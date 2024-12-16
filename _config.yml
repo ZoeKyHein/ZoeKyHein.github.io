@@ -61,5 +61,5 @@ ignore: null
 theme: fluid
 deploy:
   type: git
-  repo: https://github.com/ZoeKyHein/Hexo.git
+  repo: https://github.com/ZoeKyHein/ZoeKyhein.github.io.git
   branch: gh-pages

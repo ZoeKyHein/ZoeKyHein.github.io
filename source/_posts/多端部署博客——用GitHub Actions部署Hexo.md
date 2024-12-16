@@ -1,9 +1,12 @@
 ---
 title: 多端部署博客——用GitHub Actions部署Hexo
 tags: 博客
+catogory: 胡乱捣鼓
 ---
 
-# 多端部署博客——用GitHub Actions部署Hexo
+# Hexo + GitHub Actions + Page部署自动化博客
+
+最近想部署一个博客，网上看了很多相关的教程，但大部分都要么版本不一样了，要么缺少关键步骤。不如自己总结一下，来一个自己认为比较全面的，希望能给后面有相关需求的朋友一点帮助。
 
 ## 1.安装Git
 
@@ -57,15 +60,20 @@ npm install -g hexo-cli
 
 ## 4.使用Hexo建站
 
-安装完Hexo之后,就可以在本地选择一个文件夹,开始建站了。比如我要在本地创建一个名为Blog的文件夹。可以执行如下命令。
+为了方便和上手，这里使用Vscode+git操作。
 
-```sh
-hexo init Blog
-cd Blog
+安装完Hexo之后,就可以在本地选择一个文件夹,开始建站了。比如我要在本地创建一个名为Hexo的文件夹。
+
+使用Vscode打开这个文件夹，新建一个终端，运行如下命令
+
+``` shell
+hexo init
 npm install
 ```
 
-等到npm命令执行完毕，Blog目录中会出现如下结构。
+如果`npm install`失败，可以尝试删除文件夹中的`node_modules`文件夹重试。
+
+等到npm命令执行完毕，Hexo目录中会出现如下结构。
 
 ```
 .
@@ -80,58 +88,47 @@ npm install
 └── themes
 ```
 
-_config.yml是博客的配置文件，本篇只介绍部署，暂时不介绍配置。
+初始化完成后，将目录中的内容推送至仓库的main分支，这里我选择使用Vscode+git更方便的进行创建并推送。
 
-这时输入指令`hexo s`或`hexo server`，即可在本地测试博客效果。默认端口为`http://localhost:4000`。
+![image-20241216111417720](https://cdn.jsdelivr.net/gh/ZoeKyHein/ImageRepo/image-20241216111417720.png)
 
-![image-20241213194144483](/Users/wang/Library/Application Support/typora-user-images/image-20241213194144483.png)
+## 5.创建Token。
 
-## 5.创建一个仓库
+点击GitHub头像，选择`Settings->Developer settings->Personal access tokens->Tokens(classic)->Generate new token->classic`。
 
-如果你希望你的博客部署后是`username.github.io`直接能访问，就将仓库名字设置为`username.github.io`。
+![image-20241216111650090](https://cdn.jsdelivr.net/gh/ZoeKyHein/ImageRepo/image-20241216111650090.png)
 
-如果希望部署后还要一级，如`username.github.io/blog`,就将仓库名字设置为`blog`。
+勾选`repo`和`workflow`，Note填入`GH_TOKEN`(其实都可以，与后面对应即可，如果不熟悉就跟着来吧)。有效期根据自己的需要选择。设置完成后点击生成，然后复制生成的token，注意保存，token只能查看一次，如果忘记了后面需要重新生成。
 
-## 6.关联GitHub Pages和Hexo
+![image-20241216111819418](https://cdn.jsdelivr.net/gh/ZoeKyHein/ImageRepo/image-20241216111819418.png)
 
-### 1.生成部署密钥
+## 6.将创建的token放入仓库内。
 
-```sh
-ssh-keygen -f github-deploy-key
-```
+进入刚才推送出来的仓库，选择`Settings->Secrets and Variables->Actions->New repository secret`。
 
-输入后一直按回车即可。执行结束后，会在当前目录生成两个文件。
+![image-20241216112206006](https://cdn.jsdelivr.net/gh/ZoeKyHein/ImageRepo/image-20241216112206006.png)
 
-- github-deploy-key
-- github-deploy-key.pub
+将刚才我们复制的token填入，名称填写`GH_TOKEN`。
 
-### 2.配置部署密钥
+## 7.配置仓库地址。
 
-GitHub上打开上面创建的仓库，找到`Settings->Secrets and Variables->Actions->New repository secret`。
-
-- `Name`:`HEXO_DEPLOY_PRI`
-- `Value`:`github-deploy-key`中的内容
-
-还是在这个仓库，找到`Settings->Deploy keys->Add deploy key`。
-
-- `Title`:`HEXO_DEPLOY_PUB`
-- `Key`:`github-deploy-key.pub`中的内容
-- 勾选`Allow write access`选项
-
-## 7.创建配置文件
-
-在电脑本地查看node版本。
-
-```sh
-node -v
-```
-
-前往上面创建的仓库，找到`Settings->Pages->Build and deployment->source`，将其更改为`Github Actions`。
-
-在`.github`目录下创建`workflow`目录，在这个目录下添加`page.yml`文件,内容如下：
+回到Vscode，找到我们新建文件夹中的`_config.yml`文件，拉到最下方，将配置进行如下修改。
 
 ```yaml
-name: Pages
+deploy:
+  type: git
+  repo: https://github.com/ZoeKyHein/Hexo.git
+  branch: gh-pages
+```
+
+仓库名称和地址根据自己的，灵活修改。
+
+## 8.配置GitHub Actions工作流
+
+在`.github`目录下新建一个名为`workflows`的文件夹(注意是有s的)。在其中新建一个名为`deploy.yml`的文件，复制以下内容。
+
+``` yaml
+name: Deploy Hexo to GitHub Pages
 
 on:
   push:
@@ -141,67 +138,97 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v2
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
           # If your repository depends on submodule, please see: https://github.com/actions/checkout
-          submodules: recursive
-      - name: Use Node.js 20
-        uses: actions/setup-node@v4
+          submodules: false
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
         with:
           # Examples: 20, 18.19, >=16.20.2, lts/Iron, lts/Hydrogen, *, latest, current, node
           # Ref: https://github.com/actions/setup-node#supported-version-syntax
-          node-version: "20"
-      - name: Cache NPM dependencies
-        uses: actions/cache@v4
-        with:
-          path: node_modules
-          key: ${{ runner.OS }}-npm-cache
-          restore-keys: |
-            ${{ runner.OS }}-npm-cache
+          node-version: "22"
+
+     
       - name: Install Dependencies
         run: npm install
-      - name: Build
-        run: npm run build
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: ./public
-  deploy:
-    needs: build
-    permissions:
-      pages: write
-      id-token: write
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    steps:
+
+      - name: Install Hexo Git Deployer
+        run: |
+          npm install hexo-deployer-git --save
+          npm install hexo-cli -g
+
+      - name: Clean and Generate Static Files
+        run: |
+          hexo clean
+          hexo generate
+
+      - name: Configure Git
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+
       - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: |
+          cd public/
+          git init
+          git add -A
+          git commit -m "Create by workflows"
+          git remote add origin https://${{ secrets.GH_TOKEN }}@github.com/ZoeKyHein/Hexo.git
+          git push origin HEAD:gh-pages -f
 ```
 
-将其中的node版本替换为自己需要的版本即可。
+其中有两个位置需要修改：
 
-## 8.大功告成
+- 一是node版本需要与本地对应。在本地运行`node -v`得到版本，替换上面的`22`。
+- 二是最下方仓库地址修改为自己的仓库路径。
 
-将上面的项目推送到刚刚创建的仓库，访问对应的地址：
+其实Actions工作流的本质就是，当你提交git时，自动帮你把markdown转静态网页，发布等工作给做了。相当于我们在后续维护博客的过程中，只需要使用git提交即可，后续操作都会自动帮我们完成。
 
-- 如果仓库名是`username.github.io`，访问`username.github.io`。
-- 如果仓库名是`blog`,访问`username.github.io/blog`。
+修改完成后，将刚才的所有修改全部推送上去，查看GitHub仓库的`Action`是否有工作流工作。
 
-或者可以在GitHub的Page页查看。
+![image-20241216113145810](https://cdn.jsdelivr.net/gh/ZoeKyHein/ImageRepo/image-20241216113145810.png)
 
-![image-20241214091039592](/Users/wang/Library/Application Support/typora-user-images/image-20241214091039592.png)
+正常情况下，该工作流前面会有一个✅标志，表示没有错误发生，正常进行。
 
+回到`Code`，查看是否出现了`gh-pages`分支，并检查`gh-pages`分支下的`index.html`文件是否为空，如果为空，需要根据工作流日志查阅一下问题。
 
+## 9.配置GitHub Pages
+
+进入到仓库，选择`Settings->Pages`,确保分支时`gh-pages`。
+
+![image-20241216113459989](https://cdn.jsdelivr.net/gh/ZoeKyHein/ImageRepo/image-20241216113459989.png)
+
+关于网站的访问地址，可以在图中上方红框框起来的区域查看。规则如下：
+
+- 如果想要通过`https://username.github.io`直接访问，需要把仓库名称修改为`username.github.io`，且这样不会出现外部文件引用出错的问题，**推荐**。
+- 如果想要通过`https://username.github.io/xxx`访问，仓库名字设置为`xxx`，但这样需要多配置一步，来解决外部文件的引用错误。
+
+访问网站，如果你用的是第一种，那么应该可以看到Hexo的默认页面。(这里图片是使用了主题，所以看起来可能与你的不太一样，问题不大，意思到了就好)
+
+![image-20241216114436636](https://cdn.jsdelivr.net/gh/ZoeKyHein/ImageRepo/image-20241216114436636.png)
+
+如果是第二种，需要回到配置文件`_config.yml`，解决一下资源请求的问题。
+
+![image-20241216114239466](https://cdn.jsdelivr.net/gh/ZoeKyHein/ImageRepo/image-20241216114239466.png)
+
+将`url`字段修改为仓库的地址，`root`字段修改为仓库名称。可以顺手将`post_asset_folder`属性修改为`true`来解决图片不显示的问题。
+
+## 10.修改主题
+
+至此，默认的Hexo的配置已经完成了。下面来说一下如何更改主题，我这里用的是[fluid](https://github.com/fluid-dev/hexo-theme-fluid)，以这个为例。每个主题一般都会提供安装文档。按照安装文档一步步进行即可。
+
+---
+
+至此，就已经完成了全部配置，可以开始自己的博客写作之路了。
 
 > 参考资料：
 >
-> [Hexo官方文档](https://hexo.io/zh-cn/)
+> [Hexo官方文档](https://hexo.io/zh-cn/docs/)
 >
-> [利用 Github Actions 自动部署 Hexo 博客](https://sanonz.github.io/2020/deploy-a-hexo-blog-from-github-actions/)
->
-> [从零开始搭建 Hexo 博客简明教程（2024版）](https://www.philoli.com/building-a-blog-from-scratch/)
+> [9分钟零成本搭建自动化部署个人博客(Hexo + Github Action + Page)](https://www.bilibili.com/video/BV1xTgTemEDU/?spm_id_from=333.337.search-card.all.click&vd_source=54e860cc95e5fe130d79a442d282774f)
