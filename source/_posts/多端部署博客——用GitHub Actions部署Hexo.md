@@ -1,5 +1,5 @@
 ---
-title: 多端部署博客——用GitHub Actions部署Hexo
+title: Hexo + GitHub Actions + Page部署自动化博客
 tags: 博客
 catogory: 胡乱捣鼓
 ---
