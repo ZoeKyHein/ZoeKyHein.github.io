@@ -4,7 +4,7 @@ tags:
   - 博客
   - Hexo
 catogories: 
-  - 胡乱捣鼓
+  - [胡乱捣鼓]
 ---
 
 # Hexo + GitHub Actions + Page部署自动化博客
