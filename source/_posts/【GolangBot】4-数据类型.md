@@ -369,8 +369,6 @@ func main() {
 
 [Run in playground](https://go.dev/play/p/Dia3qOrRi_j)
 
-In line no. 9, `i` is converted to `float64` and then assigned to `j`. When you try to assign `i` to `j` without any type conversion, the compiler will throw an error.
-
 在第9行,`i`被转换为了`float64`，然后赋值给了`j`。但你尝试在不进行类型转换的情况下，将`i`赋值给`j`时，编译器将会抛出一个错误。
 
 **下一篇教程 - [常量](../【GolangBot】5-常量/)**
