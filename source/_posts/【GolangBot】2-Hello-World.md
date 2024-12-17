@@ -67,8 +67,6 @@ func main() {
 
 ### 1. go install
 
-The first method to run a Go program is using the `go install` command. Let’s `cd` into the `learngo` directory we just created.
-
 第一种运行Go程序的方法是使用`go install`命令。让我们`cd`进我们刚刚创建的`learngo`目录。
 
 ```fallback
