@@ -9,9 +9,6 @@ categories:
 ---
 
 # 【GolangBot】2-Hello World
-
-This is the second tutorial in our [Golang tutorial series](https://golangbot.com/learn-golang-series/). Please read our previous tutorial [Golang Introduction and Installation](https://golangbot.com/golang-tutorial-part-1-introduction-and-installation/) to know about what is Golang and how to install Golang.
-
 这是我们[Golang系列教程](https://golangbot.com/learn-golang-series)的第二篇。请阅读我们前一篇教程[Golang安装和介绍](../【GolangBot】1-介绍和安装/)来了解什么是Golang，以及如何安装Golang。
 
 ## 安装开发环境
@@ -221,7 +218,5 @@ func main() {
 代码可以在[GitHub](https://github.com/golangbot/hello)上下载。
 
 你现在可以去[【GolangBot】3-变量]()来学习Go中的变量。
-
-
 
 **下一篇教程 - [变量](../【GolangBot】3-变量/)**

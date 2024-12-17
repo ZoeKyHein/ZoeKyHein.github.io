@@ -12,7 +12,7 @@ categories:
 
 > [原文地址](https://golangbot.com/learn-golang-series/)
 
-# 【GolangBot】1.介绍和安装
+# 【GolangBot】1-介绍和安装
 
 这是我们[GoLang系列教程](https://golangbot.com/learn-golang-series/)的第一篇。这篇文章提供了对于Go的介绍，也讨论了在其他众多编程语言中，选择Go的优点。我们也会学习如何在MacOS、Windows和Linux上安装MacOS。
 
