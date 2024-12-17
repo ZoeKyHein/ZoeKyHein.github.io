@@ -34,7 +34,7 @@ Go的语法简洁明了，没有多余的功能。这使得编写可读性和可
 
 ### 容易编写并发程序
 
-[并发性](../【GolangBot】20-并发介绍.html)是Go语言的固有部分。因此，对于Go来说，编写多线程程序是小菜一碟。这是通过[Goroutines](../【GolangBot】21-Goroutines.html)和[Channels](../【GolangBot】22-Channels.html)实现的，我们将在接下来的教程讨论他们。
+[并发性](../【GolangBot】20-并发介绍/)是Go语言的固有部分。因此，对于Go来说，编写多线程程序是小菜一碟。这是通过[Goroutines](../【GolangBot】21-Goroutines/)和[Channels](../【GolangBot】22-Channels/)实现的，我们将在接下来的教程讨论他们。
 
 
 
@@ -108,9 +108,9 @@ $ go version
 go version go1.19.2 linux/amd64
 ```
 
-`1.19.2`是在写这篇教程时最新的版本。这证实Go确实安装成功了。在下一篇教程中，我们将会用Go写我们的第一个[Hello World程序](../【GolangBot】2-Hello-World.html)。
+`1.19.2`是在写这篇教程时最新的版本。这证实Go确实安装成功了。在下一篇教程中，我们将会用Go写我们的第一个[Hello World程序](../【GolangBot】2-Hello-World/)。
 
 
 
-下一篇教程 - [Hello World](../【GolangBot】2-Hello-World.html)
+下一篇教程 - [Hello World](../【GolangBot】2-Hello-World/)
 
