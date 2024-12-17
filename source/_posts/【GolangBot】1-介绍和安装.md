@@ -112,5 +112,5 @@ go version go1.19.2 linux/amd64
 
 
 
-下一篇教程 - [Hello World](../【GolangBot】2-Hello-World/)
+**下一篇教程 - [Hello World](../【GolangBot】2-Hello-World/)**
 

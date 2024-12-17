@@ -12,23 +12,23 @@ categories:
 
 This is the second tutorial in our [Golang tutorial series](https://golangbot.com/learn-golang-series/). Please read our previous tutorial [Golang Introduction and Installation](https://golangbot.com/golang-tutorial-part-1-introduction-and-installation/) to know about what is Golang and how to install Golang.
 
-这是我们Golang系列教程的第二篇。
+这是我们[Golang系列教程](https://golangbot.com/learn-golang-series)的第二篇。请阅读我们前一篇教程[Golang安装和介绍](../【GolangBot】1-介绍和安装/)来了解什么是Golang，以及如何安装Golang。
 
-There is no better way to learn a programming language than getting our hands dirty with code. Let’s go ahead and write our first Go program.
+## 安装开发环境
 
-### Setting up the development environment
-
-Let’s create a directory where we want to write our hello world program. Open the terminal and run the following command.
+让我们在想要写Hello World程序的位置创建一个目录。打开终端运行如下命令。
 
 ```fallback
 mkdir ~/Documents/learngo/
 ```
 
-The above command will create a directory named `learngo` inside the current user’s Documents directory. Feel free to create the directory wherever you want the code to reside.
+上面的命令将会在当前用户的文档目录下创建一个名为`learngo`的目录。你可以随意在希望存放代码的位置创建目录。
 
-### Creating a Go Module
+## 创建一个Go Module
 
-Next step is to create a go module named `learngo` in the `~/Documents/learngo/` folder. Go modules are used to track our application’s dependencies and their versions. We will discuss Go modules in more detail when we learn about [packages](https://golangbot.com/go-packages/).
+下一步是在`~/Documents/learngo/`文件夹中创建一个名为`learngo`的go module。Go modules 用来追踪应用的依赖和版本。我们将会在我们学习[包](../【GolangBot】7-包/)的时候详细讨论Go modules。
+
+在`~/Documents/learngo/`目录中运行`go mod init learngo`。这将会创建一个名为`go.mod`的文件。运行`go mod init learngo`命令后，下面的内容将会被打印出来
 
 Run `go mod init learngo` inside the `~/Documents/learngo/` directory. This will create a file named `go.mod`. The following will be printed after running the `go mod init learngo` command
 
@@ -36,9 +36,7 @@ Run `go mod init learngo` inside the `~/Documents/learngo/` directory. This will
 go: creating new go.mod: module learngo
 ```
 
-v
-
-The contents of the `go.mod` file are provided below.
+`go.mod`文件的内容如下。
 
 ```v
 1module learngo
@@ -46,13 +44,13 @@ The contents of the `go.mod` file are provided below.
 3go 1.21.0
 ```
 
-v
-
 The first line `module learngo` specifies the module name. The next line `1.21.0` indicates that the files in this module use go version 1.21.0
 
-### Hello World
+第一行`module learngo`制定了module的名称。下一行`1.21.0`表明在这个module当中，使用的go版本是1.21.0。
 
-Create a file named `main.go` in the `learngo` directory using your favourite text editor with the following contents.
+## Hello World
+
+用你最喜欢的文本编辑器在`learngo`目录下创建一个名为`main.go`的文件，其中包含以下内容。
 
 ```go
 1package main
@@ -64,145 +62,143 @@ Create a file named `main.go` in the `learngo` directory using your favourite te
 7} 
 ```
 
-go
+按照Go的管理，包含`main`函数的文件命名为`main.go`，但其他名称也同样适用。
 
-It’s a convention in Go to name the file that contains the `main` function as `main.go`, but other names work as well.
+## 运行go程序
 
-### Running a go program
+有几种运行Go程序的不同方式。让我们一个个地来看。
 
-There are a couple of different ways to run a Go program. Let’s look at them one by one.
-
-#### 1. go install
+### 1. go install
 
 The first method to run a Go program is using the `go install` command. Let’s `cd` into the `learngo` directory we just created.
+
+第一种运行Go程序的方法是使用`go install`命令。让我们`cd`进我们刚刚创建的`learngo`目录。
 
 ```fallback
 cd ~/Documents/learngo/
 ```
 
-Run the following command next.
+运行如下命令。
 
 ```fallback
 go install
 ```
 
-The above command will compile the program and install(copy) the binary to location `~/go/bin`. The name of the binary will be the name of the go module. In our case, it will be named `learngo`.
+上面的命令将会变异程序并且安装(拷贝)二进制文件到`~/go/bin`路径。二进制文件的名称是go module的名称。在我们的示例中，它会被命名为`learngo`。
 
-You might encounter the following error when you try to install the program.
+当你尝试安装程序的时候，你可能会碰到下面的错误。
 
 ```fallback
 go install: no install location for directory /home/naveen/Documents/learngo outside GOPATH
 For more details see: 'go help gopath'
 ```
 
-What the above error actually means is, `go install` is unable to find a location to install the compiled binary. So let’s go ahead and give it a location. This location is governed by the `GOBIN` environment variable.
+上面的错误通常的意思是指，`go install`找不到位置安装编译后的二进制文件。所以让我们继续，并且给他一个位置。这个位置是由`GOBIN`环境变量控制的。
 
 ```fallback
 export GOBIN=~/go/bin/
 ```
 
-The above environment variable specifies that `go install` should copy the compiled binary to the path `~/go/bin/`. This is the conventional location for a Go binary but feel free to change it to any location you want. Now try running `go install` again and the program should compile and run without any problems.
+上面的环境变量制定了`go install`应该拷贝并且编译二进制文件到`~go/bin`路径。这是对Go的二进制文件来说一个约定俗成的路径，但你也可以随心所欲的修改它到任意你想要的位置。现在试着重新运行`go install`，程序应该会正常编译并且运行了。
 
-You can type `ls -al ~/go/bin/learngo` in the terminal and you can find that in fact `go install` has placed the binary in the path `~/go/bin`
+你可以在终端里面输入`ls -al ~/go/bin/learngo`，你会发现实际上`go install`已经把二进制文件放到了`~/go/bin`路径下。
 
-Now let’s run the compiled binary.
+现在，让我们来运行编译后的二进制文件。
 
 ```fallback
 ~/go/bin/learngo
 ```
 
-The above command will run the `learngo` binary and print the following output.
+上面的命令将会运行`learngo`二进制文件并且打印如下输出。
 
 ```fallback
 Hello World
 ```
 
-Congrats! You have successfully run your first Go Program.
+恭喜！你已经成功运行了你的第一个Go程序。
 
-If you want to avoid typing the entire path `~/go/bin/learngo` each time you run the program, you can add `~/go/bin/` to your PATH.
+如果你不想每次运行程序的时候都输入完整的路径`~/go/bin/learngo`，你可以把`~/go/bin/`添加到你的PATH环境变量中。
 
 ```fallback
 export PATH=$PATH:~/go/bin
 ```
 
-Now you can just type `learngo` in the terminal to run the program.
+现在，你只需要在终端输入`learngo`就可以运行你的程序了。
 
-You might be wondering what will happen when the `learngo` directory contains muliple go files instead of just `main.go`. How will `go install` work in this case? Please hold on, we will discuss these when we learn about [packages and go modules](https://golangbot.com/go-packages/).
+你也许想知道当`learngo`目录包含多个go文件而不只有一个`main.go`时会发生什么。在这种情况下`go install`会发生什么？请别着急，我们将会在[包和Go Modules](../【GolangBot】7-包/)一节中讨论这些。
 
-#### 2. go build
+### 2. go build
 
-The second option to run the program is using `go build`. `go build` is much similar to `go install` except that it doesn’t install(copy) the compiled binary to the path `~/go/bin/`, rather it creates the binary inside the location from which `go build` was installed.
+运行程序的第二个选择是使用`go build`。`go build`和`go install`非常相似，除了它不会在`~/go/bin/`路径下安装(拷贝)二进制文件。相反，它会在安装`go build`的位置创建二进制文件。
 
-Type the following command in the terminal
+在终端输入以下命令将当前目录更改为`learngo`。
 
 ```fallback
 cd ~/Documents/learngo/
 ```
 
-to change the current directory to `learngo`.
-
-After that, enter the following command.
+在那之后，输入下面的命令。
 
 ```fallback
 go build
 ```
 
-The above command will create a binary named `learngo` in the current directory. Running `ls -al` will reveal that a file named `learngo` is created.
+上方的命令会在当前目录创建一个名为`learngo`的二进制文件。运行`ls -al`会发现一个名为`learngo`的文件被创建了。
 
-Type `./learngo` to run the program. This will also print
+输入`./learngo`运行程序。这也会打印
 
 ```fallback
 Hello World
 ```
 
-We have successfully run our first Go program using `go build` too :)
+我们用`go build`同样成功运行了我们的第一个Go程序:)
 
-#### 3. go run
+### 3. go run
 
-The third way to run the program is using `go run` command.
+第三种运行程序的方式是使用`go run`命令。
 
-Type the command `cd ~/Documents/learngo/` in the terminal to change the current directory to `learngo`.
+在终端中输入`cd ~/Documents/learngo/`命令来改变当前目录到`learngo`。
 
-After that, enter the following command.
+然后，输入如下的命令。
 
 ```fallback
 go run main.go
 ```
 
-After the above command is entered, we can see the output
+执行上面的命令后，我们会看到输出
 
 ```fallback
 Hello World
 ```
 
-One difference between the `go run` and `go build/go install` commands is, `go run` requires the name of the `.go` file as an argument.
+`go run`与`go build/go install`命令的一个不同就在于，`go run`需要`.go`文件的名字作为一个参数。
 
-Under the hood, `go run` works much similar to `go build`. Instead of compiling and installing the program to the current directory, it compiles the file to a temporary location and runs the file from that location. If you are interested to know the location where `go run` compiles the file to, please run `go run` with the `--work` argument.
+在底层，`go run`和`go build`非常相似。但`go run`不在当前目录编译和安装程序，而是向一个临时目录编译文件，并在该目录运行文件。如果你有兴趣想知道`go run`把文件编译到了哪里，请在运行`go run`的时候加上`--work`参数。
 
 ```fallback
 go run --work main.go
 ```
 
-Running the above command in my case outputs
+运行上面的命令，我这里输出
 
 ```fallback
 WORK=/tmp/go-build199689936
 Hello World
 ```
 
-The `WORK` key’s value specifies the temporary location to which the program will be compiled. In my case, the program has been compiled to the location `/tmp/go-build199689936`. This might vary in your case :)
+关键字`WORK`的值制定了程序将会被编译到的临时位置。在我的示例中，程序已经被编译到了`/tmp/go-build199689936`。你的运行情况可能有所不同:)
 
-#### 4. Go Playground
+### 4. Go在线运行环境。
 
-The final way of running the program is using the go playground. Although this has restrictions, this method comes in handy when we want to run simple programs since it uses the browser and doesn’t need Go installed in your local :). I have created a playground for the hello world program. [Click here](https://go.dev/play/p/oXGayDtoLPh) to run the program online.
+最后一种方式是使用Go在线运行环境。尽管有一些限制，但当我们想要运行简单的程序时，此方法将会派上用场，它使用浏览器运行，不需要在本地安装GO:)。我已经为Hello World 程序创建了一个在线环境。[点击这里](https://go.dev/play/p/oXGayDtoLPh)在线运行程序。
 
-You can also use the go playground to share your source code with others.
+你也可以使用Go在线运行环境来与其他人分享你的源码。
 
-Now that we know 4 different ways to run a program, you might be in a confusion to decide which method to use. The answer is, it depends. I generally use the [playground](https://go.dev/play/p/oXGayDtoLPh) when I want to do a quick check of logic or find out how a standard library function works. In most other cases, I prefer `go install` since it gives me an option to run the program from any directory in the terminal as it compiles all programs to the standard `~/go/bin/` path.
+现在我们知道了运行程序的四种不同的方式，你可能纠结于使用哪一种。答案是，视情况而定。当我想要做一个快速逻辑检查或一个标准库函数是否生效时，我一般会选择在线环境。在大多数情况下，我更喜欢`go install`，因为它给我一种选择，让我可以在终端里可以从任意目录运行程序，因为它将所有的程序编译到靠准`~/go/bin`路径。
 
-#### A short explanation of the hello world program
+### 对Hello World程序的简短解释
 
-Here is the hello world program we just wrote
+这里是我们刚刚写的Hello World程序。
 
 ```go
 package main 
@@ -214,22 +210,18 @@ func main() {
 }
 ```
 
-go
+我们会简要讨论程序的每一行的作用。我们将在接下来的每一篇教程中深入探讨程序的各个部分。
 
-We will discuss in brief what each line of the program does. We will dwell deep into each section of the program in the upcoming tutorials.
+**package main - 每一个go文件都必须从`package name`语句开始**。包用于提供代码的分隔和可重用性。这里用到了包名`main`。`main`函数应该永远处于main包中。
 
-**package main** - **Every go file must start with the `package name` statement.** Packages are used to provide code compartmentalization and reusability. The package name **`main`** is used here. The main function should always reside in the main package.
+**import “fmt”** - import语句用来引用其他的包。在我们的示例中，`fmt`包被引用并且它用于在main函数中向标准输出打印文本。
 
-**import “fmt”** - The import statement is used to import other packages. In our case, `fmt` package is imported and it will be used inside the main function to print text to the standard output.
+**fmt.Println(“Hello World”)** - `fmt`包的 `Println` 函数用于向标准输出打印文本。`package.Function()`是调用包内函数的格式。
 
-**func main()** - The `func` keyword marks the beginning of a function. The `main` is a special function. The program execution starts from the `main` function. The `{` and `}` braces indicate the start and end of the main function.
+代码可以在[GitHub](https://github.com/golangbot/hello)上下载。
 
-**fmt.Println(“Hello World”)** - The `Println` function of the `fmt` package is used to write text to the standard output. `package.Function()` is the syntax to call a function in a package.
+你现在可以去[【GolangBot】3-变量]()来学习Go中的变量。
 
-The code is available for download at [github](https://github.com/golangbot/hello).
 
-You can now move on to [Golang tutorial part 3: Variables](https://golangbot.com/variables/) to learn about variables in Go.
 
-I hope you liked this tutorial. Please leave your feedback and comments. Please consider sharing this tutorial on [twitter](https://twitter.com/intent/tweet?text=Hello World&url=https%3a%2f%2fgolangbot.com%2fhello-world-gomod%2f&tw_p=tweetbutton) and [LinkedIn](https://golangbot.com/hello-world-gomod/#linkedinshr). Have a good day.
-
-**Next Tutorial - [Variables](https://golangbot.com/variables/)**
+**下一篇教程 - [变量](../【GolangBot】3-变量/)**
