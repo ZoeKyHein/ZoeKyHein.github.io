@@ -36,9 +36,9 @@ go: creating new go.mod: module learngo
 `go.mod`文件的内容如下。
 
 ```v
-1module learngo
-2
-3go 1.21.0
+module learngo
+
+go 1.21.0
 ```
 
 The first line `module learngo` specifies the module name. The next line `1.21.0` indicates that the files in this module use go version 1.21.0
@@ -50,13 +50,13 @@ The first line `module learngo` specifies the module name. The next line `1.21.0
 用你最喜欢的文本编辑器在`learngo`目录下创建一个名为`main.go`的文件，其中包含以下内容。
 
 ```go
-1package main
-2
-3import "fmt"
-4
-5func main() {
-6	fmt.Println("Hello World")
-7} 
+package main
+
+import "fmt"
+
+func main() {
+	fmt.Println("Hello World")
+} 
 ```
 
 按照Go的管理，包含`main`函数的文件命名为`main.go`，但其他名称也同样适用。
