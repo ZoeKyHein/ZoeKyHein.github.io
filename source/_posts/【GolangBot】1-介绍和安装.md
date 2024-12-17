@@ -81,19 +81,19 @@ Go使用垃圾收集机制，因此内存管理基本是自动完成的，开发
 
 ## 安装
 
-Go可以安装在所有的三种平台上：Mac、Windows和Linux。你可以从https://go.dev/dl/下载对应平台的二进制文件。
+Go可以安装在所有的三种平台上：Mac、Windows和Linux。你可以从 https://go.dev/dl/ 下载对应平台的二进制文件。
 
 ### Mac OS
 
-从https://go.dev/dl/下载Mac OS安装器。双击开始安装。根据提示操作，Golang将会安装在`/usr/local/go`并且会把 `/usr/local/go/bin`这个文件夹添加到你的PATH环境变量中。
+从 https://go.dev/dl/ 下载Mac OS安装器。双击开始安装。根据提示操作，Golang将会安装在`/usr/local/go`并且会把 `/usr/local/go/bin`这个文件夹添加到你的PATH环境变量中。
 
 ### Windows
 
-从https://go.dev/dl/下载MSI安装器。双击开始安装，并根据提示进行操作。这将会把Go安装在`c:\Go`，并且会把目录 `c:\Go\bin`添加到path环境变量。
+从 https://go.dev/dl/ 下载MSI安装器。双击开始安装，并根据提示进行操作。这将会把Go安装在`c:\Go`，并且会把目录 `c:\Go\bin`添加到path环境变量。
 
 ### Linux
 
-从https://go.dev/dl/下载tar文件并且解压至`/usr/local`。添加`/usr/local/go/bin`到PATH环境变量。这将在Linux中安装Go。
+从 https://go.dev/dl/ 下载tar文件并且解压至`/usr/local`。添加`/usr/local/go/bin`到PATH环境变量。这将在Linux中安装Go。
 
 
 
