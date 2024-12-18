@@ -43,8 +43,6 @@ func main() {
 My initial age is 0  
 ```
 
-A variable can be assigned to any value of its type. In the above program, `age` can be assigned any integer value.
-
 一个变量可以被分配它类型的任意值。在上面的程序中，`age`可以被分配任意的整型值。
 
 ```go
@@ -390,4 +388,4 @@ func main() {
 
 [Run in playground](https://go.dev/play/p/_L67J5Mxy8F)
 
-**下一篇教程 - [Types](../【GolangBot】4-数据类型/)**
+**下一篇教程 - [类型](../【GolangBot】4-数据类型/)**
