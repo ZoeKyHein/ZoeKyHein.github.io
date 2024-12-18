@@ -13,7 +13,6 @@ published: true
 
 
 
-Welcome to tutorial no. 6 in our [Golang tutorial series](https://golangbot.com/learn-golang-series/).
 
 欢迎来到[Golang系列教程](../GolangBot/)的第六篇。
 
