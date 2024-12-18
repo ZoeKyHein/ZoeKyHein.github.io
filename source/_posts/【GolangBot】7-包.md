@@ -1,6 +1,6 @@
 ---
 title: 【GolangBot】7-包
-date: 2024-12-17 08:48:29
+date: 2024-12-18 16:48:29
 tags: 
     - GoLang
     - 教程
@@ -9,7 +9,7 @@ categories:
 published: true
 ---
 
-Welcome to tutorial number 7 in [Golang tutorial series](https://golangbot.com/learn-golang-series/).
+
 
 欢迎来到[Golang系列教程](../GolangBot/)的第七篇。
 
