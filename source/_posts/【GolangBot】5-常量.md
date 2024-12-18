@@ -9,7 +9,6 @@ categories:
 published: true
 ---
 
-Welcome to tutorial no. 5 in our [Golang tutorial series](https://golangbot.com/learn-golang-series/).
 
 欢迎来到我们Golang系列教程的第五篇。
 
@@ -44,7 +43,6 @@ func main() {
 
 [Run in playground](https://go.dev/play/p/mv3B-q3h0zh)
 
-In the above code `a` is a constant and it is assigned the value `50`.
 
 在上面的代码中，`a`是一个常量，它被赋值为`50`。
 
@@ -92,9 +90,7 @@ func main() {
 
 [Run in playground](https://go.dev/play/p/5ggPss1iSsl)
 
-**常量的值应该在编译时就已经知道了。**因此，它不能被赋值为[函数调用](../_posts/【GolangBot】6-函数/)的值，因为函数调用发生在运行时。
-
-**The value of a constant should be known at compile time.** Hence it cannot be assigned to a value returned by a [function call](https://golangbot.com/functions/) since the function call takes place at run time.
+**常量的值应该在编译时就已经知道了。**因此，它不能被赋值为[函数调用](../【GolangBot】6-函数/)的值，因为函数调用发生在运行时。
 
 ```go
 package main
@@ -112,35 +108,31 @@ func main() {
 }
 ```
 
-go
-
 [Run in playground](https://go.dev/play/p/fFLfoN0L3Nf)
 
-In the above program, `a` is a [variable](https://golangbot.com/variables/) and hence it can be assigned to the result of the function `math.Sqrt(4)` (We will discuss functions in more detail in a [separate tutorial](https://golangbot.com/functions/)).
+在上面的程序中，`a`是一个[变量](../【GolangBot】3-变量/)，因此它可以被赋值为函数`math.Sqrt(4)`的结果（我们将在[单独的教程](../【GolangBot】6-函数/)中讨论函数）。
 
-`b` is a constant and the value of `b` needs to be known at compile time. The function `math.Sqrt(4)` will be evaluated only during run time and hence `const b = math.Sqrt(4)` fails to compile with error
+`b`是一个常量，并且`b`的值需要在编译时就知道。函数`math.Sqrt(4)`仅在运行时求值，因此`const b = math.Sqrt(4)`编译失败，出现错误，
 
 ```fallback
 ./prog.go:11:12: math.Sqrt(4) (value of type float64) is not constant
 ```
 
-### String Constants, Typed and Untyped Constants
+### 字符串常量、类型常量和无类型常量
 
-Any value enclosed between double quotes is a string constant in Go. For example, strings like `"Hello World"`, `"Sam"` are all constants in Go.
+在Go中任何被双引号包起来的值都是一个字符串常量。例如，像`"Hello World"`,`"Sam"`在Go中都是常量。
 
-What type does a string constant belong to? The answer is they are **untyped**.
+一个字符串常量属于什么类型？答案是**无类型。**
 
-**A string constant like “Hello World” does not have any type**.
+**一个像"Hello World"的字符串没有任何类型。**
 
 ```go
 const hello = "Hello World"
 ```
 
-go
+在上面这行代码中，常量`hello`没有任何类型。
 
-In the above line of code, the constant `hello` doesn’t have a type.
-
-Go is a strongly typed language. All variables require an explicit type. How does the following program which assigns a variable `name` to an untyped constant `n` work?
+Go是强类型语言。所有变量都需要显式的类型。下面的程序中，为变量`name`赋值无类型的常量`n`会发生什么？
 
 ```go
 package main
@@ -157,23 +149,21 @@ func main() {
 }
 ```
 
-go
-
 [Run in playground](https://go.dev/play/p/CFqbC8yfe6C)
 
-**The answer is untyped constants have a default type associated with them and they supply it if and only if a line of code demands it. In the statement `var name = n` in line no. 9, `name` needs a type and it gets it from the default type of the string constant `n` which is a `string`.**
+**答案是无类型常量有一个与之关联的默认类型，只有在某行代码需要时才会提供默认类型。在第9行的语句`var name = n`中，`name`需要一个类型，它从`string`常量`n`的默认类型中获取**
 
-Is there a way to create a **typed constant**? The answer is yes. The following code creates a typed constant.
+有没有一种办法可以创建一个**类型常量**？答案是有的。下面的代码创建了一个类型常量。
 
 ```go
 const name string = "Hello World"
 ```
 
-go
-
-*name* in the above code is a constant of type `string`.
+*name* 在上面的代码中是一个`string`类型的常量。
 
 Go is a strongly typed language. Mixing types during the assignment is not allowed. Let’s see what this means with the help of a program.
+
+Go是强类型语言。赋值过程中是不允许混合类型的。我们用一个程序来看看这是啥意思。
 
 ```go
 package main
@@ -189,19 +179,17 @@ func main() {
 }
 ```
 
-go
-
 [Run in playground](https://go.dev/play/p/sJ1rCtzebkP)
 
-In the above code, we first create a variable `defaultName` and assign it to the constant `Sam`. **The default type of the constant `Sam` is a `string`, so after the assignment `defaultName` is of type `string`.**
+在上面的代码中，我们首先创建了一个变量`defaultName`，并将常量`Sam`赋值给他。**常量`Sam`的默认类型是`string`，所以在赋值之后，`defaultName`的类型是`string`。**
 
-In the next line, we create a new type `myString` which is an alias of `string`.
+在下一行，我们创建了一个新的类型`myString`，这是`string`类型的别称。
 
-Then we create a variable `customName` of type `myString` and assign the constant `Sam` to it. Since the constant `Sam` is untyped, it can be assigned to any `string` variable. Hence this assignment is allowed and `customName` gets the type `myString`.
+然后我们创建一个`myString`类型的变量`customName`，并且将常量`Sam`赋值给它。因为常量`Sam`是无类型的，它可以被赋值给任意`string`类型的变量。因此这个赋值操作是允许的，`customName`得到类型`myString`。
 
-Now we have a variable `defaultName` of type `string` and another variable `customName` of type `myString`. Even though we know that `myString` is an alias of `string`, Go’s strong typing policy disallows variables of one type to be assigned to another. **Hence the assignment `customName = defaultName` is not allowed and the compiler throws the error `./prog.go:9:15: cannot use defaultName (variable of type string) as myString value in assignment`**
+现在我们有一个`string`类型的变量`defalutName`，另一个`myString`类型的变量`customName`。尽管我们知道`myString`是`string`的别名，Go的强类型规则不允许将一种类型的值赋值给另外一种类型。**因此赋值操作`customName = defaultName`是不被允许的，编译操作会抛出一个错误：``./prog.go:9:15: cannot use defaultName (variable of type string) as myString value in assignment``**
 
-To make the above program work, `defaultName` must be converted to type `myString`. This is done in the following program in line no. 9
+为了让上面的程序正常工作，`defalutName`必须被转换为`myString`类型。这在下面的程序中的第9行进行操作。
 
 ```go
 package main
@@ -217,15 +205,13 @@ func main() {
 }
 ```
 
-go
-
 [Run in playground](https://go.dev/play/p/EObC2BTq4KW)
 
-The above program will print `Sam`
+上面的程序将会打印`Sam`。
 
-### Boolean Constants
+### 布尔型常量
 
-Boolean constants are no different from string constants. They are two untyped constants `true` and `false`. The same rules for string constants apply to booleans so we will not repeat them here. The following is a simple program to explain boolean constants.
+布尔型常量和字符串常量没有什么区别。它们是两个无类型的常量`true`和`false`。字符串常量的规则对于布尔型常量也同样适用，所以我们就不再赘述了。下面是一个简单的程序来解释布尔型常量。
 
 ```go
 package main
@@ -239,17 +225,17 @@ func main() {
 }
 ```
 
-go
-
 [Run in playground](https://go.dev/play/p/YWZ80x94Q1D)
 
 The above program is self-explanatory.
 
-### Numeric Constants
+上面的程序是不言自明的。
 
-Numeric constants include integers, floats and complex constants. There are some subtleties in numeric constants.
+### 数字常量
 
-Let’s look at some examples to make things clear.
+数字常量包括整数、浮点数和复数。数字常量有一些细节需要注意。
+
+让我们举一些例子来说明问题。
 
 ```go
 package main
@@ -268,11 +254,9 @@ func main() {
 }
 ```
 
-go
-
 [Run in playground](https://go.dev/play/p/9MzdS-nmA1Z)
 
-In the program above, the const `c` is `untyped` and has a value `5`. **You may be wondering what is the default type of c and if it does have one, how do we then assign it to variables of different types**. The answer lies in the syntax of `c`. The following program will make things more clear.
+在上面的程序中，常量`c`是`untyped`类型并且有一个值`5`。**你也许想知道c的默认类型是什么，以及如果它确实有默认类型，我们又该如何将其赋值给其他不同类型的变量。**答案就在`c`的语法当中。下面的程序将会让这个问题更加清晰。
 
 ```go
 package main
@@ -289,17 +273,15 @@ func main() {
 }
 ```
 
-go
-
 [Run in playground](https://go.dev/play/p/XVEGb9aUsxs)
 
-In the program above, the type of each variable is determined by the syntax of the numeric constant. **5** is an integer by syntax, **5.6** is a float and **5 + 6i** is a complex number by syntax. When the above program is run, it prints
+在上面的程序中，每个变量的类型都被数字常量的语法所定义。根据语法，**5**是一个整数，**5.6**是一个浮点数，**5 + 6i**是一个复数。上面的程序运行会打印
 
 ```fallback
 i's type is int, f's type is float64, c's type is complex128
 ```
 
-With this knowledge, let’s try to understand how the below program worked.
+知道了这些，我们来试着理解下面的程序会如何工作。
 
 ```go
 package main
@@ -318,15 +300,13 @@ func main() {
 }
 ```
 
-go
-
 [Run in playground](https://go.dev/play/p/9MzdS-nmA1Z)
 
-In the program above, the value of `c` is `5` and the syntax of `c` is generic. It can represent a float, integer or even a complex number with no imaginary part. Hence it is possible to be assigned to any compatible type. The default type of these kinds of constants can be thought of as being generated based on the context where they are used. `var intVar int = c` requires `c` to be `int` so it becomes an `int` constant. `var complex64Var complex64 = c` requires `c` to be a complex number and hence it becomes a complex constant. Pretty neat :).
+在上面的程序中，`c`的值是`5`并且`c`的语法是通用语法。它可以表示浮点数、整数，甚至是无虚部复数。因此它可以赋值给任意兼容类型。可以认为，这些类型的常量的默认类型是由它们所使用的上下文生成的。`var intVar int = c`需要`c`是`int`类型，所以它变成了一个`int`常量。`var complex64Var complex64 = c`需要`c`是复数类型，因此它变成一个复数常量。以此类推:)。
 
-### Numeric Expressions
+### 数字表达式
 
-Numeric constants are free to be mixed and matched in expressions and a type is needed only when they are assigned to variables or used in any place in code which demands a type.
+数字常量可以在表达式中自由混合和匹配，只有当它们赋值给变量或者用于需要类型的代码中才需要类型。
 
 ```go
 package main
@@ -341,16 +321,12 @@ func main() {
 }
 ```
 
-go
-
 [Run in playground](https://go.dev/play/p/Nsak9scUAWg)
 
-In the program above, `5.9` is a float by syntax and `8` is an integer by syntax. Still, `5.9/8` is allowed as both are numeric constants. The result of the division is `0.7375` is a `float` and hence variable `a` is of type `float`. The output of the program is
+在上面的程序中，`5.9`语法上是一个浮点数，`8`语法上是一个整数。不过，由于两者都是数字常量，因此`5.9/8`是被允许的。相除后的结果是`0.7375`是一个浮点数`float`。程序的输出是
 
 ```fallback
 a's type is float64 and value is 0.7375
 ```
 
-This brings us to the end of this tutorial.
-
-I hope you liked this tutorial. Please leave your feedback and comments. Please consider sharing this tutorial on [twitter](https://twitter.com/intent/tweet?text=Constants&url=https%3a%2f%2fgolangbot.com%2fconstants%2f&tw_p=tweetbutton) or [LinkedIn](https://golangbot.com/constants/#linkedinshr). Have a good day.
+**下一篇教程 - [函数](../_posts/【GolangBot】6-函数/)**
