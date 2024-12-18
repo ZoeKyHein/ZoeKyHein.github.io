@@ -10,7 +10,7 @@ categories:
 
 # 【GolangBot】4-数据类型
 
-这是我们[Golang系列教程](https://golangbot.com/learn-golang-series/)的第四篇.
+这是我们[Golang系列教程](../golangbot/)的第四篇.
 
 请阅读[第三部分：变量](../【GolangBot】3-变量/)来学习变量。
 

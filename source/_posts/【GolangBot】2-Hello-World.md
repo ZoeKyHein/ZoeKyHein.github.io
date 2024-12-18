@@ -9,7 +9,7 @@ categories:
 ---
 
 # 【GolangBot】2-Hello World
-这是我们[Golang系列教程](https://golangbot.com/learn-golang-series)的第二篇。请阅读我们前一篇教程[Golang安装和介绍](../【GolangBot】1-介绍和安装/)来了解什么是Golang，以及如何安装Golang。
+这是我们[Golang系列教程](../golangbot/)的第二篇。请阅读我们前一篇教程[Golang安装和介绍](../【GolangBot】1-介绍和安装/)来了解什么是Golang，以及如何安装Golang。
 
 ## 安装开发环境
 

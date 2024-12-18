@@ -10,9 +10,9 @@ categories:
 
 # 【GolangBot】3-变量
 
-这是我们[Golang系列教程](https://golangbot.com/learn-golang-series/)的第三篇，这篇我们来处理Golang中的变量。
+这是我们[Golang系列教程](../golangbot/)的第三篇，这篇我们来处理Golang中的变量。
 
-你可以阅读[第二部分](https://golangbot.com/hello-world-gomod/)来学习配置Go，运行Hello World程序。
+你可以阅读[第二部分](../【GolangBot】2-Hello-World/)来学习配置Go，运行Hello World程序。
 
 ## 什么是变量？
 
