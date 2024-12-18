@@ -6,7 +6,7 @@ tags:
     - 教程
 categories:
     - [学习心得, GoLangBot]
-published: false
+published: true
 ---
 
 Welcome to tutorial no. 5 in our [Golang tutorial series](https://golangbot.com/learn-golang-series/).
@@ -25,9 +25,9 @@ Go中的常量用于定义固定的值，例如：
 
 等等。常量通常用来表示一个值，这个值在应用的整个生命周期中都不会改变。
 
-### 定义一个常量
+### 声明一个常量
 
-The keyword `const` is used to declare a constant in Go. Let’s see how to declare a constant by means an example.
+关键字`const`在Go中用来声明一个常量。我们用一个例子来看看如何声明一个常量。
 
 ```go
 package main
@@ -42,15 +42,15 @@ func main() {
 }
 ```
 
-go
-
 [Run in playground](https://go.dev/play/p/mv3B-q3h0zh)
 
 In the above code `a` is a constant and it is assigned the value `50`.
 
-### Declaring a group of constants
+在上面的代码中，`a`是一个常量，它被赋值为`50`。
 
-There is also another syntax to define a group of constants using a single statement. An example to define a group of constants using this syntax is provided below.
+### 定义一组常量
+
+Go中也有语法用于使用一条语句声明一组常量。下面是用这个语法来声明一组常量的例子。
 
 ```go
 package main
@@ -70,18 +70,16 @@ func main() {
 }
 ```
 
-go
-
 [Run in playground](https://go.dev/play/p/gSPJC0y49Sm)
 
-In the above program, we have declared 2 constants `retryLimit` and `httpMethod`. The above program prints,
+在上面的程序中，我们已经定义了2个常量`retryLimit`和`httpMethod`。上面的程序将会打印，
 
 ```fallback
 4
 GET
 ```
 
-Constants, as the name indicate, cannot be reassigned again to any other value. In the program below, we are trying to assign another value `89` to `a`. This is not allowed since `a` is a constant. This program will fail to run with compilation error `cannot assign to a (neither addressable nor a map index expression)`.
+常量，顾名思义，不能被再赋值为其他值。在上面的程序中，我们尝试为`a`赋值另一个值`89`。因为`a`是一个常量，所以这是不允许的。这个程序将会运行失败，报错`cannot assign to a (neither addressable nor a map index expression)`。
 
 ```go
 package main
@@ -92,9 +90,9 @@ func main() {
 }
 ```
 
-go
-
 [Run in playground](https://go.dev/play/p/5ggPss1iSsl)
+
+**常量的值应该在编译时就已经知道了。**因此，它不能被赋值为[函数调用](../_posts/【GolangBot】6-函数/)的值，因为函数调用发生在运行时。
 
 **The value of a constant should be known at compile time.** Hence it cannot be assigned to a value returned by a [function call](https://golangbot.com/functions/) since the function call takes place at run time.
 
