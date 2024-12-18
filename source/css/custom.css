@@ -1,6 +1,6 @@
 @import url("https://chinese-fonts-cdn.deno.dev/packages/zqfs/dist/ZhuqueFangsong-Regular/result.css");
 
-html, body, .markdown-body, p {
+p {
     font-family: 'Zhuque Fangsong (technical preview)', sans-serif;
     font-weight: 400;
 }
