@@ -11,11 +11,11 @@ published: false
 
 Welcome to tutorial no. 5 in our [Golang tutorial series](https://golangbot.com/learn-golang-series/).
 
-欢迎来到我们
+欢迎来到我们Golang系列教程的第五篇。
 
-### What is a constant?
+### 什么是常量？
 
-Constants in Go is used to denote fixed static values such as
+Go中的常量用于定义固定的值，例如：
 
 ```fallback
 95 
@@ -23,9 +23,9 @@ Constants in Go is used to denote fixed static values such as
 67.89 
 ```
 
-and so on. Constants are generally used to represent values that do not change throughout the life time of an application.
+等等。常量通常用来表示一个值，这个值在应用的整个生命周期中都不会改变。
 
-### Declaring a constant
+### 定义一个常量
 
 The keyword `const` is used to declare a constant in Go. Let’s see how to declare a constant by means an example.
 

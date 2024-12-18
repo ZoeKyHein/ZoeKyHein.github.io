@@ -11,7 +11,7 @@ categories:
 # 【GolangBot】2-Hello World
 这是我们[Golang系列教程](../golangbot/)的第二篇。请阅读我们前一篇教程[Golang安装和介绍](../【GolangBot】1-介绍和安装/)来了解什么是Golang，以及如何安装Golang。
 
-## 安装开发环境
+### 安装开发环境
 
 让我们在想要写Hello World程序的位置创建一个目录。打开终端运行如下命令。
 
@@ -21,7 +21,7 @@ mkdir ~/Documents/learngo/
 
 上面的命令将会在当前用户的文档目录下创建一个名为`learngo`的目录。你可以随意在希望存放代码的位置创建目录。
 
-## 创建一个Go Module
+### 创建一个Go Module
 
 下一步是在`~/Documents/learngo/`文件夹中创建一个名为`learngo`的go module。Go modules 用来追踪应用的依赖和版本。我们将会在我们学习[包](../【GolangBot】7-包/)的时候详细讨论Go modules。
 
@@ -45,7 +45,7 @@ The first line `module learngo` specifies the module name. The next line `1.21.0
 
 第一行`module learngo`制定了module的名称。下一行`1.21.0`表明在这个module当中，使用的go版本是1.21.0。
 
-## Hello World
+### Hello World
 
 用你最喜欢的文本编辑器在`learngo`目录下创建一个名为`main.go`的文件，其中包含以下内容。
 
@@ -61,11 +61,11 @@ func main() {
 
 按照Go的管理，包含`main`函数的文件命名为`main.go`，但其他名称也同样适用。
 
-## 运行go程序
+### 运行go程序
 
 有几种运行Go程序的不同方式。让我们一个个地来看。
 
-### 1. go install
+#### 1. go install
 
 第一种运行Go程序的方法是使用`go install`命令。让我们`cd`进我们刚刚创建的`learngo`目录。
 
@@ -122,7 +122,7 @@ export PATH=$PATH:~/go/bin
 
 你也许想知道当`learngo`目录包含多个go文件而不只有一个`main.go`时会发生什么。在这种情况下`go install`会发生什么？请别着急，我们将会在[包和Go Modules](../【GolangBot】7-包/)一节中讨论这些。
 
-### 2. go build
+#### 2. go build
 
 运行程序的第二个选择是使用`go build`。`go build`和`go install`非常相似，除了它不会在`~/go/bin/`路径下安装(拷贝)二进制文件。相反，它会在安装`go build`的位置创建二进制文件。
 
@@ -148,7 +148,7 @@ Hello World
 
 我们用`go build`同样成功运行了我们的第一个Go程序:)
 
-### 3. go run
+#### 3. go run
 
 第三种运行程序的方式是使用`go run`命令。
 
@@ -183,7 +183,7 @@ Hello World
 
 关键字`WORK`的值制定了程序将会被编译到的临时位置。在我的示例中，程序已经被编译到了`/tmp/go-build199689936`。你的运行情况可能有所不同:)
 
-### 4. Go在线运行环境。
+#### 4. Go在线运行环境。
 
 最后一种方式是使用Go在线运行环境。尽管有一些限制，但当我们想要运行简单的程序时，此方法将会派上用场，它使用浏览器运行，不需要在本地安装GO:)。我已经为Hello World 程序创建了一个在线环境。[点击这里](https://go.dev/play/p/oXGayDtoLPh)在线运行程序。
 
@@ -191,7 +191,7 @@ Hello World
 
 现在我们知道了运行程序的四种不同的方式，你可能纠结于使用哪一种。答案是，视情况而定。当我想要做一个快速逻辑检查或一个标准库函数是否生效时，我一般会选择在线环境。在大多数情况下，我更喜欢`go install`，因为它给我一种选择，让我可以在终端里可以从任意目录运行程序，因为它将所有的程序编译到靠准`~/go/bin`路径。
 
-### 对Hello World程序的简短解释
+#### 对Hello World程序的简短解释
 
 这里是我们刚刚写的Hello World程序。
 
