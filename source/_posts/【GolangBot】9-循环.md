@@ -200,8 +200,6 @@ i = 2 , j = 3
 
 如果我想在`i`和`j`相等的时候停止打印该怎么办呢？为了达成目的，我们需要从外层`for`循环`break`。当内层`for`循环`i`和`j`相等的时候添加一个`break`，将会只结束内层`for`循环。
 
-What if we want to stop printing when `i` and `j` are equal. To do this we need to `break` from the outer `for` loop. Adding a `break` in the inner `for` loop when `i` and `j` are equal will only break from the inner `for` loop.
-
 ```go
 package main
 
