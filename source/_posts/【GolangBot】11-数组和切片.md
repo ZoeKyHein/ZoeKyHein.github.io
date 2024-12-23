@@ -11,15 +11,15 @@ published: true
 
 欢迎来到[Golang系列教程](../GolangBot/)的第11篇。我们将学习Go中的数组和切片。
 
-### Arrays数组
+### 数组
 
-An array is a collection of elements that belong to the same type. For example, the collection of integers 5, 8, 9, 79, 76 forms an array. Mixing values of different types, for example, an array that contains both strings and integers is not allowed in Go.
+数组是一组属于同一类型的元素的集合。例如，整数集合 5、8、9、79、76 构成一个数组。在 Go 语言中，不允许混合不同类型的值，例如一个同时包含字符串和整数的数组是非法的。
 
-##### Declaration
+##### 声明
 
-An array belongs to type `[n]T`. `n` denotes the number of elements in an array and `T` represents the type of each element. The number of elements `n` is also a part of the type(We will discuss this in more detail shortly.)
+数组属于类型 `[n]T`。其中，`n` 表示数组中的元素数量，`T` 表示每个元素的类型。元素数量 `n` 也是类型的一部分（我们稍后会对此进行更详细的讨论）。
 
-There are different ways to declare arrays. Let’s look at them one by one.
+声明数组有多种方式，让我们逐一来看。
 
 ```go
 package main
@@ -35,17 +35,15 @@ func main() {
 }
 ```
 
-go
-
 [Run in playground](https://play.golang.org/p/Zvgh82u0ej)
 
-**var a [3]int** declares an integer array of length 3. **All elements in an array are automatically assigned the zero value of the array type**. In this case `a` is an integer array and hence all elements of `a` are assigned to `0`, the zero value of int. Running the above program will print
+**`var a [3]int`** 声明了一个长度为 3 的整数数组。**数组中的所有元素会自动赋值为该数组类型的零值**。在这个例子中，`a` 是一个整数数组，因此 `a` 的所有元素都被赋值为 `0`，即整数类型的零值。运行上述程序将会打印
 
 ```fallback
 [0 0 0]
 ```
 
-The index of an array starts from `0` and ends at `length - 1`. Let’s assign some values to the above array.
+数组的索引从 `0` 开始，到 `length - 1` 结束。让我们为上述数组分配一些值。
 
 ```go
 package main
@@ -64,17 +62,15 @@ func main() {
 }
 ```
 
-go
-
 [Run in playground](https://play.golang.org/p/WF0Uj8sv39)
 
-a[0] assigns value to the first element of the array. The program will print
+`a[0]` 为数组的第一个元素赋值。运行程序将会打印：
 
 ```fallback
 [12 78 50]
 ```
 
-Let’s create the same array using the **short hand declaration**.
+让我们使用**简写声明**创建相同的数组。
 
 ```go
 package main 
@@ -89,17 +85,15 @@ func main() {
 }
 ```
 
-go
-
 [Run in playground](https://play.golang.org/p/NKOV04zgI6)
 
-The program above will print the same output
+上面的程序将打印相同的输出。
 
 ```fallback
 [12 78 50]
 ```
 
-It is not necessary that all elements in an array have to be assigned a value during short hand declaration.
+在使用简写声明时，并不一定需要为数组中的所有元素都赋值。
 
 ```go
 package main
@@ -114,17 +108,15 @@ func main() {
 }
 ```
 
-go
-
 [Run in playground](https://play.golang.org/p/AdPH0kXRly)
 
-In the above program in line no. 8 `a := [3]int{12}` declares an array of length 3 but is provided with only one value `12`. The remaining 2 elements are assigned `0` automatically. This program will print
+在上面的程序中，第 8 行 `a := [3]int{12}` 声明了一个长度为 3 的数组，但只提供了一个值 `12`。剩余的 2 个元素会自动赋值为 `0`。该程序将打印：
 
 ```fallback
 [12 0 0]
 ```
 
-You can even ignore the length of the array in the declaration and replace it with `...` and let the compiler find the length for you. This is done in the following program.
+你甚至可以在声明中忽略数组的长度，并用 `...` 替代，让编译器自动推导数组的长度。以下程序就是这样做的：
 
 ```go
 package main
@@ -139,11 +131,9 @@ func main() {
 }
 ```
 
-go
-
 [Run in playground](https://play.golang.org/p/_fVmr6KGDh)
 
-**The size of the array is a part of the type.** Hence `[5]int` and `[25]int` are distinct types. Because of this, arrays cannot be resized. Don’t worry about this restriction since `slices` exist to overcome this.
+**数组的大小是类型的一部分。** 因此，`[5]int` 和 `[25]int` 是不同的类型。由于这个原因，数组的大小不能被修改。不要担心这个限制，因为存在 `切片`（slices）来解决这个问题。
 
 ```go
 package main
@@ -155,19 +145,17 @@ func main() {
 }
 ```
 
-go
-
 [Run in playground](https://play.golang.org/p/kBdot3pXSB)
 
-In line no. 6 of the program above, we are trying to assign a variable of type `[3]int` to a variable of type `[5]int` which is not allowed and hence the compiler will print the following error
+在上面程序的第 6 行，我们尝试将一个类型为 `[3]int` 的变量赋值给一个类型为 `[5]int` 的变量，这是不允许的，因此编译器会打印以下错误：
 
 ```fallback
 ./prog.go:6:7: cannot use a (type [3]int) as type [5]int in assignment
 ```
 
-##### Arrays are value types
+##### 数组是值类型。
 
-Arrays in Go are value types and not reference types. This means that when they are assigned to a new variable, a copy of the original array is assigned to the new variable. If changes are made to the new variable, it will not be reflected in the original array.
+Go 中的数组是值类型，而不是引用类型。这意味着当数组被赋值给一个新变量时，会将原数组的副本赋值给新变量。如果对新变量进行更改，原数组不会受到影响。
 
 ```go
 package main
@@ -183,18 +171,16 @@ func main() {
 }
 ```
 
-go
-
 [Run in playground](https://play.golang.org/p/-ncGk1mqPd)
 
-In the above program in line no. 7, a copy of `a` is assigned to `b`. In line no. 8, the first element of `b` is changed to `Singapore`. This will not reflect in the original array `a`. The program will print,
+在上面的程序中，第 7 行将 `a` 的副本赋值给 `b`。在第 8 行，`b` 的第一个元素被更改为 `Singapore`。由于数组是值类型，这一更改不会影响原始数组 `a`。程序将打印：
 
 ```fallback
 a is [USA China India Germany France]
 b is [Singapore China India Germany France]
 ```
 
-Similarly when arrays are passed to functions as parameters, they are passed by value and the original array is unchanged.
+同样，当数组作为参数传递给函数时，它们是按值传递的，原始数组不会被改变。
 
 ```go
 package main
@@ -214,11 +200,9 @@ func main() {
 }
 ```
 
-go
-
 [Run in playground](https://play.golang.org/p/e3U75Q8eUZ)
 
-In the above program in line no. 13, the array `num` is actually passed by value to the function `changeLocal` and hence will not change because of the function call. This program will print,
+在上面的程序中，第 13 行，数组 `num` 实际上是按值传递给函数 `changeLocal` 的，因此由于函数调用，数组 `num` 不会被更改。程序将打印：
 
 ```fallback
 before passing to function  [5 6 7 8 8]
@@ -226,9 +210,9 @@ inside function  [55 6 7 8 8]
 after passing to function  [5 6 7 8 8]
 ```
 
-##### Length of an array
+##### 数组的长度
 
-The length of the array is found by passing the array as parameter to the `len` function.
+数组的长度可以通过将数组作为参数传递给 `len` 函数来获得。
 
 ```go
 package main
@@ -242,19 +226,17 @@ func main() {
 }
 ```
 
-go
-
 [Run in playground](https://play.golang.org/p/UrIeNlS0RN)
 
-The output of the above program is
+上面程序的输出是：
 
 ```fallback
 length of a is 4
 ```
 
-##### Iterating arrays using range
+##### 使用 `range` 遍历数组
 
-The `for` loop can be used to iterate over elements of an array.
+可以使用 `for` 循环遍历数组的元素。
 
 ```go
 package main
@@ -269,11 +251,9 @@ func main() {
 }
 ```
 
-go
-
 [Run in playground](https://play.golang.org/p/80ejSTACO6)
 
-The above program uses a `for` loop to iterate over the elements of the array starting from index `0` to `length of the array - 1`. This program works and will print,
+上述程序使用 `for` 循环遍历数组的元素，从索引 `0` 开始，到数组的长度减一为止。这个程序能够正常运行，并将打印：
 
 ```fallback
 0 th element of a is 67.70
@@ -282,7 +262,7 @@ The above program uses a `for` loop to iterate over the elements of the array st
 3 th element of a is 78.00
 ```
 
-Go provides a better and concise way to iterate over an array by using the **range** form of the `for` loop. `range` returns both the index and the value at that index. Let’s rewrite the above code using range. We will also find the sum of all elements of the array.
+Go 提供了一种更简洁的方式来遍历数组，即使用 `for` 循环的 **range** 形式。`range` 会返回数组元素的索引和值。让我们使用 `range` 重写上述代码，并计算数组所有元素的和。
 
 ```go
 package main
@@ -300,11 +280,9 @@ func main() {
 }
 ```
 
-go
-
 [Run in playground](https://play.golang.org/p/Ji6FRon36m)
 
-line no. 8 `for i, v := range a` of the above program is the range form of the for loop. It will return both the index and the value at that index. We print the values and also calculate the sum of all elements of the array `a`. The **output** of the program is,
+第 8 行 `for i, v := range a` 是上述程序中 `for` 循环的 range 形式。它将返回数组 `a` 中每个元素的索引和该索引处的值。我们打印这些值，并计算数组 `a` 中所有元素的和。该程序的 **输出** 是：
 
 ```fallback
 the element of a is 67.70
@@ -315,18 +293,18 @@ the element of a is 78.00
 sum of all elements of a 256.5
 ```
 
-In case you want only the value and want to ignore the index, you can do this by replacing the index with the `_` blank identifier.
+如果你只需要值并且想忽略索引，可以通过将索引替换为 `_` 空白标识符来实现。
 
 ```fallback
 for _, v := range a { //ignores index
 }
 ```
 
-The above for loop ignores the index. Similarly, the value can also be ignored.
+上述 `for` 循环忽略了索引。同样，值也可以被忽略。
 
-##### Multidimensional arrays
+##### 多维数组
 
-The arrays we created so far are all single dimension. It is possible to create multidimensional arrays.
+到目前为止，我们创建的数组都是一维数组。实际上，可以创建多维数组。
 
 ```go
 package main
@@ -363,15 +341,13 @@ func main() {
 }
 ```
 
-go
-
 [Run in playground](https://play.golang.org/p/InchXI4yY8)
 
-In the above program in line no. 17, a two dimensional string array `a` has been declared using short hand syntax. The comma at the end of line no. 20 is necessary. This is because of the fact that the lexer automatically inserts semicolons according to simple rules. Please read https://golang.org/doc/effective_go.html#semicolons if you are interested to know more about why a semicolon is needed.
+在上面的程序中，第 17 行使用简写语法声明了一个二维字符串数组 `a`。第 20 行末尾的逗号是必须的。这是因为词法分析器（lexer）会根据简单的规则自动插入分号。如果你有兴趣了解更多关于为什么需要分号的原因，可以阅读 [Effective Go](https://golang.org/doc/effective_go.html#semicolons)。
 
-Another 2d array `b` is declared in line no. 23 and strings are added to it one by one for each index. This is another way of initializing a 2d array.
+在第 23 行声明了另一个二维数组 `b`，并逐个为每个索引添加字符串。这是初始化二维数组的另一种方式。
 
-The `printarray` function in line no. 7 uses two for range loops to print the contents of 2d arrays. The above program will print
+第 7 行的 `printarray` 函数使用了两个 `for range` 循环来打印二维数组的内容。上述程序将打印：
 
 ```fallback
 lion tiger 
@@ -383,15 +359,15 @@ microsoft google
 AT&T T-Mobile 
 ```
 
-That’s it for arrays. Although arrays seem to be flexible enough, they come with the restriction that they are of fixed length. It is not possible to increase the length of an array. This is where **slices** come into the picture. In fact in Go, slices are more common than conventional arrays.
+数组的内容就到这里。虽然数组看起来足够灵活，但它们有一个限制，即长度是固定的。无法增加数组的长度。在这里，**切片**（slices）发挥了作用。事实上，在 Go 中，切片比传统的数组更常见。
 
-### Slices
+### 切片
 
-A slice is a convenient, flexible and powerful wrapper on top of an array. Slices do not own any data on their own. They are just references to existing arrays.
+切片是数组之上的一种方便、灵活且强大的封装。切片本身并不拥有任何数据，它们只是对现有数组的引用。
 
-##### Creating a slice
+##### 创建切片
 
-A slice with elements of type T is represented by `[]T`
+元素类型为 T 的切片表示为 `[]T`。
 
 ```go
 package main
@@ -407,13 +383,11 @@ func main() {
 }
 ```
 
-go
-
 [Run in playground](https://play.golang.org/p/Za6w5eubBB)
 
-The syntax `a[start:end]` creates a slice from array `a` starting from index `start` to index `end - 1`. So in line no. 9 of the above program `a[1:4]` creates a slice representation of the array `a` starting from indexes 1 through 3. Hence the slice `b` has values `[77 78 79]`.
+语法 `a[start:end]` 创建一个从数组 `a` 中索引 `start` 到索引 `end - 1` 的切片。所以在上述程序的第 9 行，`a[1:4]` 创建了数组 `a` 从索引 1 到索引 3 的切片表示。因此，切片 `b` 的值是 `[77 78 79]`。
 
-Let’s look at another way to create a slice.
+让我们看看另一种创建切片的方式。
 
 ```go
 package main
@@ -428,15 +402,13 @@ func main() {
 }
 ```
 
-go
-
 [Run in playground](https://go.dev/play/p/anQIndv7Sm6)
 
-In the above program in line no. 8, `c := []int{6, 7, 8}` creates an array with 3 integers and returns a slice reference which is stored in c.
+在上述程序的第 8 行，`c := []int{6, 7, 8}` 创建了一个包含 3 个整数的数组，并返回一个切片引用，该引用存储在 `c` 中。
 
-##### modifying a slice
+##### 修改切片
 
-A slice does not own any data of its own. It is just a representation of the underlying array. Any modifications done to the slice will be reflected in the underlying array.
+切片本身不拥有任何数据，它只是对底层数组的一个表示。对切片所做的任何修改都会反映在底层数组中。
 
 ```go
 package main
@@ -456,18 +428,16 @@ func main() {
 }
 ```
 
-go
-
 [Run in playground](https://play.golang.org/p/6FinudNf1k)
 
-In line number 9 of the above program, we create `dslice` from indexes 2, 3, 4 of the array. The for loop increments the value in these indexes by one. When we print the array after the for loop, we can see that the changes to the slice are reflected in the array. The output of the program is
+在上述程序的第 9 行，我们从数组的索引 2、3、4 创建了 `dslice`。`for` 循环将这些索引中的值增加了 1。当我们在 `for` 循环后打印数组时，可以看到切片的更改反映在了数组中。程序的输出是：
 
 ```fallback
 array before [57 89 90 82 100 78 67 69 59]
 array after [57 89 91 83 101 78 67 69 59]
 ```
 
-When a number of slices share the same underlying array, the changes that each one makes will be reflected in the array.
+当多个切片共享相同的底层数组时，每个切片所做的更改都会反映在该数组中。
 
 ```go
 package main
@@ -488,11 +458,9 @@ func main() {
 }
 ```
 
-go
-
 [Run in playground](https://play.golang.org/p/mdNi4cs854)
 
-In line no. 9, in `numa[:]` the start and end values are missing. The default values for start and end are `0` and `len(numa)` respectively. Both slices `nums1` and `nums2` share the same array. The output of the program is
+在第 9 行，`numa[:]` 中缺少起始值和结束值。默认情况下，起始值为 `0`，结束值为 `len(numa)`。因此，两个切片 `nums1` 和 `nums2` 共享相同的数组。程序的输出是：
 
 ```fallback
 array before change 1 [78 79 80]
@@ -500,13 +468,13 @@ array after modification to slice nums1 [100 79 80]
 array after modification to slice nums2 [100 101 80]
 ```
 
-From the output, it’s clear that when slices share the same array. The modifications made to the slice are reflected in the array.
+从输出可以看出，当切片共享相同的数组时，对切片所做的修改会反映在数组中。
 
-##### length and capacity of a slice
+##### 切片的长度和容量
 
-The length of the slice is the number of elements in the slice. **The capacity of the slice is the number of elements in the underlying array starting from the index from which the slice is created.**
+切片的长度是切片中元素的数量。**切片的容量是从切片创建的索引开始，底层数组中元素的数量。**
 
-Let’s write some code to understand this better.
+让我们编写一些代码来更好地理解这一点。
 
 ```go
 package main
@@ -522,15 +490,13 @@ func main() {
 }
 ```
 
-go
-
 [Run in playground](https://play.golang.org/p/a1WOcdv827)
 
-In the above program, `fruitslice` is created from indexes 1 and 2 of the `fruitarray`. Hence the length of `fruitslice` is 2.
+在上述程序中，`fruitslice` 是从 `fruitarray` 的索引 1 和 2 创建的。因此，`fruitslice` 的长度是 2。
 
-The length of the `fruitarray` is 7. `fruiteslice` is created from index `1` of `fruitarray`. Hence the capacity of `fruitslice` is the no of elements in `fruitarray` starting from index `1` i.e from `orange` and that value is `6`. Hence the capacity of `fruitslice` is 6. The [program](https://play.golang.org/p/a1WOcdv827) prints **length of slice 2 capacity 6**.
+`fruitarray` 的长度是 7，`fruitslice` 是从 `fruitarray` 的索引 1 创建的。因此，`fruitslice` 的容量是从索引 1 开始的 `fruitarray` 中的元素数量，即从 `orange` 开始，容量为 6。因此，`fruitslice` 的容量是 6。该程序（[程序链接](https://play.golang.org/p/a1WOcdv827)）打印出 **slice 的长度 2 容量 6**。
 
-A slice can be re-sliced upto its capacity. Anything beyond that will cause the program to throw a run time error.
+切片可以重新切片，直到其容量为止。超出此范围将导致程序抛出运行时错误。
 
 ```go
 package main
@@ -548,20 +514,18 @@ func main() {
 }
 ```
 
-go
-
 [Run in playground](https://go.dev/play/p/GI1gkZReeya)
 
-In line no. 11 of the above program,`fruitslice` is re-sliced to its capacity. The above program outputs,
+在上述程序的第 11 行，`fruitslice` 被重新切片，直到其容量为止。该程序的输出是：
 
 ```fallback
 length of slice 2 capacity 6
 After re-slicing length is 6 and capacity is 6
 ```
 
-##### creating a slice using make
+##### 使用 `make` 创建切片
 
-*func make([]T, len, cap) []T* can be used to create a slice by passing the type, length and capacity. The capacity parameter is optional and defaults to the length. The make function creates an array and returns a slice reference to it.
+`func make([]T, len, cap) []T` 可以通过传递类型、长度和容量来创建一个切片。容量参数是可选的，默认为长度。`make` 函数创建一个数组并返回一个切片引用。
 
 ```go
 package main
@@ -576,19 +540,17 @@ func main() {
 }
 ```
 
-go
-
 [Run in playground](https://play.golang.org/p/M4OqxzerxN)
 
-The values are zeroed by default when a slice is created using make. The above program will output `[0 0 0 0 0]`.
+当使用 `make` 创建切片时，默认情况下切片中的值会被初始化为零。上述程序的输出将是 `[0 0 0 0 0]`。
 
-##### Appending to a slice
+##### 向切片追加元素
 
-As we already know arrays are restricted to fixed length and their length cannot be increased. Slices are dynamic and new elements can be appended to the slice using `append` function. The definition of append function is `func append(s []T, x ...T) []T`.
+正如我们所知道的，数组的长度是固定的，不能增加。而切片是动态的，可以使用 `append` 函数向切片中追加新元素。`append` 函数的定义是 `func append(s []T, x ...T) []T`。
 
-**x …T** in the function definition means that the function accepts variable number of arguments for the parameter x. These type of functions are called [variadic functions](https://golangbot.com/variadic-functions/).
+**x ...T** 在函数定义中表示该函数接受可变数量的参数。这样的函数被称为 [变参函数](../【GolangBot】12-可变参数函数)。
 
-One question might be bothering you though. If slices are backed by arrays and arrays themselves are of fixed length then how come a slice is of dynamic length. Well what happens under the hood is, when new elements are appended to the slice, a new array is created. The elements of the existing array are copied to this new array and a new slice reference for this new array is returned. The capacity of the new slice is now twice that of the old slice. Pretty cool right :). The following program will make things clear.
+不过，有一个问题可能困扰你。如果切片是由数组支持的，而数组本身是固定长度的，那么切片是如何具有动态长度的呢？实际上，发生的情况是，当向切片中追加新元素时，首先会创建一个新的数组。现有数组的元素会被复制到这个新数组中，并且返回一个指向新数组的切片引用。新切片的容量将是旧切片容量的两倍。很酷，对吧？下面的程序将使这一点更加清晰。
 
 ```go
 package main
@@ -605,18 +567,16 @@ func main() {
 }
 ```
 
-go
-
 [Run in playground](https://play.golang.org/p/VUSXCOs1CF)
 
-In the above program, the capacity of `cars` is 3 initially. We append a new element to cars in line no. 10 and assign the slice returned by `append(cars, "Toyota")` to cars again. Now the capacity of cars is doubled and becomes 6. The output of the above program is
+在上述程序中，`cars` 的初始容量为 3。在第 10 行，我们向 `cars` 中追加了一个新元素，并将 `append(cars, "Toyota")` 返回的切片重新赋值给 `cars`。现在，`cars` 的容量翻倍，变成了 6。该程序的输出是：
 
 ```fallback
 cars: [Ferrari Honda Ford] has old length 3 and capacity 3
 cars: [Ferrari Honda Ford Toyota] has new length 4 and capacity 6
 ```
 
-The zero value of a slice type is `nil`. A `nil` slice has length and capacity 0. It is possible to append values to a `nil` slice using the append function.
+切片类型的零值是 `nil`。一个 `nil` 切片的长度和容量都是 0。可以使用 `append` 函数向一个 `nil` 切片追加值。
 
 ```go
 package main
@@ -635,18 +595,16 @@ func main() {
 }
 ```
 
-go
-
 [Run in playground](https://play.golang.org/p/x_-4XAJHbM)
 
-In the above program `names` is nil and we have appended 3 strings to `names`. The output of the program is
+在上述程序中，`names` 是 `nil`，我们向 `names` 中追加了 3 个字符串。该程序的输出是：
 
 ```fallback
 slice is nil going to append
 names contents: [John Sebastian Vinay]
 ```
 
-It is also possible to append one slice to another using the `...` operator. You can learn more about this operator in the [variadic functions](https://golangbot.com/variadic-functions/) tutorial.
+也可以使用 `...` 操作符将一个切片追加到另一个切片。你可以在 [变参函数](../【GolangBot】12-可变参数函数) 教程中了解更多关于这个操作符的信息。
 
 ```go
 package main
@@ -663,15 +621,13 @@ func main() {
 }
 ```
 
-go
-
 [Run in playground](https://play.golang.org/p/UnHOH_u6HS)
 
-In line no. 10 of the above program *food* is created by appending `fruits` to `veggies`. Output of the program is `food: [potatoes tomatoes brinjal oranges apples]`
+在上述程序的第 10 行，`food` 是通过将 `fruits` 追加到 `veggies` 上创建的。程序的输出是 `food: [potatoes tomatoes brinjal oranges apples]`。
 
-##### Passing a slice to a function
+##### 将切片传递给函数
 
-Slices can be thought of as being represented internally by a structure type. This is how it looks,
+切片可以被认为是通过一个结构类型在内部表示的。它的结构如下所示：
 
 ```fallback
 type slice struct {
@@ -681,7 +637,7 @@ type slice struct {
 }
 ```
 
-A slice contains the length, capacity and a pointer to the zeroth element of the array. When a slice is passed to a function, even though it’s passed by value, the pointer variable will refer to the same underlying array. Hence when a slice is passed to a function as parameter, changes made inside the function are visible outside the function too. Lets write a program to check this out.
+一个切片包含长度、容量以及指向数组第零元素的指针。当切片传递给函数时，尽管是按值传递，但指针变量仍然指向相同的底层数组。因此，当切片作为参数传递给函数时，函数内部所做的更改在函数外部也可见。让我们编写一个程序来验证这一点。
 
 ```go
 package main
@@ -704,20 +660,18 @@ func main() {
 }
 ```
 
-go
-
 [Run in playground](https://play.golang.org/p/IzqDihNifq)
 
-The function call in line number 17 of the above program decrements each element of the slice by 2. When the slice is printed after the function call, these changes are visible. If you can recall, this is different from an array where the changes made to an array inside a function are not visible outside the function. Output of the above [program](https://play.golang.org/p/bWUb6R-1bS) is,
+在上述程序的第 17 行，函数调用将切片的每个元素都减少了 2。当函数调用之后打印切片时，这些更改是可见的。如果你还记得，这与数组不同，因为数组在函数内部所做的更改在函数外部是不可见的。该[程序](https://play.golang.org/p/bWUb6R-1bS)的输出是：
 
 ```fallback
 slice before function call [8 7 6]
 slice after function call [6 5 4]
 ```
 
-##### Multidimensional slices
+##### 多维切片
 
-Similar to arrays, slices can have multiple dimensions.
+与数组类似，切片也可以具有多个维度。
 
 ```go
 package main
@@ -742,11 +696,9 @@ func main() {
 }
 ```
 
-go
-
 [Run in playground](https://play.golang.org/p/--p1AvNGwN)
 
-The output of the program is,
+程序的输出是，
 
 ```fallback
 C C++ 
@@ -754,11 +706,11 @@ JavaScript
 Go Rust 
 ```
 
-##### Memory Optimisation
+##### 内存优化
 
-Slices hold a reference to the underlying array. As long as the slice is in memory, the array cannot be garbage collected. This might be of concern when it comes to memory management. Lets assume that we have a very large array and we are interested in processing only a small part of it. Henceforth we create a slice from that array and start processing the slice. The important thing to be noted here is that the array will still be in memory since the slice references it.
+切片持有对底层数组的引用。只要切片存在于内存中，数组就无法被垃圾回收。当涉及到内存管理时，这可能会成为一个问题。假设我们有一个非常大的数组，并且只关心处理其中的一小部分。接下来，我们从该数组创建一个切片并开始处理该切片。这里需要注意的一个重要问题是，由于切片引用了数组，数组仍然会保留在内存中。
 
-One way to solve this problem is to use the [copy](https://golang.org/pkg/builtin/#copy) function `func copy(dst, src []T) int` to make a copy of that slice. This way we can use the new slice and the original array can be garbage collected.
+解决这个问题的一种方法是使用 [copy](https://golang.org/pkg/builtin/#copy) 函数 `func copy(dst, src []T) int` 来创建该切片的副本。通过这种方式，我们可以使用新的切片，并且原始数组可以被垃圾回收。
 
 ```go
 package main
@@ -780,18 +732,12 @@ func main() {
 }
 ```
 
-go
-
 [Run in playground](https://play.golang.org/p/35ayYBhcDE)
 
-In line no. 9 of the above program, `neededCountries := countries[:len(countries)-2]` creates a slice of `countries` barring the last 2 elements. Line no. 11 of the above program copies `neededCountries` to `countriesCpy` and also returns it from the function in the next line. Now `countries` array can be garbage collected since `neededCountries` is no longer referenced.
+在上述程序的第 9 行，`neededCountries := countries[:len(countries)-2]` 创建了一个切片，去除了 `countries` 的最后两个元素。第 11 行将 `neededCountries` 复制到 `countriesCpy` 中，并在下一行将其返回。现在，`countries` 数组可以被垃圾回收，因为 `neededCountries` 不再被引用。
 
-I have compiled all the concepts we discussed so far into a single program. You can download it from [github](https://github.com/golangbot/arraysandslices).
+我已经将我们讨论过的所有概念汇总到一个程序中。你可以从 [GitHub](https://github.com/golangbot/arraysandslices) 下载它。
 
-Thats it for arrays and slices. Thanks for reading.
 
-I hope you liked this tutorial. Please leave your feedback and comments. Please consider sharing this tutorial on [twitter](https://twitter.com/intent/tweet?text=Arrays and Slices&url=https%3a%2f%2fgolangbot.com%2farrays-and-slices%2f&tw_p=tweetbutton) and [LinkedIn](https://golangbot.com/arrays-and-slices/#linkedinshr). Have a good day.
 
-**Next tutorial - [Variadic Functions](https://golangbot.com/variadic-functions/)**
-
-**Previous tutorial - [Switch Statement](https://golangbot.com/switch/)**
+**下一篇教程 - [变参函数](../【GolangBot】12-可变参数函数)**
