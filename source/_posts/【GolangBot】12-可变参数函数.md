@@ -9,6 +9,8 @@ categories:
 published: true
 ---
 
+# 【GolangBot】12-可变参数函数
+
 欢迎来到[Golang系列教程](../golangbot/)的第12篇。
 
 ### 什么是变参函数？

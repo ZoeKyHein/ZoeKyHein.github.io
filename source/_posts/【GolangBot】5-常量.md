@@ -12,6 +12,8 @@ published: true
 
 欢迎来到我们[Golang系列教程](../golangbot/)的第五篇。
 
+# 【GolangBot】5-常量
+
 ### 什么是常量？
 
 Go中的常量用于定义固定的值，例如：
