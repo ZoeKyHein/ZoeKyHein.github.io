@@ -9,7 +9,7 @@ categories:
 published: true
 ---
 
-欢迎来到[Golang系列教程](../GolangBot/)的第11篇。我们将学习Go中的数组和切片。
+欢迎来到[Golang系列教程](../golangbot/)的第11篇。我们将学习Go中的数组和切片。
 
 ### 数组
 

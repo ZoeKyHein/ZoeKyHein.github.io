@@ -9,7 +9,7 @@ categories:
 published: true
 ---
 
-欢迎来到[Golang系列教程](../GolangBot/)的第12篇。
+欢迎来到[Golang系列教程](../golangbot/)的第12篇。
 
 ### 什么是变参函数？
 

@@ -11,7 +11,7 @@ published: true
 
 # 【GolangBot】8-if else语句
 
-欢迎来到[Golang系列教程](../GolangBot/)的第八篇。
+欢迎来到[Golang系列教程](../golangbot/)的第八篇。
 
 **`if`语句有个条件，如果这个条件值为`true`，它就会执行一段代码块。如果条件为`false`，就会执行另一段代码块。**在这个教程中，我们会看一下使用`if`语句的不同语法。
 

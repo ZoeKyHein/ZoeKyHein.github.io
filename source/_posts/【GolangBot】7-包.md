@@ -11,7 +11,7 @@ published: true
 
 
 
-欢迎来到[Golang系列教程](../GolangBot/)的第七篇。
+欢迎来到[Golang系列教程](../golangbot/)的第七篇。
 
 ### 什么是包？我们为什么要用它？
 

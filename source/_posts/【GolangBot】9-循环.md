@@ -11,7 +11,7 @@ published: true
 
 # 【GolangBot】9-循环
 
-欢迎来到Golang教程系列的第9课
+欢迎来到[Golang教程系列](../golangbot/)的第9课
 
 循环用于重复执行一段代码，直到满足某个条件为止。
 

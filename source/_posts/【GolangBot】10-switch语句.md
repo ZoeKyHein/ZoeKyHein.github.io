@@ -11,7 +11,7 @@ published: true
 
 # 【GolangBot】10-switch语句
 
-这是[Golang系列教程](../golangBot/)的第10篇。
+这是[Golang系列教程](../golangbot/)的第10篇。
 
 ### 什么是switch语句？
 
