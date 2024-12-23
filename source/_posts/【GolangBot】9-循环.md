@@ -2,10 +2,10 @@
 title: 【GolangBot】9-循环
 date: 2024-12-19 18:48:57
 tags: 
-    - GoLang
+    - Golang
     - 教程
 categories:
-    - [学习心得, GoLangBot]
+    - [学习心得, GolangBot]
 published: true
 ---
 

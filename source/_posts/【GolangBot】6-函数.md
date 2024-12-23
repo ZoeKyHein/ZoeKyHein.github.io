@@ -2,10 +2,10 @@
 title: 【GolangBot】6-函数
 date: 2024-12-18 14:48:21
 tags: 
-    - GoLang
+    - Golang
     - 教程
 categories:
-    - [学习心得, GoLangBot]
+    - [学习心得, GolangBot]
 published: true
 ---
 

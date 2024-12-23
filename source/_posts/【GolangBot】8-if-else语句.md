@@ -2,10 +2,10 @@
 title: 【GolangBot】8-if else语句
 date: 2024-12-19 17:48:50
 tags: 
-    - GoLang
+    - Golang
     - 教程
 categories:
-    - [学习心得, GoLangBot]
+    - [学习心得, GolangBot]
 published: true
 ---
 

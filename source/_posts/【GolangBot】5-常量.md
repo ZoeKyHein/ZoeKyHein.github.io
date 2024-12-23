@@ -2,10 +2,10 @@
 title: 【GolangBot】5-常量
 date: 2024-12-18 09:48:12
 tags: 
-    - GoLang
+    - Golang
     - 教程
 categories:
-    - [学习心得, GoLangBot]
+    - [学习心得, GolangBot]
 published: true
 ---
 

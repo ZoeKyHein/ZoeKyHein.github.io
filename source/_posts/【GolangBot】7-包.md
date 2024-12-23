@@ -2,10 +2,10 @@
 title: 【GolangBot】7-包
 date: 2024-12-18 16:48:29
 tags: 
-    - GoLang
+    - Golang
     - 教程
 categories:
-    - [学习心得, GoLangBot]
+    - [学习心得, GolangBot]
 published: true
 ---
 

@@ -2,19 +2,19 @@
 title: 【GolangBot】1.介绍和安装
 date: 2024-12-16 18:31:00
 tags: 
-    - GoLang
+    - Golang
     - 教程
 categories:
-    - [学习心得, GoLangBot]
+    - [学习心得, GolangBot]
 ---
 
-发现了一个不错的英文Golang初级教程，内容比较容易理解，开个新坑，翻译一下。一来能够巩固一下GoLang基础，二来可以提高一下英文水平，如果纰漏还请指出。那我们开始吧！
+发现了一个不错的英文Golang初级教程，内容比较容易理解，开个新坑，翻译一下。一来能够巩固一下Golang基础，二来可以提高一下英文水平，如果纰漏还请指出。那我们开始吧！
 
 > [原文地址](https://golangbot.com/learn-golang-series/)
 
 # 【GolangBot】1-介绍和安装
 
-这是我们[GoLang系列教程](../golangbot/)的第一篇。这篇文章提供了对于Go的介绍，也讨论了在其他众多编程语言中，选择Go的优点。我们也会学习如何在MacOS、Windows和Linux上安装MacOS。
+这是我们[Golang系列教程](../golangbot/)的第一篇。这篇文章提供了对于Go的介绍，也讨论了在其他众多编程语言中，选择Go的优点。我们也会学习如何在MacOS、Windows和Linux上安装MacOS。
 
 ### 介绍
 
