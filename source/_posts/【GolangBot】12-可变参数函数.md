@@ -326,7 +326,6 @@ func main() {
 }
 ```
 
-
 [Run in playground](https://play.golang.org/p/WdbFIkdLoe)
 
 我把上面的程序作为一个练习留给你，让你自己弄明白它是如何工作的 :）。
