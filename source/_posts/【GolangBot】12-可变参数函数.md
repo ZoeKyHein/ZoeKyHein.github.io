@@ -1,6 +1,6 @@
 ---
 title: 【GolangBot】12-可变参数函数
-date: 2024-12-17 11:50:32
+date: 2024-12-23 11:50:32
 tags: 
     - Golang
     - 教程
