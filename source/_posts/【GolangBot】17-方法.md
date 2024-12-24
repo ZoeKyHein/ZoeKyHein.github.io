@@ -1,5 +1,6 @@
 ---
 title: 【GolangBot】17-方法
+date: 2024-12-24 12:52:41
 tags: 
     - Golang
     - 教程
