@@ -8,7 +8,7 @@ categories:
     - [学习心得, GolangBot]
 published: true
 ---
-# Golang结构体教程
+# 【GolangBot】16-结构体
 
 欢迎来到我们的 [Golang 教程系列](../golangbot/)的第16篇教程。
 
@@ -77,6 +77,8 @@ func main() {
 }
 ```
 
+[Run in playground](https://play.golang.org/p/WPlLuPy0Lty)
+
 在上面程序的第7行中，我们创建了一个命名结构体类型`Employee`。在程序的第17行中，通过指定每个字段名的值来定义`emp1`结构体。字段的顺序不需要与声明结构体类型时的字段名顺序相同。在这种情况下，我们改变了`lastName`的位置并将其移到末尾。这样做不会有任何问题。
 
 **在程序的第25行中，定义`emp2`时省略了字段名。在这种情况下，必须保持字段的顺序与结构体声明中指定的顺序相同。请避免使用这种语法，因为很难弄清楚哪个值对应哪个字段。**我们在这里提到这种格式只是为了让大家了解这也是一种有效的语法 :)
@@ -115,6 +117,8 @@ func main() {
     fmt.Println("Employee 3", emp3)
 }
 ```
+
+[Run in playground](https://play.golang.org/p/m_7UoICTiMy)
 
 在上面程序的第8行中，定义了一个**匿名结构体变量**`emp3`。正如我们已经提到的，这个结构体之所以称为匿名，是因为它只创建了一个新的结构体变量`emp3`，而没有像命名结构体那样定义任何新的结构体类型。
 
@@ -158,6 +162,8 @@ func main() {
 }
 ```
 
+[Run in playground](https://play.golang.org/p/iggKCd8xUMy)
+
 **emp6.firstName**在上面的程序中访问`emp6`结构体的`firstName`字段。在第25行中，我们修改了员工的工资。这个程序打印：
 
 ```
@@ -195,6 +201,8 @@ func main() {
 }
 ```
 
+[Run in playground](https://play.golang.org/p/jiCEH1tFvgW)
+
 上面的程序定义了`emp4`但没有用任何值初始化它。因此`firstName`和`lastName`被赋予了string的零值，即空字符串`""`，而`age`和`salary`被赋予了int的零值，即0。这个程序打印：
 
 ```
@@ -231,6 +239,8 @@ func main() {
     fmt.Println("Salary:", emp5.salary)
 }
 ```
+
+[Run in playground](https://play.golang.org/p/WANoyFfRt_y)
 
 在上面程序的第16行和第17行，初始化了`firstName`和`lastName`，而`age`和`salary`没有被初始化。因此`age`和`salary`被赋予了它们的零值。这个程序输出：
 
@@ -271,6 +281,8 @@ func main() {
 }
 ```
 
+[Run in playground](https://play.golang.org/p/Rli_WqmE9_H)
+
 **emp8**在上面的程序中是指向`Employee`结构体的指针。`(*emp8).firstName`是访问`emp8`结构体的`firstName`字段的语法。这个程序打印：
 
 ```
@@ -305,6 +317,8 @@ func main() {
     fmt.Println("Age:", emp8.age)
 }
 ```
+
+[Run in playground](https://go.dev/play/p/LxEQgUm3_Fu)
 
 我们在上面的程序中使用了`emp8.firstName`来访问`firstName`字段，这个程序也输出：
 
@@ -349,6 +363,8 @@ func main() {
     fmt.Println(p1.int)
 }
 ```
+
+[Run in playground](https://play.golang.org/p/zDkb0EbLqyJ)
 
 在上面程序的第17行和第18行中，我们使用它们的类型作为字段名来访问Person结构体的匿名字段，即`string`和`int`。上面程序的输出是：
 
@@ -456,6 +472,8 @@ func main() {
     fmt.Println("State:", p.state) //state is promoted field
 }
 ```
+
+[Run in playground](https://play.golang.org/p/ZwfRatdwc4p)
 
 在上面程序的第29行和第30行中，提升字段`city`和`state`使用语法`p.city`和`p.state`访问，就像它们是在结构体`p`中声明的一样。这个程序打印：
 
