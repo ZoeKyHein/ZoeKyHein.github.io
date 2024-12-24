@@ -1,5 +1,5 @@
 ---
-title: 【GolangBot】1.介绍和安装
+title: 【GolangBot】1-介绍和安装
 date: 2024-12-16 18:31:00
 tags: 
     - Golang
