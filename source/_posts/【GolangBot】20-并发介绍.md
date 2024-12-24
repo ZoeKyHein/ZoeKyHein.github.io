@@ -11,7 +11,6 @@ published: true
 
 # 【GolangBot】20-并发介绍
 
-Welcome to tutorial no. 20 in [Golang tutorial series](https://golangbot.com/learn-golang-series/).
 
 欢迎来到[Golang系列教程](../golangbot/)第20讲。
 
