@@ -97,7 +97,7 @@ date: 2024-12-18 09:10:49
 
 22 - [【GolangBot】22-Channels](../【GolangBot】22-Channels/)
 
-23 - [【GolangBot】23-缓冲通道与工人池](../【GolangBot】23-缓冲通道与工人池/)
+23 - [【GolangBot】23-缓冲通道与工作池](../【GolangBot】23-缓冲通道与工作池/)
 
 24 - [【GolangBot】24-Select](../【GolangBot】24-Select/)
 
