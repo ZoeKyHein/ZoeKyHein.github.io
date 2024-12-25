@@ -195,21 +195,21 @@ Received: 0, open: false
 同样的程序也可以使用for range循环来编写。
 
 ```go
- 1package main
- 2
- 3import (
- 4	"fmt"
- 5)
- 6
- 7func main() {
- 8	ch := make(chan int, 5)
- 9	ch <- 5
-10	ch <- 6
-11	close(ch)
-12	for n := range ch {
-13		fmt.Println("Received:", n)
-14	}
-15}
+package main
+
+import (
+	"fmt"
+)
+
+func main() {
+	ch := make(chan int, 5)
+	ch <- 5
+	ch <- 6
+	close(ch)
+	for n := range ch {
+		fmt.Println("Received:", n)
+	}
+}
 ```
 
 [Run program in playground](https://play.golang.org/p/xVgkn64Jado)
@@ -269,31 +269,31 @@ WaitGroup用于等待一组Goroutines完成执行。控制会被阻塞，直到�
 让我们停止理论，直接开始编写代码 😀
 
 ```go
- 1package main
- 2
- 3import (
- 4	"fmt"
- 5	"sync"
- 6	"time"
- 7)
- 8
- 9func process(i int, wg *sync.WaitGroup) {
-10	fmt.Println("started Goroutine ", i)
-11	time.Sleep(2 * time.Second)
-12	fmt.Printf("Goroutine %d ended\n", i)
-13	wg.Done()
-14}
-15
-16func main() {
-17	no := 3
-18	var wg sync.WaitGroup
-19	for i := 0; i < no; i++ {
-20		wg.Add(1)
-21		go process(i, &wg)
-22	}
-23	wg.Wait()
-24	fmt.Println("All go routines finished executing")
-25}
+package main
+
+import (
+	"fmt"
+	"sync"
+	"time"
+)
+
+func process(i int, wg *sync.WaitGroup) {
+	fmt.Println("started Goroutine ", i)
+	time.Sleep(2 * time.Second)
+	fmt.Printf("Goroutine %d ended\n", i)
+	wg.Done()
+}
+
+func main() {
+	no := 3
+	var wg sync.WaitGroup
+	for i := 0; i < no; i++ {
+		wg.Add(1)
+		go process(i, &wg)
+	}
+	wg.Wait()
+	fmt.Println("All go routines finished executing")
+}
 ```
 
 [Run in playground](https://play.golang.org/p/CZNtu8ktQh)
