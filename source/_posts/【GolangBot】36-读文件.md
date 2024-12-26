@@ -116,7 +116,6 @@ File reading error open test.txt: no such file or directory
 
 让我们逐一讨论。
 
-获取免费的 Golang 工具备忘单
 
 ##### 1. 使用绝对文件路径
 
@@ -344,7 +343,6 @@ func main() {
 
 如果你有兴趣了解更多关于此设计决策的信息，请阅读 https://github.com/golang/go/issues/43216
 
-获取免费的 Golang 工具备忘单
 
 ### 分块读取文件
 

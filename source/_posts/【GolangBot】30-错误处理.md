@@ -74,7 +74,6 @@ type error interface {
 
 当打印错误时，`fmt.Println` 函数内部调用 `Error() string` 方法来获取错误的描述。这就是上面的[示例程序](../【GolangBot】30-错误处理/#示例)中第 11 行打印错误描述的方式。
 
-获取免费的 Golang 工具备忘单
 
 ### 从错误中提取更多信息的不同方式
 
@@ -289,7 +288,6 @@ Bad pattern error: syntax error in pattern
 
 标准库使用上述任何一种方式来提供有关错误的更多信息。我们将在下一个教程中使用这些方式来创建我们自己的[自定义错误](https://golangbot.com/custom-errors/)。
 
-获取免费的 Golang 工具备忘单
 
 ### 不要忽略错误
 

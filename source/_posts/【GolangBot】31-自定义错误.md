@@ -120,7 +120,6 @@ func main() {
 
 [在 Playground 中运行](https://go.dev/play/p/HQ7bvjT4o2)
 
-获取免费的 Golang 工具备忘单
 
 在上面的程序中，`Errorf` 在第 10 行用于打印导致错误的实际半径。运行该程序将输出：
 
@@ -221,7 +220,6 @@ Area calculation failed, radius -20.00 is less than zero
 
 现在让我们使用上一教程中描述的[第二种策略](../【GolangBot】30-错误处理/#2-使用方法检索更多信息)，并在自定义错误类型上使用方法以提供有关错误的更多信息。
 
-获取免费的 Golang 工具备忘单
 
 ### 使用结构体类型上的方法为错误提供更多信息
 
