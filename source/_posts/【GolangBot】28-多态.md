@@ -6,7 +6,7 @@ tags:
     - 教程
 categories:
     - [学习心得, GolangBot]
-published: false
+published: true
 ---
 
 欢迎来到 [Golang 教程系列](../golangbot/) 的第 28 个教程。
