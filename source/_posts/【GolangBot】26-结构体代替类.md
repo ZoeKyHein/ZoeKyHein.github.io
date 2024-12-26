@@ -8,3 +8,6 @@ categories:
     - [学习心得, GolangBot]
 published: false
 ---
+
+# 【GolangBot】26-结构体代替类
+
