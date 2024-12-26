@@ -1,48 +1,48 @@
 ---
 title: 【GolangBot】36-读文件
-date: 2024-12-17 09:20:08
+date: 2024-12-26 13:10:08
 tags: 
     - Golang
     - 教程
 categories:
     - [学习心得, GolangBot]
-published: false
+published: true
 ---
+# 36-读文件
+欢迎来到 [Golang 教程系列](../golangbot/) 的第 36 个教程。
 
-Welcome to tutorial no. 36 in [Golang tutorial series](https://golangbot.com/learn-golang-series/).
+文件读取是任何编程语言中最常见的操作之一。在本教程中，我们将学习如何使用 Go 读取文件。
 
-File reading is one of the most common operations performed in any programming language. In this tutorial, we will learn about how files can be read using Go.
+本教程包含以下部分：
 
-This tutorial has the following sections.
+- 将整个文件读入内存
+  - 使用绝对文件路径
+  - 将文件路径作为命令行标志传递
+  - 将文件打包到二进制文件中
+- 分块读取文件
+- 逐行读取文件
 
-- Reading an entire file into memory
-  - Using an absolute file path
-  - Passing the file path as a command line flag
-  - Bundling the file inside the binary
-- Reading a file in small chunks
-- Reading a file line by line
+### 将整个文件读入内存
 
-### Reading an entire file into memory
+最基本的文件操作之一是将整个文件读入内存。这可以通过 [os](https://pkg.go.dev/os) 包中的 [ReadFile](https://pkg.go.dev/os#ReadFile) 函数来实现。
 
-One of the most basic file operations is reading an entire file into memory. This is done with the help of the [ReadFile](https://pkg.go.dev/os#ReadFile) function of the [os](https://pkg.go.dev/os) package.
+让我们读取一个文件并打印其内容。
 
-Let’s read a file and print its contents.
+我通过运行 `mkdir ~/Documents/filehandling` 在 `Documents` 目录下创建了一个文件夹 `filehandling`。
 
-I have created a folder `filehandling` inside my `Documents` directory by running `mkdir ~/Documents/filehandling`.
-
-Create a Go module named `filehandling` by running the following command from the `filehandling` directory.
+在 `filehandling` 目录下运行以下命令，创建一个名为 `filehandling` 的 Go 模块。
 
 ```fallback
 go mod init filehandling
 ```
 
-I have a text file `test.txt` which will be read from our Go program `filehandling.go`. `test.txt` contains the following string
+我有一个文本文件 `test.txt`，它将从我们的 Go 程序 `filehandling.go` 中读取。`test.txt` 包含以下字符串：
 
 ```fallback
 Hello World. Welcome to file handling in Go.
 ```
 
-Here is my directory structure.
+这是我的目录结构：
 
 ```fallback
 ├── Documents
@@ -52,35 +52,33 @@ Here is my directory structure.
 │       └── test.txt
 ```
 
-Let’s get to the code right away. Create a file `filehandling.go` with the following contents.
+让我们直接看代码。创建一个文件 `filehandling.go`，内容如下：
 
 ```go
- 1package main
- 2
- 3import (
- 4	"fmt"
- 5	"os"
- 6)
- 7
- 8func main() {
- 9	contents, err := os.ReadFile("test.txt")
-10	if err != nil {
-11		fmt.Println("File reading error", err)
-12		return
-13	}
-14	fmt.Println("Contents of file:", string(contents))
-15}
+package main
+
+import (
+	"fmt"
+	"os"
+)
+
+func main() {
+	contents, err := os.ReadFile("test.txt")
+	if err != nil {
+		fmt.Println("File reading error", err)
+		return
+	}
+	fmt.Println("Contents of file:", string(contents))
+}
 ```
 
-go
+请在本地环境中运行此程序，因为无法在 playground 中读取文件。
 
-Please run this program from your local environment as it’s not possible to read files in the playground.
+程序第 9 行读取文件并返回一个字节 [slice](../【GolangBot】11-数组和切片/#切片)，存储在 `contents` 中。在第 14 行，我们将 `contents` 转换为 `string` 并显示文件内容。
 
-Line no. 9 of the program above reads the file and returns a byte [slice](https://golangbot.com/arrays-and-slices/#slices) which is stored in `contents`. In line no. 14 we convert `contents` to a `string` and display the contents of the file.
+请在 **test.txt** 所在的目录下运行此程序。
 
-Please run this program from the location where **test.txt** is present.
-
-If **test.txt** is located at **~/Documents/filehandling**, then run this program using the following steps,
+如果 **test.txt** 位于 **~/Documents/filehandling**，则使用以下步骤运行此程序：
 
 ```fallback
 cd ~/Documents/filehandling/
@@ -88,66 +86,64 @@ go install
 filehandling
 ```
 
-If you are not aware of how to run a Go program, please visit [/hello-world-gomod/](https://golangbot.com/hello-world-gomod/) to know more. If you want to learn more about packages and Go modules, please visit [/go-packages/](https://golangbot.com/go-packages/)
+如果你不知道如何运行 Go 程序，请访问 [/hello-world-gomod/](../GolangBot】2-Hello-World) 了解更多。如果你想了解更多关于包和 Go 模块的信息，请访问 [/go-packages/](../【GolangBot】7-包)
 
-This program will print,
+该程序将打印：
 
 ```fallback
 Contents of file: Hello World. Welcome to file handling in Go.  
 ```
 
-If this program is run from any other location, for instance, try running the program from `~/Documents/`
+如果从其他位置运行此程序，例如尝试从 `~/Documents/` 运行程序：
 
 ```fallback
 cd ~/Documents/
 filehandling
 ```
 
-It will print the following error.
+它将打印以下错误：
 
 ```fallback
 File reading error open test.txt: no such file or directory
 ```
 
-The reason is Go is a compiled language. What `go install` does is, it creates a binary from the source code. The binary is independent of the source code and it can be run from any location. Since `test.txt` is not found in the location from which the binary is run, the program complains that it cannot find the file specified.
+原因是 Go 是一种编译型语言。`go install` 所做的是从源代码创建一个二进制文件。二进制文件独立于源代码，可以从任何位置运行。由于在运行二进制文件的位置找不到 `test.txt`，程序会抱怨找不到指定的文件。
 
-There are three ways to solve this problem,
+有三种方法可以解决这个问题：
 
-1. Using absolute file path
-2. Passing the file path as a command line flag
-3. Bundling the text file along with the binary
+1. 使用绝对文件路径
+2. 将文件路径作为命令行标志传递
+3. 将文本文件与二进制文件打包在一起
 
-Let’s discuss them one by one.
+让我们逐一讨论。
 
-Get the free Golang tools cheat sheet
+获取免费的 Golang 工具备忘单
 
-##### 1. Using absolute file path
+##### 1. 使用绝对文件路径
 
-The simplest way to solve this problem is to pass the absolute file path. I have modified the program and changed the path to an absolute one in line no. 9. Please change this path to the absolute location of your `test.txt`.
+解决此问题的最简单方法是传递绝对文件路径。我修改了程序，并在第 9 行将路径更改为绝对路径。请将此路径更改为你的 `test.txt` 的绝对路径。
 
 ```go
- 1package main
- 2
- 3import (
- 4	"fmt"
- 5	"os"
- 6)
- 7
- 8func main() {
- 9	contents, err := os.ReadFile("/Users/naveen/Documents/filehandling/test.txt")
-10	if err != nil {
-11		fmt.Println("File reading error", err)
-12		return
-13	}
-14	fmt.Println("Contents of file:", string(contents))
-15}
+package main
+
+import (
+	"fmt"
+	"os"
+)
+
+func main() {
+	contents, err := os.ReadFile("/Users/naveen/Documents/filehandling/test.txt")
+	if err != nil {
+		fmt.Println("File reading error", err)
+		return
+	}
+	fmt.Println("Contents of file:", string(contents))
+}
 ```
 
-go
+现在，程序可以从任何位置运行，并打印 `test.txt` 的内容。
 
-Now the program can be run from any location and it will print the contents of `test.txt`.
-
-For example, it will work even when I run it from my home directory
+例如，即使我从主目录运行它，它也会工作：
 
 ```fallback
 cd ~/Documents/filehandling
@@ -156,69 +152,67 @@ cd ~
 filehandling
 ```
 
-The program will print the contents of `test.txt`
+该程序将打印 `test.txt` 的内容。
 
-This seems to be an easy way but comes with the pitfall that the file should be located in the path specified in the program else this method will fail.
+这似乎是一种简单的方法，但有一个缺点，即文件必须位于程序中指定的路径中，否则此方法将失败。
 
-##### 2. Passing the file path as a command line flag
+##### 2. 将文件路径作为命令行标志传递
 
-Another way to solve this problem is to pass the file path as a command line argument. Using the [flag](https://pkg.go.dev/flag) package, we can get the file path as input argument from the command line and then read its contents.
+另一种解决此问题的方法是将文件路径作为命令行参数传递。使用 [flag](https://pkg.go.dev/flag) 包，我们可以从命令行获取文件路径作为输入参数，然后读取其内容。
 
-Let’s first understand how the `flag` package works. The `flag` package has a [String](https://golang.org/pkg/flag/#String) function. This function accepts 3 arguments. The first is the name of the flag, second is the default value and the third is a short description of the flag.
+让我们首先了解 `flag` 包的工作原理。`flag` 包有一个 [String](https://golang.org/pkg/flag/#String) 函数。该函数接受 3 个参数。第一个是标志的名称，第二个是默认值，第三个是标志的简短描述。
 
-Let’s write a small program to read the file name from the command line. Replace the contents of `filehandling.go` with the following,
+让我们编写一个小程序来从命令行读取文件名。将 `filehandling.go` 的内容替换为以下内容：
 
 ```go
- 1package main
- 2import (
- 3	"flag"
- 4	"fmt"
- 5)
- 6
- 7func main() {
- 8	fptr := flag.String("fpath", "test.txt", "file path to read from")
- 9	flag.Parse()
-10	fmt.Println("value of fpath is", *fptr)
-11}
+package main
+import (
+	"flag"
+	"fmt"
+)
+
+func main() {
+	fptr := flag.String("fpath", "test.txt", "file path to read from")
+	flag.Parse()
+	fmt.Println("value of fpath is", *fptr)
+}
 ```
 
-go
+程序第 8 行使用 `String` 函数创建了一个名为 `fpath` 的字符串标志，默认值为 `test.txt`，描述为 `file path to read from`。此函数返回存储标志值的字符串 [变量](https://golangbot.com/variables/) 的地址。
 
-Line no. 8 of the program above, creates a string flag named `fpath` with default value `test.txt` and description `file path to read from` using the `String` function. This function returns the address of the string [variable](https://golangbot.com/variables/) that stores the value of the flag.
+在访问任何标志之前，应调用 *flag.Parse()*。
 
-*flag.Parse()* should be called before accessing any flag.
+我们在第 10 行打印标志的值。
 
-We print the value of the flag in line no. 10
-
-When this program is run using the command
+当使用以下命令运行此程序时：
 
 ```fallback
 filehandling -fpath=/path-of-file/test.txt
 ```
 
-we pass `/path-of-file/test.txt` as the value of the flag `fpath`.
+我们将 `/path-of-file/test.txt` 作为标志 `fpath` 的值传递。
 
-This program outputs
+该程序输出：
 
 ```fallback
 value of fpath is /path-of-file/test.txt
 ```
 
-If the program is run using just `filehandling` without passing any `fpath`, it will print
+如果仅使用 `filehandling` 运行程序而不传递任何 `fpath`，它将打印：
 
 ```fallback
 value of fpath is test.txt
 ```
 
-since `test.txt` is the default value of `fpath`.
+因为 `test.txt` 是 `fpath` 的默认值。
 
-`flag` also provides a nicely formatted output of the different arguments that are available. This can be displayed by running
+`flag` 还提供了一个格式良好的输出，显示可用的不同参数。可以通过运行以下命令显示：
 
 ```fallback
 filehandling --help
 ```
 
-This command will print the following output.
+此命令将打印以下输出：
 
 ```fallback
 Usage of filehandling:
@@ -226,86 +220,82 @@ Usage of filehandling:
     	file path to read from (default "test.txt")
 ```
 
-Nice isn’t it :).
+不错吧 :)。
 
-Now that we know how to read the file path from the command line, let’s go ahead and finish our file reading program.
+现在我们知道如何从命令行读取文件路径，让我们继续完成我们的文件读取程序。
 
 ```go
- 1package main
- 2
- 3import (
- 4	"flag"
- 5	"fmt"
- 6	"os"
- 7)
- 8
- 9func main() {
-10	fptr := flag.String("fpath", "test.txt", "file path to read from")
-11	flag.Parse()
-12	contents, err := os.ReadFile(*fptr)
-13	if err != nil {
-14		fmt.Println("File reading error", err)
-15		return
-16	}
-17	fmt.Println("Contents of file:", string(contents))
-18}
+package main
+
+import (
+	"flag"
+	"fmt"
+	"os"
+)
+
+func main() {
+	fptr := flag.String("fpath", "test.txt", "file path to read from")
+	flag.Parse()
+	contents, err := os.ReadFile(*fptr)
+	if err != nil {
+		fmt.Println("File reading error", err)
+		return
+	}
+	fmt.Println("Contents of file:", string(contents))
+}
 ```
 
-go
-
-The program above reads the content of the file path passed from the command line. Run this program using the command
+上面的程序读取从命令行传递的文件路径的内容。使用以下命令运行此程序：
 
 ```fallback
 filehandling -fpath=/path-of-file/test.txt
 ```
 
-Please replace `/path-of-file/` with the absolute path of `test.txt`. For example, in my case, I ran the command
+请将 `/path-of-file/` 替换为 `test.txt` 的绝对路径。例如，在我的情况下，我运行了以下命令：
 
 ```fallback
 filehandling --fpath=/Users/naveen/Documents/filehandling/test.txt
 ```
 
-and the program printed.
+程序打印：
 
 ```fallback
 Contents of file: Hello World. Welcome to file handling in Go.
 ```
 
-##### 3. Bundling the text file along with the binary
+##### 3. 将文本文件与二进制文件打包在一起
 
-The above option of getting the file path from the command line is good but there is an even better way to solve this problem. Wouldn’t it be awesome if we are able to bundle the text file along with our binary? This is what we are going to do next.
+上述从命令行获取文件路径的选项很好，但有一种更好的方法可以解决此问题。如果能够将文本文件与我们的二进制文件打包在一起，那不是很棒吗？这就是我们接下来要做的。
 
-The [embed](https://pkg.go.dev/embed) package from the standard library will help us achieve this.
+标准库中的 [embed](https://pkg.go.dev/embed) 包将帮助我们实现这一点。
 
-After importing the `embed` package, the `//go:embed` directive can be used to read the contents of the file.
+导入 `embed` 包后，可以使用 `//go:embed` 指令读取文件内容。
 
-A program will make us understand things better.
+一个程序将帮助我们更好地理解这一点。
 
-Replace the contents of `filehandling.go` with the following,
+将 `filehandling.go` 的内容替换为以下内容：
 
 ```go
- 1package main
- 2
- 3import (
- 4	_ "embed"
- 5	"fmt"
- 6)
- 7
- 8//go:embed test.txt
- 9var contents []byte
-10
-11func main() {
-12	fmt.Println("Contents of file:", string(contents))
-13}
+package main
+
+import (
+	_ "embed"
+	"fmt"
+)
+
+//go:embed test.txt
+var contents []byte
+
+func main() {
+	fmt.Println("Contents of file:", string(contents))
+}
 ```
 
-go
+在程序的第 4 行，我们使用下划线前缀导入 `embed` 包。原因是 `embed` 没有在代码中显式使用，但第 8 行的 `//go:embed` 注释需要编译器进行一些预处理。由于我们需要在不显式使用的情况下导入包，因此我们使用下划线前缀以使编译器满意。如果不这样做，编译器会抱怨该包未在任何地方使用。
 
-In line no. 4 of the program above, we import the `embed` package with a underscore prefix. The reason is because `embed` is not explicitly used in the code but the `//go:embed` comment in line no. 8 needs some preprocessing by the compiler. Since we need to import the package without any explicit usage, we prefix it with underscore to make the compiler happy. If not, the compiler will complain stating that the package is not used anywhere.
+第 8 行的 `//go:embed test.txt` 告诉编译器读取 `test.txt` 的内容并将其分配给该注释后面的变量。在我们的例子中，`contents` 变量将保存文件的内容。
 
-The `//go:embed test.txt` in line no. 8 tells the compiler to read the contents of `test.txt` and assign it to the variable following that comment. In our case `contents` variable will hold the contents of the file.
-
-Run the program using the following commands.
+使用以下命令运行程序：
 
 ```fallback
 cd ~/Documents/filehandling
@@ -313,114 +303,110 @@ go install
 filehandling
 ```
 
-and the program will print
+程序将打印：
 
 ```fallback
 Contents of file: Hello World. Welcome to file handling in Go.
 ```
 
-Now the file is bundled along with the binary and it is available to the go binary irrespective of where it’s executed from. For example, try running the program from a directory where `test.txt` doesn’t reside.
+现在，文件与二进制文件打包在一起，无论从何处执行，Go 二进制文件都可以访问它。例如，尝试从 `test.txt` 不存在的目录运行程序。
 
 ```fallback
 cd ~/Documents
 filehandling
 ```
 
-The above command will also print the contents of the file.
+上述命令也将打印文件的内容。
 
-Do note that the variable to which the contents of the file should be assigned to must be at the package level. Local variables won’t work. Try changing the program to the following.
+请注意，文件内容应分配给的变量必须在包级别。局部变量不起作用。尝试将程序更改为以下内容：
 
 ```go
- 1package main
- 2
- 3import (
- 4	_ "embed"
- 5	"fmt"
- 6)
- 7
- 8func main() {
- 9	//go:embed test.txt
-10	var contents []byte
-11	fmt.Println("Contents of file:", string(contents))
-12}
+package main
+
+import (
+	_ "embed"
+	"fmt"
+)
+
+func main() {
+	//go:embed test.txt
+	var contents []byte
+	fmt.Println("Contents of file:", string(contents))
+}
 ```
 
-go
+上面的程序将 `contents` 作为局部变量。
 
-The above program has `contents` as a local variable.
-
-The program will now fail to compile with the following error.
+程序现在将无法编译，并出现以下错误：
 
 ```fallback
 ./filehandling.go:9:4: go:embed cannot apply to var inside func
 ```
 
-If you are interested to know more about the design decision behind this, please read https://github.com/golang/go/issues/43216
+如果你有兴趣了解更多关于此设计决策的信息，请阅读 https://github.com/golang/go/issues/43216
 
-Get the free Golang tools cheat sheet
+获取免费的 Golang 工具备忘单
 
-### Reading a file in small chunks
+### 分块读取文件
 
-In the last section, we learned how to load an entire file into memory. When the size of the file is extremely large it doesn’t make sense to read the entire file into memory especially if you are running low on RAM. A more optimal way is to read the file in small chunks. This can be done with the help of the [bufio](https://pkg.go.dev/bufio) package.
+在上一节中，我们学习了如何将整个文件加载到内存中。当文件的大小非常大时，尤其是在 RAM 不足的情况下，将整个文件读入内存是没有意义的。更优化的方法是分块读取文件。这可以通过 [bufio](https://pkg.go.dev/bufio) 包来实现。
 
-Let’s write a program that reads our `test.txt` file in chunks of 3 bytes. Replace the contents of `filehandling.go` with the following,
+让我们编写一个程序，以 3 字节的块读取我们的 `test.txt` 文件。将 `filehandling.go` 的内容替换为以下内容：
 
 ```go
- 1package main
- 2
- 3import (
- 4	"bufio"
- 5	"flag"
- 6	"fmt"
- 7	"io"
- 8	"log"
- 9	"os"
-10)
-11
-12func main() {
-13	fptr := flag.String("fpath", "test.txt", "file path to read from")
-14	flag.Parse()
-15
-16	f, err := os.Open(*fptr)
-17	if err != nil {
-18		log.Fatal(err)
-19	}
-20	defer func() {
-21		if err = f.Close(); err != nil {
-22			log.Fatal(err)
-23		}
-24	}()
-25
-26	r := bufio.NewReader(f)
-27	b := make([]byte, 3)
-28	for {
-29		n, err := r.Read(b)
-30		if err == io.EOF {
-31			fmt.Println("finished reading file")
-32			break
-33		}
-34		if err != nil {
-35			fmt.Printf("Error %s reading file", err)
-36			break
-37		}
-38		fmt.Println(string(b[0:n]))
-39	}
-40}
+package main
+
+import (
+	"bufio"
+	"flag"
+	"fmt"
+	"io"
+	"log"
+	"os"
+)
+
+func main() {
+	fptr := flag.String("fpath", "test.txt", "file path to read from")
+	flag.Parse()
+
+	f, err := os.Open(*fptr)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer func() {
+		if err = f.Close(); err != nil {
+			log.Fatal(err)
+		}
+	}()
+
+	r := bufio.NewReader(f)
+	b := make([]byte, 3)
+	for {
+		n, err := r.Read(b)
+		if err == io.EOF {
+			fmt.Println("finished reading file")
+			break
+		}
+		if err != nil {
+			fmt.Printf("Error %s reading file", err)
+			break
+		}
+		fmt.Println(string(b[0:n]))
+	}
+}
 ```
 
-go
+在程序的第 16 行，我们使用从命令行标志传递的路径打开文件。
 
-In line no. 16 of the program above, we open the file using the path passed from the command line flag.
+在第 20 行，我们延迟关闭文件。
 
-In line no. 20, we defer the file closing.
+程序的第 26 行创建了一个新的缓冲读取器。在下一行，我们创建了一个长度为 3 的字节切片，文件字节将被读取到其中。
 
-Line no. 26 of the program above creates a new buffered reader. In the next line, we create a byte slice of length and capacity 3 into which the bytes of the file will be read.
+第 29 行的 `Read` [方法](../【GolangBot】17-方法) 读取最多 `len(b)` 字节，即最多 3 个字节，并返回读取的字节数。我们将返回的字节存储在变量 `n` 中。在第 38 行，切片从索引 `0` 读取到 `n-1`，即读取到 `Read` 方法返回的字节数，并打印。
 
-The `Read` [method](https://golangbot.com/methods/) in line no. 29 reads up to `len(b)` bytes i.e up to 3 bytes and returns the number of bytes read. We store the bytes returned in a variable`n`. In line no. 38, the slice is read from index `0` to `n-1`, i.e up to the number of bytes returned by the `Read` method and printed.
+一旦到达文件末尾，`read` 将返回一个 EOF 错误。我们在第 30 行检查此错误。程序的其余部分很简单。
 
-Once the end of the file is reached, `read` will return an EOF error. We check for this error in line no. 30. The rest of the program is straight forward.
-
-If we run the program above using the commands,
+如果我们使用以下命令运行上述程序：
 
 ```fallback
 cd ~/Documents/filehandling
@@ -428,7 +414,7 @@ go install
 filehandling -fpath=/path-of-file/test.txt
 ```
 
-the following will be output
+将输出以下内容：
 
 ```fallback
 Hel
@@ -449,11 +435,11 @@ o.
 finished reading file
 ```
 
-### Reading a file line by line
+### 逐行读取文件
 
-In the section, we will discuss how to read a file line by line using Go. This can done using the [bufio](https://pkg.go.dev/bufio) package.
+在本节中，我们将讨论如何使用 Go 逐行读取文件。这可以使用 [bufio](https://pkg.go.dev/bufio) 包来完成。
 
-Please replace the contents in `test.txt` with the following
+请将 `test.txt` 的内容替换为以下内容：
 
 ```fallback
 Hello World. Welcome to file handling in Go.  
@@ -461,56 +447,54 @@ This is the second line of the file.
 We have reached the end of the file.  
 ```
 
-The following are the steps involved in reading a file line by line.
+以下是逐行读取文件的步骤：
 
-1. Open the file
-2. Create a new scanner from the file
-3. Scan the file and read it line by line.
+1. 打开文件
+2. 从文件创建一个新的扫描器
+3. 扫描文件并逐行读取。
 
-Replace the contents of `filehandling.go` with the following
+将 `filehandling.go` 的内容替换为以下内容：
 
 ```go
- 1package main
- 2
- 3import (
- 4	"bufio"
- 5	"flag"
- 6	"fmt"
- 7	"log"
- 8	"os"
- 9)
-10
-11func main() {
-12	fptr := flag.String("fpath", "test.txt", "file path to read from")
-13	flag.Parse()
-14
-15	f, err := os.Open(*fptr)
-16	if err != nil {
-17		log.Fatal(err)
-18	}
-19    defer func() {
-20	    if err = f.Close(); err != nil {
-21		log.Fatal(err)
-22	}
-23	}()
-24	s := bufio.NewScanner(f)
-25	for s.Scan() {
-26		fmt.Println(s.Text())
-27	}
-28	err = s.Err()
-29	if err != nil {
-30		log.Fatal(err)
-31	}
-32}
+package main
+
+import (
+	"bufio"
+	"flag"
+	"fmt"
+	"log"
+	"os"
+)
+
+func main() {
+	fptr := flag.String("fpath", "test.txt", "file path to read from")
+	flag.Parse()
+
+	f, err := os.Open(*fptr)
+	if err != nil {
+		log.Fatal(err)
+	}
+    defer func() {
+	    if err = f.Close(); err != nil {
+		log.Fatal(err)
+	}
+	}()
+	s := bufio.NewScanner(f)
+	for s.Scan() {
+		fmt.Println(s.Text())
+	}
+	err = s.Err()
+	if err != nil {
+		log.Fatal(err)
+	}
+}
 ```
 
-go
+在程序的第 15 行，我们使用从命令行标志传递的路径打开文件。在第 24 行，我们使用文件创建一个新的扫描器。第 25 行的 `scan()` 方法读取文件的下一行，读取的字符串将通过 `text()` 方法可用。
 
-In line no. 15 of the program above, we open the file using the path passed from the command line flag. In line no. 24, we create a new scanner using the file. The `scan()` method in line no. 25 reads the next line of the file and the string that is read will be available through the `text()` method.
+当 Scan 返回 `false` 后，`Err()` 方法将返回扫描期间发生的任何错误。如果错误是文件结束，`Err()` 将返回 `nil`。
 
-After Scan returns `false`, the `Err()` method will return any error that occurred during scanning. If the error is End of File, `Err()` will return `nil`.
-
-If we run the program above using the commands,
+如果我们使用以下命令运行上述程序：
 
 ```fallback
 cd ~/Documents/filehandling
@@ -518,7 +502,7 @@ go install
 filehandling -fpath=/path-of-file/test.txt
 ```
 
-the contents of the file will be printed line by line as shown below.
+文件的内容将逐行打印，如下所示：
 
 ```fallback
 Hello World. Welcome to file handling in Go.
@@ -526,6 +510,5 @@ This is the second line of the file.
 We have reached the end of the file.
 ```
 
-This brings us to the end of this tutorial. Hope you enjoyed it. Please leave your feedback and comments. Please consider sharing this tutorial on [twitter](https://twitter.com/intent/tweet?text=Reading Files&url=https%3a%2f%2fgolangbot.com%2fread-files%2f&tw_p=tweetbutton) and [LinkedIn](https://golangbot.com/read-files/#linkedinshr). Have a good day.
 
-**Next tutorial - [Writing Files](https://golangbot.com/write-files/)**
+**下一个教程 - [写入文件](../【GolangBot】37-写文件)**
