@@ -8,116 +8,112 @@ categories:
     - [学习心得, GolangBot]
 published: false
 ---
+# 【GolangBot】37-写文件
+欢迎来到 [Golang 教程系列](../golangbot/) 的第 37 个教程。
 
-Welcome to tutorial no. 37 in [Golang tutorial series](https://golangbot.com/learn-golang-series/).
+在本教程中，我们将学习如何使用 Go 将数据写入文件。我们还将学习如何并发地写入文件。
 
-In this tutorial, we will learn how to write data to files using Go. We will also learn how to write to a file concurrently.
+本教程包含以下部分：
 
-This tutorial has the following sections
+- 将字符串写入文件
+- 将字节写入文件
+- 逐行将数据写入文件
+- 追加到文件
+- 并发写入文件
 
-- Writing string to a file
-- Writing bytes to a file
-- Writing data to a file line by line
-- Appending to a file
-- Writing to a file concurrently
+请在你的本地系统中运行本教程的所有程序，因为 playground 不支持文件操作。
 
-Please run all the programs of this tutorial in your local system as playground doesn’t support file operations.
+### 将字符串写入文件
 
-### Writing string to a file
+最常见的文件写入操作之一是将字符串写入文件。这非常简单。它包括以下步骤：
 
-One of the most common file writing operations is writing a string to a file. This is quite simple to do. It consists of the following steps.
+1. 创建文件
+2. 将字符串写入文件
 
-1. Create the file
-2. Write the string to the file
-
-Let’s get to the code right away.
+让我们直接看代码。
 
 ```go
- 1package main
- 2
- 3import (
- 4	"fmt"
- 5	"os"
- 6)
- 7
- 8func main() {
- 9	f, err := os.Create("test.txt")
-10	if err != nil {
-11		fmt.Println(err)
-12		return
-13	}
-14	l, err := f.WriteString("Hello World")
-15	if err != nil {
-16		fmt.Println(err)
-17        f.Close()
-18		return
-19	}
-20	fmt.Println(l, "bytes written successfully")
-21	err = f.Close()
-22	if err != nil {
-23		fmt.Println(err)
-24		return
-25	}
-26}
+package main
+
+import (
+	"fmt"
+	"os"
+)
+
+func main() {
+	f, err := os.Create("test.txt")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	l, err := f.WriteString("Hello World")
+	if err != nil {
+		fmt.Println(err)
+        f.Close()
+		return
+	}
+	fmt.Println(l, "bytes written successfully")
+	err = f.Close()
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+}
 ```
 
-go
+程序第 9 行的 `create` 函数创建了一个名为 *test.txt* 的文件。如果该文件已经存在，则 `create` 函数会截断该文件。此函数返回一个 [文件描述符](https://pkg.go.dev/os#File)。
 
-The `create` function in line no. 9 of the program above creates a file named *test.txt*. If a file with that name already exists, then the create function truncates the file. This function returns a [File descriptor](https://pkg.go.dev/os#File).
+在第 14 行，我们使用 `WriteString` 方法将字符串 **Hello World** 写入文件。此方法返回写入的字节数和可能的错误。
 
-In line no 14, we write the string **Hello World** to the file using the `WriteString` method. This method returns the number of bytes written and error if any.
+最后，我们在第 21 行关闭文件。
 
-Finally, we close the file in line no. 21.
-
-The above program will print
+上述程序将打印：
 
 ```fallback
 11 bytes written successfully
 ```
 
-You can find a file named **test.txt** created in the directory from which this program was executed. If you open the file using any text editor, you can find that it contains the text **Hello World**.
+你可以在运行此程序的目录中找到一个名为 **test.txt** 的文件。如果你使用任何文本编辑器打开该文件，你会发现它包含文本 **Hello World**。
 
-### Writing bytes to a file
+### 将字节写入文件
 
-Writing bytes to a file is quite similar to writing a string to a file. We will use the [Write](https://pkg.go.dev/os#File.Write) method to write bytes to a file. The following program writes a slice of bytes to a file.
+将字节写入文件与将字符串写入文件非常相似。我们将使用 [Write](https://pkg.go.dev/os#File.Write) 方法将字节写入文件。以下程序将字节切片写入文件。
 
 ```go
- 1package main
- 2
- 3import (
- 4	"fmt"
- 5	"os"
- 6)
- 7
- 8func main() {
- 9	f, err := os.Create("/home/naveen/bytes")
-10	if err != nil {
-11		fmt.Println(err)
-12		return
-13	}
-14	d2 := []byte{104, 101, 108, 108, 111, 32, 98, 121, 116, 101, 115}
-15	n2, err := f.Write(d2)
-16	if err != nil {
-17		fmt.Println(err)
-18        f.Close()
-19		return
-20	}
-21	fmt.Println(n2, "bytes written successfully")
-22	err = f.Close()
-23	if err != nil {
-24		fmt.Println(err)
-25		return
-26	}
-27}
+package main
+
+import (
+	"fmt"
+	"os"
+)
+
+func main() {
+	f, err := os.Create("/home/naveen/bytes")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	d2 := []byte{104, 101, 108, 108, 111, 32, 98, 121, 116, 101, 115}
+	n2, err := f.Write(d2)
+	if err != nil {
+		fmt.Println(err)
+        f.Close()
+		return
+	}
+	fmt.Println(n2, "bytes written successfully")
+	err = f.Close()
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+}
 ```
 
-go
+在上述程序中，第 15 行我们使用 **Write** 方法将字节切片写入目录 `/home/naveen` 中名为 `bytes` 的文件。你可以将此目录更改为其他目录。程序的其余部分不言自明。该程序将打印 `11 bytes written successfully`，并创建一个名为 `bytes` 的文件。打开该文件，你可以看到它包含文本 `hello bytes`。
 
-In the program above, in line no. 15 we use the **Write** method to write a slice of bytes to a file named `bytes` in the directory `/home/naveen`. You can change this directory to a different one. The remaining program is self-explanatory. This program will print `11 bytes written successfully` and it will create a file named `bytes`. Open the file and you can see that it contains the text `hello bytes`
+### 逐行将字符串写入文件
 
-### Writing strings line by line to a file
-
-Another common file operation is the need to write strings to a file line by line. In this section, we will write a program to create a file with the following content.
+另一个常见的文件操作是需要逐行将字符串写入文件。在本节中，我们将编写一个程序来创建一个包含以下内容的文件。
 
 ```fallback
 Welcome to the world of Go.
@@ -125,44 +121,42 @@ Go is a compiled language.
 It is easy to learn Go.
 ```
 
-Let’s get to the code right away.
+让我们直接看代码。
 
 ```go
- 1package main
- 2
- 3import (
- 4	"fmt"
- 5	"os"
- 6)
- 7
- 8func main() {
- 9	f, err := os.Create("lines")
-10	if err != nil {
-11		fmt.Println(err)
-12                f.Close()
-13		return
-14	}
-15	d := []string{"Welcome to the world of Go1.", "Go is a compiled language.", "It is easy to learn Go."}
-16
-17	for _, v := range d {
-18		fmt.Fprintln(f, v)
-19        if err != nil {
-20			fmt.Println(err)
-21			return
-22		}
-23	}
-24	err = f.Close()
-25	if err != nil {
-26		fmt.Println(err)
-27		return
-28	}
-29	fmt.Println("file written successfully")
-30}
+package main
+
+import (
+	"fmt"
+	"os"
+)
+
+func main() {
+	f, err := os.Create("lines")
+	if err != nil {
+		fmt.Println(err)
+                f.Close()
+		return
+	}
+	d := []string{"Welcome to the world of Go1.", "Go is a compiled language.", "It is easy to learn Go."}
+
+	for _, v := range d {
+		fmt.Fprintln(f, v)
+        if err != nil {
+			fmt.Println(err)
+			return
+		}
+	}
+	err = f.Close()
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	fmt.Println("file written successfully")
+}
 ```
 
-go
-
-In line no. 9 of the program above, we create a new file named **lines**. In line no. 17 we iterate through the array using a for range loop and use the [Fprintln](https://golang.org/pkg/fmt/#Fprintln) function to write the lines to a file. The **Fprintln** function takes a `io.writer` as parameter and appends a new line, just what we wanted. Running this program will print `file written successfully` and a file `lines` will be created in the current directory. The content of the file `lines` is provided below.
+在程序的第 9 行，我们创建了一个名为 **lines** 的新文件。在第 17 行，我们使用 for range 循环遍历数组，并使用 [Fprintln](https://golang.org/pkg/fmt/#Fprintln) 函数将行写入文件。**Fprintln** 函数以 `io.writer` 作为参数，并追加一个新行，这正是我们想要的。运行此程序将打印 `file written successfully`，并在当前目录中创建一个文件 `lines`。文件 `lines` 的内容如下：
 
 ```fallback
 Welcome to the world of Go1.
@@ -170,45 +164,43 @@ Go is a compiled language.
 It is easy to learn Go.
 ```
 
-### Appending to a file
+### 追加到文件
 
-In this section, we will append one more line to the `lines` file which we created in the previous section. We will append the line **File handling is easy** to the `lines` file.
+在本节中，我们将向上一节中创建的 `lines` 文件追加一行。我们将追加行 **File handling is easy** 到 `lines` 文件。
 
-The file has to be opened in append and write only mode. These flags are passed as parameters to the [Open](https://pkg.go.dev/os#OpenFile) function. After the file is opened in append mode, we add the new line to the file.
+文件必须以追加和只写模式打开。这些标志作为参数传递给 [Open](https://pkg.go.dev/os#OpenFile) 函数。文件以追加模式打开后，我们将新行添加到文件中。
 
 ```go
- 1package main
- 2
- 3import (
- 4	"fmt"
- 5	"os"
- 6)
- 7
- 8func main() {
- 9	f, err := os.OpenFile("lines", os.O_APPEND|os.O_WRONLY, 0644)
-10	if err != nil {
-11		fmt.Println(err)
-12		return
-13	}
-14	newLine := "File handling is easy."
-15	_, err = fmt.Fprintln(f, newLine)
-16	if err != nil {
-17		fmt.Println(err)
-18                f.Close()
-19		return
-20	}
-21	err = f.Close()
-22	if err != nil {
-23		fmt.Println(err)
-24		return
-25	}
-26	fmt.Println("file appended successfully")
-27}
+package main
+
+import (
+	"fmt"
+	"os"
+)
+
+func main() {
+	f, err := os.OpenFile("lines", os.O_APPEND|os.O_WRONLY, 0644)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	newLine := "File handling is easy."
+	_, err = fmt.Fprintln(f, newLine)
+	if err != nil {
+		fmt.Println(err)
+                f.Close()
+		return
+	}
+	err = f.Close()
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	fmt.Println("file appended successfully")
+}
 ```
 
-go
-
-In line no. 9 of the program above, we open the file in append and write only mode. After the file is opened successfully, we add a new line to the file in line no. 15. This program will print `file appended successfully`. After running this program, the contents of the `lines` file will be,
+在程序的第 9 行，我们以追加和只写模式打开文件。文件成功打开后，我们在第 15 行向文件添加新行。该程序将打印 `file appended successfully`。运行此程序后，`lines` 文件的内容将是：
 
 ```fallback
 Welcome to the world of Go1.
@@ -217,133 +209,129 @@ It is easy to learn Go.
 File handling is easy.
 ```
 
-### Writing to file concurrently
+### 并发写入文件
 
-When multiple [goroutines](https://golangbot.com/goroutines/) write to a file concurrently, we will end up with a [race condition](https://golangbot.com/mutex/#criticalsection). Hence concurrent writes to a file must be coordinated using a channel.
+当多个 [goroutines](../【GolangBot】21-Goroutines) 并发写入文件时，我们将遇到 [竞态条件](../【GolangBot】25-互斥锁/#使用互斥锁解决竞态条件)。因此，必须使用通道来协调对文件的并发写入。
 
-We will write a program that creates 100 goroutines. Each of this goroutine will generate a random number concurrently, thus generating hundred random numbers in total. These random numbers will be written to a file. We will solve the [race condition](https://golangbot.com/mutex/#criticalsection) problem by using the following approach.
+我们将编写一个程序，创建 100 个 goroutines。每个 goroutine 将并发生成一个随机数，从而总共生成 100 个随机数。这些随机数将被写入文件。我们将通过以下方法解决 [竞态条件](../【GolangBot】25-互斥锁/#使用互斥锁解决竞态条件) 问题。
 
-1. Create a channel that will be used to read and write the generated random numbers.
-2. Create 100 producer goroutines. Each goroutine will generate a random number and will also write the random number to a channel.
-3. Create a consumer goroutine that will read from the channel and write the generated random number to the file. Thus we have only one goroutine writing to a file concurrently thereby avoiding race condition :)
-4. Close the file once done.
+1. 创建一个通道，用于读取和写入生成的随机数。
+2. 创建 100 个生产者 goroutines。每个 goroutine 将生成一个随机数，并将随机数写入通道。
+3. 创建一个消费者 goroutine，它将从通道中读取并将生成的随机数写入文件。因此，我们只有一个 goroutine 并发写入文件，从而避免竞态条件 :)
+4. 完成后关闭文件。
 
-Let’s write the `produce` function first which generates the random numbers.
-
-```fallback
-1func produce(data chan int, wg *sync.WaitGroup) {
-2	n := rand.Intn(999)
-3	data <- n
-4	wg.Done()
-5}
-```
-
-The function above generates a random number and writes it to the channel `data` and then calls `Done` on the [waitgroup](https://golangbot.com/buffered-channels-worker-pools/#waitgroup) to notify that it is done with its task.
-
-Let’s move to the function which writes to the file now.
+让我们首先编写生成随机数的 `produce` 函数。
 
 ```fallback
- 1func consume(data chan int, done chan bool) {
- 2	f, err := os.Create("concurrent")
- 3	if err != nil {
- 4		fmt.Println(err)
- 5		return
- 6	}
- 7	for d := range data {
- 8		_, err = fmt.Fprintln(f, d)
- 9		if err != nil {
-10			fmt.Println(err)
-11			f.Close()
-12			done <- false
-13			return
-14		}
-15	}
-16	err = f.Close()
-17	if err != nil {
-18		fmt.Println(err)
-19		done <- false
-20		return
-21	}
-22	done <- true
-23}
+func produce(data chan int, wg *sync.WaitGroup) {
+	n := rand.Intn(999)
+	data <- n
+	wg.Done()
+}
 ```
 
-The `consume` function creates a file named `concurrent`. It then reads the random numbers from the `data` channel and writes to the file. Once it has read and written all the random numbers, it writes `true` to the `done` channel to notify that it’s done with its task.
+上述函数生成一个随机数并将其写入通道 `data`，然后在 [waitgroup](../【GolangBot】23-缓冲通道与工作池/#waitgroup) 上调用 `Done` 以通知它已完成其任务。
 
-Let’s write the `main` function and complete this program. I have provided the entire program below.
+让我们现在转到写入文件的函数。
+
+```fallback
+func consume(data chan int, done chan bool) {
+	f, err := os.Create("concurrent")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	for d := range data {
+		_, err = fmt.Fprintln(f, d)
+		if err != nil {
+			fmt.Println(err)
+			f.Close()
+			done <- false
+			return
+		}
+	}
+	err = f.Close()
+	if err != nil {
+		fmt.Println(err)
+		done <- false
+		return
+	}
+	done <- true
+}
+```
+
+`consume` 函数创建一个名为 `concurrent` 的文件。然后它从 `data` 通道读取随机数并将其写入文件。一旦它读取并写入了所有随机数，它就会向 `done` 通道写入 `true`，以通知它已完成其任务。
+
+让我们编写 `main` 函数并完成此程序。我提供了整个程序如下。
 
 ```go
- 1package main
- 2
- 3import (
- 4	"fmt"
- 5	"math/rand"
- 6	"os"
- 7	"sync"
- 8)
- 9
-10func produce(data chan int, wg *sync.WaitGroup) {
-11	n := rand.Intn(999)
-12	data <- n
-13	wg.Done()
-14}
-15
-16func consume(data chan int, done chan bool) {
-17	f, err := os.Create("concurrent")
-18	if err != nil {
-19		fmt.Println(err)
-20		return
-21	}
-22	for d := range data {
-23		_, err = fmt.Fprintln(f, d)
-24		if err != nil {
-25			fmt.Println(err)
-26			f.Close()
-27			done <- false
-28			return
-29		}
-30	}
-31	err = f.Close()
-32	if err != nil {
-33		fmt.Println(err)
-34		done <- false
-35		return
-36	}
-37	done <- true
-38}
-39
-40func main() {
-41	data := make(chan int)
-42	done := make(chan bool)
-43	wg := sync.WaitGroup{}
-44	for i := 0; i < 100; i++ {
-45		wg.Add(1)
-46		go produce(data, &wg)
-47	}
-48	go consume(data, done)
-49	go func() {
-50		wg.Wait()
-51		close(data)
-52	}()
-53	d := <-done
-54	if d {
-55		fmt.Println("File written successfully")
-56	} else {
-57		fmt.Println("File writing failed")
-58	}
-59}
+package main
+
+import (
+	"fmt"
+	"math/rand"
+	"os"
+	"sync"
+)
+
+func produce(data chan int, wg *sync.WaitGroup) {
+	n := rand.Intn(999)
+	data <- n
+	wg.Done()
+}
+
+func consume(data chan int, done chan bool) {
+	f, err := os.Create("concurrent")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	for d := range data {
+		_, err = fmt.Fprintln(f, d)
+		if err != nil {
+			fmt.Println(err)
+			f.Close()
+			done <- false
+			return
+		}
+	}
+	err = f.Close()
+	if err != nil {
+		fmt.Println(err)
+		done <- false
+		return
+	}
+	done <- true
+}
+
+func main() {
+	data := make(chan int)
+	done := make(chan bool)
+	wg := sync.WaitGroup{}
+	for i := 0; i < 100; i++ {
+		wg.Add(1)
+		go produce(data, &wg)
+	}
+	go consume(data, done)
+	go func() {
+		wg.Wait()
+		close(data)
+	}()
+	d := <-done
+	if d {
+		fmt.Println("File written successfully")
+	} else {
+		fmt.Println("File writing failed")
+	}
+}
 ```
 
-go
+主函数在第 41 行创建 `data` 通道，从中读取随机数并写入。第 42 行的 `done` 通道由 `consume` goroutine 用于通知 `main` 它已完成其任务。第 43 行的 `wg` waitgroup 用于等待所有 100 个 goroutines 完成生成随机数。
 
-The main function creates the `data` channel in line no. 41 from which random numbers are read from and written. The `done` channel in line no. 42 is used by the `consume` goroutine to notify `main` that it is done with its task. The `wg` waitgroup in line no. 43 is used to wait for all the 100 goroutines to finish generating random numbers.
+第 44 行的 `for` 循环创建了 100 个 goroutines。第 49 行的 goroutine 调用在 waitgroup 上调用 `wait()`，以等待所有 100 个 goroutines 完成创建随机数。之后，它关闭通道。一旦通道关闭并且 `consume` goroutine 已完成将所有生成的随机数写入文件，它将在第 37 行向 `done` 通道写入 `true`，主 goroutine 被解除阻塞并打印 `File written successfully`。
 
-The `for` loop in line no. 44 creates 100 goroutines. The goroutine call in line no. 49 calls `wait()` on the waitgroup to wait for all 100 goroutines to finish creating random numbers. After that, it closes the channel. Once the channel is closed and the `consume` goroutine has finished writing all generated random numbers to the file, it writes `true` to the `done` channel in line no. 37 and the main goroutine is unblocked and prints `File written successfully`.
+现在你可以在任何文本编辑器中打开文件 **concurrent**，并查看生成的 100 个随机数 :)
 
-Now you can open the file **concurrent** in any text editor and see the 100 generated random numbers :)
+本教程到此结束。希望你喜欢阅读。祝你有个美好的一天。
 
-This brings us to the end of this tutorial. Hope you enjoyed reading. Have a great day.
-
-Please leave your feedback and comments. Please consider sharing this tutorial on [twitter](https://twitter.com/intent/tweet?text=Writing Files using Go&url=https%3a%2f%2fgolangbot.com%2fwrite-files%2f&tw_p=tweetbutton) or [LinkedIn](https://golangbot.com/write-files/#linkedinshr).
-
-Previous tutorial - [Reading Files](https://golangbot.com/read-files/)
+上一个教程 - [读取文件](../【GolangBot】36-读文件)
