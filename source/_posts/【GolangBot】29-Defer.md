@@ -281,4 +281,4 @@ All go routines finished executing
 在上面的程序中使用 `defer` 还有一个好处。假设我们使用一个新的 `if` 条件向 `area` 方法添加另一个返回路径。如果 `wg.Done()` 的调用没有延迟，我们必须小心确保在这个新的返回路径中调用 `wg.Done()`。但由于 `wg.Done()` 的调用被延迟了，我们不需要担心向该方法添加新的返回路径。
 
 
-**下一个教程 - [错误处理](https://golangbot.com/error-handling/)**
+**下一个教程 - [错误处理](../【GolangBot】30-错误处理)**
