@@ -1,12 +1,12 @@
 ---
 title: 【GolangBot】37-写文件
-date: 2024-12-17 09:20:14
+date: 2024-12-26 14:20:14
 tags: 
     - Golang
     - 教程
 categories:
     - [学习心得, GolangBot]
-published: false
+published: true
 ---
 # 【GolangBot】37-写文件
 欢迎来到 [Golang 教程系列](../golangbot/) 的第 37 个教程。
