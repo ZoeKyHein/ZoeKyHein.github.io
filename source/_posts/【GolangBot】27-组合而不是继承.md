@@ -264,4 +264,4 @@ Author:  Naveen Ramanathan
 Bio:  Golang Enthusiast
 ```
 
-**下一个教程 - [多态](../GolangBot】28-多态)**
+**下一个教程 - [多态](../【GolangBot】28-多态)**
