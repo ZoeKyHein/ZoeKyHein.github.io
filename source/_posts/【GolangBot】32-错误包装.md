@@ -182,4 +182,4 @@ The searched record cannot be found. Error returned from DB is no rows found
 
 这个问题的答案是，视情况而定。如果我们包装错误，我们将其暴露给我们的库/函数的调用者。我们通常不希望包装包含函数内部实现细节的错误。另一个需要记住的重要事情是，如果我们返回一个包装的错误，然后决定删除错误包装，使用我们库的代码将开始失败。因此，包装的错误应被视为 API 的一部分，如果我们决定修改返回的错误，则应进行适当的版本更改。
 
-**下一个教程 - [Panic 和 Recover](../_posts/【GolangBot】33-Panic和Recover)**
+**下一个教程 - [Panic 和 Recover](../【GolangBot】33-Panic和Recover)**
