@@ -8,7 +8,6 @@ categories:
     - [学习心得, GolangBot]
 published: true
 ---
-# 【GolangBot】34-一等公民：函数
 欢迎来到 [Golang 教程系列](../golangbot/) 的第 34 个教程。
 
 ### 什么是一等函数？

@@ -9,7 +9,6 @@ categories:
 published: true
 ---
 
-# 【GolangBot】6-函数
 
 
 欢迎来到[Golang系列教程](../golangbot/)的第六篇。

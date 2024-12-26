@@ -9,7 +9,6 @@ categories:
 published: true
 ---
 
-# 【GolangBot】23-缓冲通道与工作池
 
 
 欢迎来到[Golang系列教程](../golangbot/)的第23讲。

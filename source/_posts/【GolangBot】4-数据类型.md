@@ -8,7 +8,6 @@ categories:
     - [学习心得, GolangBot]
 ---
 
-# 【GolangBot】4-数据类型
 
 这是我们[Golang系列教程](../golangbot/)的第四篇.
 

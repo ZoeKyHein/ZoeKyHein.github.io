@@ -8,7 +8,6 @@ categories:
     - [学习心得, GolangBot]
 published: true
 ---
-# 36-读文件
 欢迎来到 [Golang 教程系列](../golangbot/) 的第 36 个教程。
 
 文件读取是任何编程语言中最常见的操作之一。在本教程中，我们将学习如何使用 Go 读取文件。

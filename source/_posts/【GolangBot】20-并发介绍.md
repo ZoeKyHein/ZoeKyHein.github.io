@@ -9,7 +9,6 @@ categories:
 published: true
 ---
 
-# 【GolangBot】20-并发介绍
 
 
 欢迎来到[Golang系列教程](../golangbot/)第20讲。

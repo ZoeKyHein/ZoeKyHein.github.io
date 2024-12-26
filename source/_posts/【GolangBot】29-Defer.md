@@ -8,7 +8,6 @@ categories:
     - [学习心得, GolangBot]
 published: true
 ---
-# 【GolangBot】29-Defer
 欢迎来到 [Golang 教程系列](../golangbot/) 的第 29 个教程。
 
 ### 什么是 Defer？

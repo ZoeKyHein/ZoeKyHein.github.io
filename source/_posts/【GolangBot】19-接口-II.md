@@ -9,7 +9,6 @@ categories:
 published: true
 ---
 
-# 【GolangBot】19-接口 II
 
 欢迎来到[Golang教程系列](../golangbot/)的第19篇教程。这是接口教程的第二部分。如果你错过了第一部分，可以从[这里](../【GolangBot】18-接口-I/)阅读
 

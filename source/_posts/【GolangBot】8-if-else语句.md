@@ -9,7 +9,6 @@ categories:
 published: true
 ---
 
-# 【GolangBot】8-if else语句
 
 欢迎来到[Golang系列教程](../golangbot/)的第八篇。
 

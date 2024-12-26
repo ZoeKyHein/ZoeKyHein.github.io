@@ -8,7 +8,6 @@ categories:
     - [学习心得, GolangBot]
 published: true
 ---
-# 【GolangBot】37-写文件
 欢迎来到 [Golang 教程系列](../golangbot/) 的第 37 个教程。
 
 在本教程中，我们将学习如何使用 Go 将数据写入文件。我们还将学习如何并发地写入文件。

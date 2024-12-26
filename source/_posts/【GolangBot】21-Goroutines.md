@@ -9,7 +9,6 @@ categories:
 published: true
 ---
 
-# 【GolangBot】21-Goroutines
 
 欢迎来到[Golang教程系列](../golangbot/)的第21篇教程。
 

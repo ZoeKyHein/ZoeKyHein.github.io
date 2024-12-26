@@ -8,7 +8,6 @@ categories:
     - [学习心得, GolangBot]
 published: true
 ---
-# 【GolangBot】16-结构体
 
 欢迎来到我们的 [Golang 教程系列](../golangbot/)的第16篇教程。
 

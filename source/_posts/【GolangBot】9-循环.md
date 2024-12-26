@@ -9,7 +9,6 @@ categories:
 published: true
 ---
 
-# 【GolangBot】9-循环
 
 欢迎来到[Golang教程系列](../golangbot/)的第9课
 

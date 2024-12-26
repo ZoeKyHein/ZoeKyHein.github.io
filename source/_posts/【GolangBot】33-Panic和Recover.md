@@ -8,7 +8,6 @@ categories:
     - [学习心得, GolangBot]
 published: true
 ---
-# 【GolangBot】33-Panic和Recover
 
 欢迎来到 [Golang 教程系列](../golangbot/) 的第 33 个教程。
 

@@ -9,7 +9,6 @@ categories:
 published: true
 ---
 
-# 【GolangBot】13-Maps
 
 欢迎来到[Golang系列教程](../GolangBot/)的第13篇。
 

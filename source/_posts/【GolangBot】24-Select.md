@@ -9,7 +9,6 @@ categories:
 published: true
 ---
 
-# 【GolangBot】24-Select
 
 欢迎来到 [Golang系列教程](../golangbot/) 的第24篇教程。
 

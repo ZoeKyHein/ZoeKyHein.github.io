@@ -8,7 +8,6 @@ categories:
     - [学习心得, GolangBot]
 published: true
 ---
-# 【GolangBot】35-反射
 欢迎来到 [Golang 教程系列](../golangbot/) 的第 35 个教程。
 
 反射是 Go 中的高级主题之一。我将尽量使其简单易懂。

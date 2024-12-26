@@ -9,7 +9,6 @@ categories:
 published: true
 ---
 
-# 【GolangBot】22-Channels
 
 欢迎来到 [Golang系列教程](../golangbot) 的第22篇教程。
 

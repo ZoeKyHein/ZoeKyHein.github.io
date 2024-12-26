@@ -8,7 +8,6 @@ categories:
     - [学习心得, GolangBot]
 ---
 
-# 【GolangBot】3-变量
 
 这是我们[Golang系列教程](../golangbot/)的第三篇，这篇我们来处理Golang中的变量。
 

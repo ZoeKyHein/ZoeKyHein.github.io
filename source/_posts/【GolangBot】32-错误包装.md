@@ -9,7 +9,6 @@ categories:
 published: true
 ---
 
-# 【GolangBot】32-错误包装
 
 欢迎来到 [Golang 教程系列](../golangbot/) 的第 32 个教程。
 

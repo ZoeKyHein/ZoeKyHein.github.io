@@ -9,7 +9,6 @@ categories:
 published: true
 ---
 
-# 【GolangBot】14-Strings
 
 欢迎来到[Golang系列教程](../golangbot/)第14篇。
 

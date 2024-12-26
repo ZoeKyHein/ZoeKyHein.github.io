@@ -8,7 +8,6 @@ categories:
     - [学习心得, GolangBot]
 published: true
 ---
-# 【GolangBot】31-自定义错误
 欢迎来到 [Golang 教程系列](../golangbot/) 的第 31 个教程。
 
 在[上一个教程](../【GolangBot】30-错误处理)中，我们学习了 Go 中错误的表示方式以及如何处理标准库中的错误。我们还学习了如何从错误中提取更多信息。

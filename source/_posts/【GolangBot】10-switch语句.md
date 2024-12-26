@@ -9,7 +9,6 @@ categories:
 published: true
 ---
 
-# 【GolangBot】10-switch语句
 
 这是[Golang系列教程](../golangbot/)的第10篇。
 

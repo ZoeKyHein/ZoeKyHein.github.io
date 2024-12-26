@@ -8,7 +8,6 @@ categories:
     - [学习心得, GolangBot]
 published: true
 ---
-# GolangBot】25-互斥锁
 
 欢迎来到 [Golang系列教程](../golangbot/) 的第25篇教程。
 
