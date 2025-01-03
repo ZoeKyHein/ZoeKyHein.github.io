@@ -1,0 +1,737 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/icon.png">
+  <link rel="icon" href="/img/icon.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#ac9343">
+  <meta name="author" content="ZoeKyHein">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="欢迎来到我们Golang系列教程的第五篇。 什么是常量？Go中的常量用于定义固定的值，例如： 12395 &quot;I love Go&quot; 67.89   等等。常量通常用来表示一个值，这个值在应用的整个生命周期中都不会改变。 声明一个常量关键字const在Go中用来声明一个常量。我们用一个例子来看看如何声明一个常量。 12345678910package mainimport (	&amp;q">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【GolangBot】5-常量">
+<meta property="og:url" content="https://zoekyhein.github.io/%E3%80%90GolangBot%E3%80%915-%E5%B8%B8%E9%87%8F/index.html">
+<meta property="og:site_name" content="传火祭祀场">
+<meta property="og:description" content="欢迎来到我们Golang系列教程的第五篇。 什么是常量？Go中的常量用于定义固定的值，例如： 12395 &quot;I love Go&quot; 67.89   等等。常量通常用来表示一个值，这个值在应用的整个生命周期中都不会改变。 声明一个常量关键字const在Go中用来声明一个常量。我们用一个例子来看看如何声明一个常量。 12345678910package mainimport (	&amp;q">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-12-18T09:48:12.000Z">
+<meta property="article:modified_time" content="2025-01-03T01:30:04.020Z">
+<meta property="article:author" content="ZoeKyHein">
+<meta property="article:tag" content="Golang">
+<meta property="article:tag" content="教程">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>【GolangBot】5-常量 - 传火祭祀场</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"zoekyhein.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"💥","loop":false,"scope":["home"]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>传火祭祀场</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/golangbot" target="_self">
+                <i class="iconfont icon-book"></i>
+                <span>Go教程</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/sunKnight.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">【GolangBot】5-常量</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-12-18 09:48" pubdate>
+          2024年12月18日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.8k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          16 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">【GolangBot】5-常量</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>欢迎来到我们<a href="../golangbot/">Golang系列教程</a>的第五篇。</p>
+<h3 id="什么是常量？"><a href="#什么是常量？" class="headerlink" title="什么是常量？"></a>什么是常量？</h3><p>Go中的常量用于定义固定的值，例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs fallback">95 <br>&quot;I love Go&quot; <br>67.89 <br></code></pre></td></tr></table></figure>
+
+<p>等等。常量通常用来表示一个值，这个值在应用的整个生命周期中都不会改变。</p>
+<h3 id="声明一个常量"><a href="#声明一个常量" class="headerlink" title="声明一个常量"></a>声明一个常量</h3><p>关键字<code>const</code>在Go中用来声明一个常量。我们用一个例子来看看如何声明一个常量。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;fmt&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	<span class="hljs-keyword">const</span> a = <span class="hljs-number">50</span><br>	fmt.Println(a)<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://go.dev/play/p/mv3B-q3h0zh">Run in playground</a></p>
+<p>在上面的代码中，<code>a</code>是一个常量，它被赋值为<code>50</code>。</p>
+<h3 id="定义一组常量"><a href="#定义一组常量" class="headerlink" title="定义一组常量"></a>定义一组常量</h3><p>Go中也有语法用于使用一条语句声明一组常量。下面是用这个语法来声明一组常量的例子。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;fmt&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	<span class="hljs-keyword">const</span> (<br>		retryLimit = <span class="hljs-number">4</span><br>		httpMethod = <span class="hljs-string">&quot;GET&quot;</span><br>	)<br><br>	fmt.Println(retryLimit)<br>	fmt.Println(httpMethod)<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://go.dev/play/p/gSPJC0y49Sm">Run in playground</a></p>
+<p>在上面的程序中，我们已经定义了2个常量<code>retryLimit</code>和<code>httpMethod</code>。上面的程序将会打印，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs fallback">4<br>GET<br></code></pre></td></tr></table></figure>
+
+<p>常量，顾名思义，不能被再赋值为其他值。在上面的程序中，我们尝试为<code>a</code>赋值另一个值<code>89</code>。因为<code>a</code>是一个常量，所以这是不允许的。这个程序将会运行失败，报错<code>cannot assign to a (neither addressable nor a map index expression)</code>。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;  <br>    <span class="hljs-keyword">const</span> a = <span class="hljs-number">55</span> <span class="hljs-comment">//allowed</span><br>    a = <span class="hljs-number">89</span> <span class="hljs-comment">//reassignment not allowed</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://go.dev/play/p/5ggPss1iSsl">Run in playground</a></p>
+<p>**常量的值应该在编译时就已经知道了。**因此，它不能被赋值为<a href="../%E3%80%90GolangBot%E3%80%916-%E5%87%BD%E6%95%B0/">函数调用</a>的值，因为函数调用发生在运行时。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;fmt&quot;</span><br>	<span class="hljs-string">&quot;math&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	<span class="hljs-keyword">var</span> a = math.Sqrt(<span class="hljs-number">4</span>) <span class="hljs-comment">//allowed</span><br>	fmt.Println(a)<br>	<span class="hljs-keyword">const</span> b = math.Sqrt(<span class="hljs-number">4</span>) <span class="hljs-comment">//not allowed</span><br>	fmt.Println(b)<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://go.dev/play/p/fFLfoN0L3Nf">Run in playground</a></p>
+<p>在上面的程序中，<code>a</code>是一个<a href="../%E3%80%90GolangBot%E3%80%913-%E5%8F%98%E9%87%8F/">变量</a>，因此它可以被赋值为函数<code>math.Sqrt(4)</code>的结果（我们将在<a href="../%E3%80%90GolangBot%E3%80%916-%E5%87%BD%E6%95%B0/">单独的教程</a>中讨论函数）。</p>
+<p><code>b</code>是一个常量，并且<code>b</code>的值需要在编译时就知道。函数<code>math.Sqrt(4)</code>仅在运行时求值，因此<code>const b = math.Sqrt(4)</code>编译失败，出现错误，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs fallback">./prog.go:11:12: math.Sqrt(4) (value of type float64) is not constant<br></code></pre></td></tr></table></figure>
+
+<h3 id="字符串常量、类型常量和无类型常量"><a href="#字符串常量、类型常量和无类型常量" class="headerlink" title="字符串常量、类型常量和无类型常量"></a>字符串常量、类型常量和无类型常量</h3><p>在Go中任何被双引号包起来的值都是一个字符串常量。例如，像<code>&quot;Hello World&quot;</code>,<code>&quot;Sam&quot;</code>在Go中都是常量。</p>
+<p>一个字符串常量属于什么类型？答案是<strong>无类型。</strong></p>
+<p><strong>一个像”Hello World”的字符串没有任何类型。</strong></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">const</span> hello = <span class="hljs-string">&quot;Hello World&quot;</span><br></code></pre></td></tr></table></figure>
+
+<p>在上面这行代码中，常量<code>hello</code>没有任何类型。</p>
+<p>Go是强类型语言。所有变量都需要显式的类型。下面的程序中，为变量<code>name</code>赋值无类型的常量<code>n</code>会发生什么？</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;fmt&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	<span class="hljs-keyword">const</span> n = <span class="hljs-string">&quot;Sam&quot;</span><br>	<span class="hljs-keyword">var</span> name = n<br>	fmt.Printf(<span class="hljs-string">&quot;type %T value %v&quot;</span>, name, name)<br><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://go.dev/play/p/CFqbC8yfe6C">Run in playground</a></p>
+<p><strong>答案是无类型常量有一个与之关联的默认类型，只有在某行代码需要时才会提供默认类型。在第9行的语句<code>var name = n</code>中，<code>name</code>需要一个类型，它从<code>string</code>常量<code>n</code>的默认类型中获取</strong></p>
+<p>有没有一种办法可以创建一个<strong>类型常量</strong>？答案是有的。下面的代码创建了一个类型常量。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">const</span> name <span class="hljs-type">string</span> = <span class="hljs-string">&quot;Hello World&quot;</span><br></code></pre></td></tr></table></figure>
+
+<p><em>name</em> 在上面的代码中是一个<code>string</code>类型的常量。</p>
+<p>Go is a strongly typed language. Mixing types during the assignment is not allowed. Let’s see what this means with the help of a program.</p>
+<p>Go是强类型语言。赋值过程中是不允许混合类型的。我们用一个程序来看看这是啥意思。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> <span class="hljs-string">&quot;fmt&quot;</span><br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	<span class="hljs-keyword">var</span> defaultName = <span class="hljs-string">&quot;Sam&quot;</span> <span class="hljs-comment">//allowed</span><br>	<span class="hljs-keyword">type</span> myString <span class="hljs-type">string</span><br>	<span class="hljs-keyword">var</span> customName myString = <span class="hljs-string">&quot;Sam&quot;</span> <span class="hljs-comment">//allowed</span><br>	customName = defaultName        <span class="hljs-comment">//not allowed</span><br>	fmt.Println(customName)<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://go.dev/play/p/sJ1rCtzebkP">Run in playground</a></p>
+<p>在上面的代码中，我们首先创建了一个变量<code>defaultName</code>，并将常量<code>Sam</code>赋值给他。<strong>常量<code>Sam</code>的默认类型是<code>string</code>，所以在赋值之后，<code>defaultName</code>的类型是<code>string</code>。</strong></p>
+<p>在下一行，我们创建了一个新的类型<code>myString</code>，这是<code>string</code>类型的别称。</p>
+<p>然后我们创建一个<code>myString</code>类型的变量<code>customName</code>，并且将常量<code>Sam</code>赋值给它。因为常量<code>Sam</code>是无类型的，它可以被赋值给任意<code>string</code>类型的变量。因此这个赋值操作是允许的，<code>customName</code>得到类型<code>myString</code>。</p>
+<p>现在我们有一个<code>string</code>类型的变量<code>defalutName</code>，另一个<code>myString</code>类型的变量<code>customName</code>。尽管我们知道<code>myString</code>是<code>string</code>的别名，Go的强类型规则不允许将一种类型的值赋值给另外一种类型。<strong>因此赋值操作<code>customName = defaultName</code>是不被允许的，编译操作会抛出一个错误：<code>./prog.go:9:15: cannot use defaultName (variable of type string) as myString value in assignment</code></strong></p>
+<p>为了让上面的程序正常工作，<code>defalutName</code>必须被转换为<code>myString</code>类型。这在下面的程序中的第9行进行操作。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> <span class="hljs-string">&quot;fmt&quot;</span><br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	<span class="hljs-keyword">var</span> defaultName = <span class="hljs-string">&quot;Sam&quot;</span> <span class="hljs-comment">//allowed</span><br>	<span class="hljs-keyword">type</span> myString <span class="hljs-type">string</span><br>	<span class="hljs-keyword">var</span> customName myString = <span class="hljs-string">&quot;Sam&quot;</span>    <span class="hljs-comment">//allowed</span><br>	customName = myString(defaultName) <span class="hljs-comment">//allowed</span><br>	fmt.Println(customName)<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://go.dev/play/p/EObC2BTq4KW">Run in playground</a></p>
+<p>上面的程序将会打印<code>Sam</code>。</p>
+<h3 id="布尔型常量"><a href="#布尔型常量" class="headerlink" title="布尔型常量"></a>布尔型常量</h3><p>布尔型常量和字符串常量没有什么区别。它们是两个无类型的常量<code>true</code>和<code>false</code>。字符串常量的规则对于布尔型常量也同样适用，所以我们就不再赘述了。下面是一个简单的程序来解释布尔型常量。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	<span class="hljs-keyword">const</span> trueConst = <span class="hljs-literal">true</span><br>	<span class="hljs-keyword">type</span> myBool <span class="hljs-type">bool</span><br>	<span class="hljs-keyword">var</span> defaultBool = trueConst <span class="hljs-comment">//allowed</span><br>	<span class="hljs-keyword">var</span> customBool myBool = trueConst <span class="hljs-comment">//allowed</span><br>	defaultBool = customBool <span class="hljs-comment">//not allowed</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://go.dev/play/p/YWZ80x94Q1D">Run in playground</a></p>
+<p>The above program is self-explanatory.</p>
+<p>上面的程序是不言自明的。</p>
+<h3 id="数字常量"><a href="#数字常量" class="headerlink" title="数字常量"></a>数字常量</h3><p>数字常量包括整数、浮点数和复数。数字常量有一些细节需要注意。</p>
+<p>让我们举一些例子来说明问题。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;fmt&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	<span class="hljs-keyword">const</span> c = <span class="hljs-number">5</span><br>	<span class="hljs-keyword">var</span> intVar <span class="hljs-type">int</span> = c<br>	<span class="hljs-keyword">var</span> int32Var <span class="hljs-type">int32</span> = c<br>	<span class="hljs-keyword">var</span> float64Var <span class="hljs-type">float64</span> = c<br>	<span class="hljs-keyword">var</span> complex64Var <span class="hljs-type">complex64</span> = c<br>	fmt.Println(<span class="hljs-string">&quot;intVar&quot;</span>, intVar, <span class="hljs-string">&quot;\nint32Var&quot;</span>, int32Var, <span class="hljs-string">&quot;\nfloat64Var&quot;</span>, float64Var, <span class="hljs-string">&quot;\ncomplex64Var&quot;</span>, complex64Var)<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://go.dev/play/p/9MzdS-nmA1Z">Run in playground</a></p>
+<p>在上面的程序中，常量<code>c</code>是<code>untyped</code>类型并且有一个值<code>5</code>。**你也许想知道c的默认类型是什么，以及如果它确实有默认类型，我们又该如何将其赋值给其他不同类型的变量。**答案就在<code>c</code>的语法当中。下面的程序将会让这个问题更加清晰。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;fmt&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	<span class="hljs-keyword">var</span> i = <span class="hljs-number">5</span><br>	<span class="hljs-keyword">var</span> f = <span class="hljs-number">5.6</span><br>	<span class="hljs-keyword">var</span> c = <span class="hljs-number">5</span> + <span class="hljs-number">6i</span><br>	fmt.Printf(<span class="hljs-string">&quot;i&#x27;s type is %T, f&#x27;s type is %T, c&#x27;s type is %T&quot;</span>, i, f, c)<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://go.dev/play/p/XVEGb9aUsxs">Run in playground</a></p>
+<p>在上面的程序中，每个变量的类型都被数字常量的语法所定义。根据语法，<strong>5</strong>是一个整数，<strong>5.6</strong>是一个浮点数，<strong>5 + 6i</strong>是一个复数。上面的程序运行会打印</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs fallback">i&#x27;s type is int, f&#x27;s type is float64, c&#x27;s type is complex128<br></code></pre></td></tr></table></figure>
+
+<p>知道了这些，我们来试着理解下面的程序会如何工作。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;fmt&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	<span class="hljs-keyword">const</span> c = <span class="hljs-number">5</span><br>	<span class="hljs-keyword">var</span> intVar <span class="hljs-type">int</span> = c<br>	<span class="hljs-keyword">var</span> int32Var <span class="hljs-type">int32</span> = c<br>	<span class="hljs-keyword">var</span> float64Var <span class="hljs-type">float64</span> = c<br>	<span class="hljs-keyword">var</span> complex64Var <span class="hljs-type">complex64</span> = c<br>	fmt.Println(<span class="hljs-string">&quot;intVar&quot;</span>, intVar, <span class="hljs-string">&quot;\nint32Var&quot;</span>, int32Var, <span class="hljs-string">&quot;\nfloat64Var&quot;</span>, float64Var, <span class="hljs-string">&quot;\ncomplex64Var&quot;</span>, complex64Var)<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://go.dev/play/p/9MzdS-nmA1Z">Run in playground</a></p>
+<p>在上面的程序中，<code>c</code>的值是<code>5</code>并且<code>c</code>的语法是通用语法。它可以表示浮点数、整数，甚至是无虚部复数。因此它可以赋值给任意兼容类型。可以认为，这些类型的常量的默认类型是由它们所使用的上下文生成的。<code>var intVar int = c</code>需要<code>c</code>是<code>int</code>类型，所以它变成了一个<code>int</code>常量。<code>var complex64Var complex64 = c</code>需要<code>c</code>是复数类型，因此它变成一个复数常量。以此类推:)。</p>
+<h3 id="数字表达式"><a href="#数字表达式" class="headerlink" title="数字表达式"></a>数字表达式</h3><p>数字常量可以在表达式中自由混合和匹配，只有当它们赋值给变量或者用于需要类型的代码中才需要类型。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;fmt&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	<span class="hljs-keyword">var</span> a = <span class="hljs-number">5.9</span> / <span class="hljs-number">8</span><br>	fmt.Printf(<span class="hljs-string">&quot;a&#x27;s type is %T and value is %v&quot;</span>, a, a)<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://go.dev/play/p/Nsak9scUAWg">Run in playground</a></p>
+<p>在上面的程序中，<code>5.9</code>语法上是一个浮点数，<code>8</code>语法上是一个整数。不过，由于两者都是数字常量，因此<code>5.9/8</code>是被允许的。相除后的结果是<code>0.7375</code>是一个浮点数<code>float</code>。程序的输出是</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs fallback">a&#x27;s type is float64 and value is 0.7375<br></code></pre></td></tr></table></figure>
+
+<p><strong>下一篇教程 - <a href="../_posts/%E3%80%90GolangBot%E3%80%916-%E5%87%BD%E6%95%B0/">函数</a></strong></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E5%BF%83%E5%BE%97/" class="category-chain-item">学习心得</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E5%BF%83%E5%BE%97/GolangBot/" class="category-chain-item">GolangBot</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Golang/" class="print-no-link">#Golang</a>
+      
+        <a href="/tags/%E6%95%99%E7%A8%8B/" class="print-no-link">#教程</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>【GolangBot】5-常量</div>
+      <div>https://zoekyhein.github.io/【GolangBot】5-常量/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>ZoeKyHein</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年12月18日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/%E3%80%90GolangBot%E3%80%916-%E5%87%BD%E6%95%B0/" title="【GolangBot】6-函数">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">【GolangBot】6-函数</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/%E3%80%90GolangBot%E3%80%914-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/" title="【GolangBot】4-数据类型">
+                        <span class="hidden-mobile">【GolangBot】4-数据类型</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <link rel="stylesheet" type="text/css" href="https://cdn.jsdmirror.com/gh/muzihuaner/deng@main/deng.css"> <!-- 灯笼1 --> <div class="deng-box"> <div class="deng"> <div class="xian"></div> <div class="deng-a"> <div class="deng-b"><div class="deng-t">年</div></div> </div> <div class="shui shui-a"><div class="shui-c"></div><div class="shui-b"></div></div> </div> </div>
+<!-- 灯笼2 --> <div class="deng-box1"> <div class="deng"> <div class="xian"></div> <div class="deng-a"> <div class="deng-b"><div class="deng-t">新</div></div> </div> <div class="shui shui-a"><div class="shui-c"></div><div class="shui-b"></div></div> </div> </div>
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

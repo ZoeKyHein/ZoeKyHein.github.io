@@ -1,0 +1,812 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/icon.png">
+  <link rel="icon" href="/img/icon.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#ac9343">
+  <meta name="author" content="ZoeKyHein">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="欢迎来到 Golang 教程系列 的第 36 个教程。 文件读取是任何编程语言中最常见的操作之一。在本教程中，我们将学习如何使用 Go 读取文件。 本教程包含以下部分：  将整个文件读入内存 使用绝对文件路径 将文件路径作为命令行标志传递 将文件打包到二进制文件中   分块读取文件 逐行读取文件  将整个文件读入内存最基本的文件操作之一是将整个文件读入内存。这可以通过 os 包中的 ReadFil">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【GolangBot】36-读文件">
+<meta property="og:url" content="https://zoekyhein.github.io/%E3%80%90GolangBot%E3%80%9136-%E8%AF%BB%E6%96%87%E4%BB%B6/index.html">
+<meta property="og:site_name" content="传火祭祀场">
+<meta property="og:description" content="欢迎来到 Golang 教程系列 的第 36 个教程。 文件读取是任何编程语言中最常见的操作之一。在本教程中，我们将学习如何使用 Go 读取文件。 本教程包含以下部分：  将整个文件读入内存 使用绝对文件路径 将文件路径作为命令行标志传递 将文件打包到二进制文件中   分块读取文件 逐行读取文件  将整个文件读入内存最基本的文件操作之一是将整个文件读入内存。这可以通过 os 包中的 ReadFil">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-12-26T13:10:08.000Z">
+<meta property="article:modified_time" content="2025-01-03T01:30:04.020Z">
+<meta property="article:author" content="ZoeKyHein">
+<meta property="article:tag" content="Golang">
+<meta property="article:tag" content="教程">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>【GolangBot】36-读文件 - 传火祭祀场</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"zoekyhein.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"💥","loop":false,"scope":["home"]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>传火祭祀场</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/golangbot" target="_self">
+                <i class="iconfont icon-book"></i>
+                <span>Go教程</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/sunKnight.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">【GolangBot】36-读文件</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-12-26 13:10" pubdate>
+          2024年12月26日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.8k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          24 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">【GolangBot】36-读文件</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>欢迎来到 <a href="../golangbot/">Golang 教程系列</a> 的第 36 个教程。</p>
+<p>文件读取是任何编程语言中最常见的操作之一。在本教程中，我们将学习如何使用 Go 读取文件。</p>
+<p>本教程包含以下部分：</p>
+<ul>
+<li>将整个文件读入内存<ul>
+<li>使用绝对文件路径</li>
+<li>将文件路径作为命令行标志传递</li>
+<li>将文件打包到二进制文件中</li>
+</ul>
+</li>
+<li>分块读取文件</li>
+<li>逐行读取文件</li>
+</ul>
+<h3 id="将整个文件读入内存"><a href="#将整个文件读入内存" class="headerlink" title="将整个文件读入内存"></a>将整个文件读入内存</h3><p>最基本的文件操作之一是将整个文件读入内存。这可以通过 <a target="_blank" rel="noopener" href="https://pkg.go.dev/os">os</a> 包中的 <a target="_blank" rel="noopener" href="https://pkg.go.dev/os#ReadFile">ReadFile</a> 函数来实现。</p>
+<p>让我们读取一个文件并打印其内容。</p>
+<p>我通过运行 <code>mkdir ~/Documents/filehandling</code> 在 <code>Documents</code> 目录下创建了一个文件夹 <code>filehandling</code>。</p>
+<p>在 <code>filehandling</code> 目录下运行以下命令，创建一个名为 <code>filehandling</code> 的 Go 模块。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs fallback">go mod init filehandling<br></code></pre></td></tr></table></figure>
+
+<p>我有一个文本文件 <code>test.txt</code>，它将从我们的 Go 程序 <code>filehandling.go</code> 中读取。<code>test.txt</code> 包含以下字符串：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs fallback">Hello World. Welcome to file handling in Go.<br></code></pre></td></tr></table></figure>
+
+<p>这是我的目录结构：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs fallback">├── Documents<br>│   └── filehandling<br>│       ├── filehandling.go<br>|       ├── go.mod<br>│       └── test.txt<br></code></pre></td></tr></table></figure>
+
+<p>让我们直接看代码。创建一个文件 <code>filehandling.go</code>，内容如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;fmt&quot;</span><br>	<span class="hljs-string">&quot;os&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	contents, err := os.ReadFile(<span class="hljs-string">&quot;test.txt&quot;</span>)<br>	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br>		fmt.Println(<span class="hljs-string">&quot;File reading error&quot;</span>, err)<br>		<span class="hljs-keyword">return</span><br>	&#125;<br>	fmt.Println(<span class="hljs-string">&quot;Contents of file:&quot;</span>, <span class="hljs-type">string</span>(contents))<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>请在本地环境中运行此程序，因为无法在 playground 中读取文件。</p>
+<p>程序第 9 行读取文件并返回一个字节 <a href="../%E3%80%90GolangBot%E3%80%9111-%E6%95%B0%E7%BB%84%E5%92%8C%E5%88%87%E7%89%87/#%E5%88%87%E7%89%87">slice</a>，存储在 <code>contents</code> 中。在第 14 行，我们将 <code>contents</code> 转换为 <code>string</code> 并显示文件内容。</p>
+<p>请在 <strong>test.txt</strong> 所在的目录下运行此程序。</p>
+<p>如果 <strong>test.txt</strong> 位于 <strong>~&#x2F;Documents&#x2F;filehandling</strong>，则使用以下步骤运行此程序：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs fallback">cd ~/Documents/filehandling/<br>go install <br>filehandling<br></code></pre></td></tr></table></figure>
+
+<p>如果你不知道如何运行 Go 程序，请访问 <a href="../GolangBot%E3%80%912-Hello-World">&#x2F;hello-world-gomod&#x2F;</a> 了解更多。如果你想了解更多关于包和 Go 模块的信息，请访问 <a href="../%E3%80%90GolangBot%E3%80%917-%E5%8C%85">&#x2F;go-packages&#x2F;</a></p>
+<p>该程序将打印：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs fallback">Contents of file: Hello World. Welcome to file handling in Go.  <br></code></pre></td></tr></table></figure>
+
+<p>如果从其他位置运行此程序，例如尝试从 <code>~/Documents/</code> 运行程序：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs fallback">cd ~/Documents/<br>filehandling<br></code></pre></td></tr></table></figure>
+
+<p>它将打印以下错误：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs fallback">File reading error open test.txt: no such file or directory<br></code></pre></td></tr></table></figure>
+
+<p>原因是 Go 是一种编译型语言。<code>go install</code> 所做的是从源代码创建一个二进制文件。二进制文件独立于源代码，可以从任何位置运行。由于在运行二进制文件的位置找不到 <code>test.txt</code>，程序会抱怨找不到指定的文件。</p>
+<p>有三种方法可以解决这个问题：</p>
+<ol>
+<li>使用绝对文件路径</li>
+<li>将文件路径作为命令行标志传递</li>
+<li>将文本文件与二进制文件打包在一起</li>
+</ol>
+<p>让我们逐一讨论。</p>
+<h5 id="1-使用绝对文件路径"><a href="#1-使用绝对文件路径" class="headerlink" title="1. 使用绝对文件路径"></a>1. 使用绝对文件路径</h5><p>解决此问题的最简单方法是传递绝对文件路径。我修改了程序，并在第 9 行将路径更改为绝对路径。请将此路径更改为你的 <code>test.txt</code> 的绝对路径。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;fmt&quot;</span><br>	<span class="hljs-string">&quot;os&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	contents, err := os.ReadFile(<span class="hljs-string">&quot;/Users/naveen/Documents/filehandling/test.txt&quot;</span>)<br>	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br>		fmt.Println(<span class="hljs-string">&quot;File reading error&quot;</span>, err)<br>		<span class="hljs-keyword">return</span><br>	&#125;<br>	fmt.Println(<span class="hljs-string">&quot;Contents of file:&quot;</span>, <span class="hljs-type">string</span>(contents))<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>现在，程序可以从任何位置运行，并打印 <code>test.txt</code> 的内容。</p>
+<p>例如，即使我从主目录运行它，它也会工作：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs fallback">cd ~/Documents/filehandling<br>go install<br>cd ~<br>filehandling<br></code></pre></td></tr></table></figure>
+
+<p>该程序将打印 <code>test.txt</code> 的内容。</p>
+<p>这似乎是一种简单的方法，但有一个缺点，即文件必须位于程序中指定的路径中，否则此方法将失败。</p>
+<h5 id="2-将文件路径作为命令行标志传递"><a href="#2-将文件路径作为命令行标志传递" class="headerlink" title="2. 将文件路径作为命令行标志传递"></a>2. 将文件路径作为命令行标志传递</h5><p>另一种解决此问题的方法是将文件路径作为命令行参数传递。使用 <a target="_blank" rel="noopener" href="https://pkg.go.dev/flag">flag</a> 包，我们可以从命令行获取文件路径作为输入参数，然后读取其内容。</p>
+<p>让我们首先了解 <code>flag</code> 包的工作原理。<code>flag</code> 包有一个 <a target="_blank" rel="noopener" href="https://golang.org/pkg/flag/#String">String</a> 函数。该函数接受 3 个参数。第一个是标志的名称，第二个是默认值，第三个是标志的简短描述。</p>
+<p>让我们编写一个小程序来从命令行读取文件名。将 <code>filehandling.go</code> 的内容替换为以下内容：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;flag&quot;</span><br>	<span class="hljs-string">&quot;fmt&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	fptr := flag.String(<span class="hljs-string">&quot;fpath&quot;</span>, <span class="hljs-string">&quot;test.txt&quot;</span>, <span class="hljs-string">&quot;file path to read from&quot;</span>)<br>	flag.Parse()<br>	fmt.Println(<span class="hljs-string">&quot;value of fpath is&quot;</span>, *fptr)<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>程序第 8 行使用 <code>String</code> 函数创建了一个名为 <code>fpath</code> 的字符串标志，默认值为 <code>test.txt</code>，描述为 <code>file path to read from</code>。此函数返回存储标志值的字符串 <a target="_blank" rel="noopener" href="https://golangbot.com/variables/">变量</a> 的地址。</p>
+<p>在访问任何标志之前，应调用 <em>flag.Parse()</em>。</p>
+<p>我们在第 10 行打印标志的值。</p>
+<p>当使用以下命令运行此程序时：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs fallback">filehandling -fpath=/path-of-file/test.txt<br></code></pre></td></tr></table></figure>
+
+<p>我们将 <code>/path-of-file/test.txt</code> 作为标志 <code>fpath</code> 的值传递。</p>
+<p>该程序输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs fallback">value of fpath is /path-of-file/test.txt<br></code></pre></td></tr></table></figure>
+
+<p>如果仅使用 <code>filehandling</code> 运行程序而不传递任何 <code>fpath</code>，它将打印：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs fallback">value of fpath is test.txt<br></code></pre></td></tr></table></figure>
+
+<p>因为 <code>test.txt</code> 是 <code>fpath</code> 的默认值。</p>
+<p><code>flag</code> 还提供了一个格式良好的输出，显示可用的不同参数。可以通过运行以下命令显示：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs fallback">filehandling --help<br></code></pre></td></tr></table></figure>
+
+<p>此命令将打印以下输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs fallback">Usage of filehandling:<br>  -fpath string<br>    	file path to read from (default &quot;test.txt&quot;)<br></code></pre></td></tr></table></figure>
+
+<p>不错吧 :)。</p>
+<p>现在我们知道如何从命令行读取文件路径，让我们继续完成我们的文件读取程序。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;flag&quot;</span><br>	<span class="hljs-string">&quot;fmt&quot;</span><br>	<span class="hljs-string">&quot;os&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	fptr := flag.String(<span class="hljs-string">&quot;fpath&quot;</span>, <span class="hljs-string">&quot;test.txt&quot;</span>, <span class="hljs-string">&quot;file path to read from&quot;</span>)<br>	flag.Parse()<br>	contents, err := os.ReadFile(*fptr)<br>	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br>		fmt.Println(<span class="hljs-string">&quot;File reading error&quot;</span>, err)<br>		<span class="hljs-keyword">return</span><br>	&#125;<br>	fmt.Println(<span class="hljs-string">&quot;Contents of file:&quot;</span>, <span class="hljs-type">string</span>(contents))<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>上面的程序读取从命令行传递的文件路径的内容。使用以下命令运行此程序：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs fallback">filehandling -fpath=/path-of-file/test.txt<br></code></pre></td></tr></table></figure>
+
+<p>请将 <code>/path-of-file/</code> 替换为 <code>test.txt</code> 的绝对路径。例如，在我的情况下，我运行了以下命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs fallback">filehandling --fpath=/Users/naveen/Documents/filehandling/test.txt<br></code></pre></td></tr></table></figure>
+
+<p>程序打印：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs fallback">Contents of file: Hello World. Welcome to file handling in Go.<br></code></pre></td></tr></table></figure>
+
+<h5 id="3-将文本文件与二进制文件打包在一起"><a href="#3-将文本文件与二进制文件打包在一起" class="headerlink" title="3. 将文本文件与二进制文件打包在一起"></a>3. 将文本文件与二进制文件打包在一起</h5><p>上述从命令行获取文件路径的选项很好，但有一种更好的方法可以解决此问题。如果能够将文本文件与我们的二进制文件打包在一起，那不是很棒吗？这就是我们接下来要做的。</p>
+<p>标准库中的 <a target="_blank" rel="noopener" href="https://pkg.go.dev/embed">embed</a> 包将帮助我们实现这一点。</p>
+<p>导入 <code>embed</code> 包后，可以使用 <code>//go:embed</code> 指令读取文件内容。</p>
+<p>一个程序将帮助我们更好地理解这一点。</p>
+<p>将 <code>filehandling.go</code> 的内容替换为以下内容：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>	_ <span class="hljs-string">&quot;embed&quot;</span><br>	<span class="hljs-string">&quot;fmt&quot;</span><br>)<br><br><span class="hljs-comment">//go:embed test.txt</span><br><span class="hljs-keyword">var</span> contents []<span class="hljs-type">byte</span><br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	fmt.Println(<span class="hljs-string">&quot;Contents of file:&quot;</span>, <span class="hljs-type">string</span>(contents))<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>在程序的第 4 行，我们使用下划线前缀导入 <code>embed</code> 包。原因是 <code>embed</code> 没有在代码中显式使用，但第 8 行的 <code>//go:embed</code> 注释需要编译器进行一些预处理。由于我们需要在不显式使用的情况下导入包，因此我们使用下划线前缀以使编译器满意。如果不这样做，编译器会抱怨该包未在任何地方使用。</p>
+<p>第 8 行的 <code>//go:embed test.txt</code> 告诉编译器读取 <code>test.txt</code> 的内容并将其分配给该注释后面的变量。在我们的例子中，<code>contents</code> 变量将保存文件的内容。</p>
+<p>使用以下命令运行程序：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs fallback">cd ~/Documents/filehandling<br>go install<br>filehandling<br></code></pre></td></tr></table></figure>
+
+<p>程序将打印：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs fallback">Contents of file: Hello World. Welcome to file handling in Go.<br></code></pre></td></tr></table></figure>
+
+<p>现在，文件与二进制文件打包在一起，无论从何处执行，Go 二进制文件都可以访问它。例如，尝试从 <code>test.txt</code> 不存在的目录运行程序。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs fallback">cd ~/Documents<br>filehandling<br></code></pre></td></tr></table></figure>
+
+<p>上述命令也将打印文件的内容。</p>
+<p>请注意，文件内容应分配给的变量必须在包级别。局部变量不起作用。尝试将程序更改为以下内容：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>	_ <span class="hljs-string">&quot;embed&quot;</span><br>	<span class="hljs-string">&quot;fmt&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	<span class="hljs-comment">//go:embed test.txt</span><br>	<span class="hljs-keyword">var</span> contents []<span class="hljs-type">byte</span><br>	fmt.Println(<span class="hljs-string">&quot;Contents of file:&quot;</span>, <span class="hljs-type">string</span>(contents))<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>上面的程序将 <code>contents</code> 作为局部变量。</p>
+<p>程序现在将无法编译，并出现以下错误：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs fallback">./filehandling.go:9:4: go:embed cannot apply to var inside func<br></code></pre></td></tr></table></figure>
+
+<p>如果你有兴趣了解更多关于此设计决策的信息，请阅读 <a target="_blank" rel="noopener" href="https://github.com/golang/go/issues/43216">https://github.com/golang/go/issues/43216</a></p>
+<h3 id="分块读取文件"><a href="#分块读取文件" class="headerlink" title="分块读取文件"></a>分块读取文件</h3><p>在上一节中，我们学习了如何将整个文件加载到内存中。当文件的大小非常大时，尤其是在 RAM 不足的情况下，将整个文件读入内存是没有意义的。更优化的方法是分块读取文件。这可以通过 <a target="_blank" rel="noopener" href="https://pkg.go.dev/bufio">bufio</a> 包来实现。</p>
+<p>让我们编写一个程序，以 3 字节的块读取我们的 <code>test.txt</code> 文件。将 <code>filehandling.go</code> 的内容替换为以下内容：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;bufio&quot;</span><br>	<span class="hljs-string">&quot;flag&quot;</span><br>	<span class="hljs-string">&quot;fmt&quot;</span><br>	<span class="hljs-string">&quot;io&quot;</span><br>	<span class="hljs-string">&quot;log&quot;</span><br>	<span class="hljs-string">&quot;os&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	fptr := flag.String(<span class="hljs-string">&quot;fpath&quot;</span>, <span class="hljs-string">&quot;test.txt&quot;</span>, <span class="hljs-string">&quot;file path to read from&quot;</span>)<br>	flag.Parse()<br><br>	f, err := os.Open(*fptr)<br>	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br>		log.Fatal(err)<br>	&#125;<br>	<span class="hljs-keyword">defer</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span></span> &#123;<br>		<span class="hljs-keyword">if</span> err = f.Close(); err != <span class="hljs-literal">nil</span> &#123;<br>			log.Fatal(err)<br>		&#125;<br>	&#125;()<br><br>	r := bufio.NewReader(f)<br>	b := <span class="hljs-built_in">make</span>([]<span class="hljs-type">byte</span>, <span class="hljs-number">3</span>)<br>	<span class="hljs-keyword">for</span> &#123;<br>		n, err := r.Read(b)<br>		<span class="hljs-keyword">if</span> err == io.EOF &#123;<br>			fmt.Println(<span class="hljs-string">&quot;finished reading file&quot;</span>)<br>			<span class="hljs-keyword">break</span><br>		&#125;<br>		<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br>			fmt.Printf(<span class="hljs-string">&quot;Error %s reading file&quot;</span>, err)<br>			<span class="hljs-keyword">break</span><br>		&#125;<br>		fmt.Println(<span class="hljs-type">string</span>(b[<span class="hljs-number">0</span>:n]))<br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>在程序的第 16 行，我们使用从命令行标志传递的路径打开文件。</p>
+<p>在第 20 行，我们延迟关闭文件。</p>
+<p>程序的第 26 行创建了一个新的缓冲读取器。在下一行，我们创建了一个长度为 3 的字节切片，文件字节将被读取到其中。</p>
+<p>第 29 行的 <code>Read</code> <a href="../%E3%80%90GolangBot%E3%80%9117-%E6%96%B9%E6%B3%95">方法</a> 读取最多 <code>len(b)</code> 字节，即最多 3 个字节，并返回读取的字节数。我们将返回的字节存储在变量 <code>n</code> 中。在第 38 行，切片从索引 <code>0</code> 读取到 <code>n-1</code>，即读取到 <code>Read</code> 方法返回的字节数，并打印。</p>
+<p>一旦到达文件末尾，<code>read</code> 将返回一个 EOF 错误。我们在第 30 行检查此错误。程序的其余部分很简单。</p>
+<p>如果我们使用以下命令运行上述程序：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs fallback">cd ~/Documents/filehandling<br>go install<br>filehandling -fpath=/path-of-file/test.txt<br></code></pre></td></tr></table></figure>
+
+<p>将输出以下内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs fallback">Hel<br>lo<br>Wor<br>ld.<br> We<br>lco<br>me<br>to<br>fil<br>e h<br>and<br>lin<br>g i<br>n G<br>o.<br>finished reading file<br></code></pre></td></tr></table></figure>
+
+<h3 id="逐行读取文件"><a href="#逐行读取文件" class="headerlink" title="逐行读取文件"></a>逐行读取文件</h3><p>在本节中，我们将讨论如何使用 Go 逐行读取文件。这可以使用 <a target="_blank" rel="noopener" href="https://pkg.go.dev/bufio">bufio</a> 包来完成。</p>
+<p>请将 <code>test.txt</code> 的内容替换为以下内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs fallback">Hello World. Welcome to file handling in Go.  <br>This is the second line of the file.  <br>We have reached the end of the file.  <br></code></pre></td></tr></table></figure>
+
+<p>以下是逐行读取文件的步骤：</p>
+<ol>
+<li>打开文件</li>
+<li>从文件创建一个新的扫描器</li>
+<li>扫描文件并逐行读取。</li>
+</ol>
+<p>将 <code>filehandling.go</code> 的内容替换为以下内容：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;bufio&quot;</span><br>	<span class="hljs-string">&quot;flag&quot;</span><br>	<span class="hljs-string">&quot;fmt&quot;</span><br>	<span class="hljs-string">&quot;log&quot;</span><br>	<span class="hljs-string">&quot;os&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	fptr := flag.String(<span class="hljs-string">&quot;fpath&quot;</span>, <span class="hljs-string">&quot;test.txt&quot;</span>, <span class="hljs-string">&quot;file path to read from&quot;</span>)<br>	flag.Parse()<br><br>	f, err := os.Open(*fptr)<br>	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br>		log.Fatal(err)<br>	&#125;<br>    <span class="hljs-keyword">defer</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span></span> &#123;<br>	    <span class="hljs-keyword">if</span> err = f.Close(); err != <span class="hljs-literal">nil</span> &#123;<br>		log.Fatal(err)<br>	&#125;<br>	&#125;()<br>	s := bufio.NewScanner(f)<br>	<span class="hljs-keyword">for</span> s.Scan() &#123;<br>		fmt.Println(s.Text())<br>	&#125;<br>	err = s.Err()<br>	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br>		log.Fatal(err)<br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>在程序的第 15 行，我们使用从命令行标志传递的路径打开文件。在第 24 行，我们使用文件创建一个新的扫描器。第 25 行的 <code>scan()</code> 方法读取文件的下一行，读取的字符串将通过 <code>text()</code> 方法可用。</p>
+<p>当 Scan 返回 <code>false</code> 后，<code>Err()</code> 方法将返回扫描期间发生的任何错误。如果错误是文件结束，<code>Err()</code> 将返回 <code>nil</code>。</p>
+<p>如果我们使用以下命令运行上述程序：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs fallback">cd ~/Documents/filehandling<br>go install<br>filehandling -fpath=/path-of-file/test.txt<br></code></pre></td></tr></table></figure>
+
+<p>文件的内容将逐行打印，如下所示：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs fallback">Hello World. Welcome to file handling in Go.<br>This is the second line of the file.<br>We have reached the end of the file.<br></code></pre></td></tr></table></figure>
+
+
+<p><strong>下一个教程 - <a href="../%E3%80%90GolangBot%E3%80%9137-%E5%86%99%E6%96%87%E4%BB%B6">写入文件</a></strong></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E5%BF%83%E5%BE%97/" class="category-chain-item">学习心得</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E5%BF%83%E5%BE%97/GolangBot/" class="category-chain-item">GolangBot</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Golang/" class="print-no-link">#Golang</a>
+      
+        <a href="/tags/%E6%95%99%E7%A8%8B/" class="print-no-link">#教程</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>【GolangBot】36-读文件</div>
+      <div>https://zoekyhein.github.io/【GolangBot】36-读文件/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>ZoeKyHein</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年12月26日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/%E3%80%90GolangBot%E3%80%9137-%E5%86%99%E6%96%87%E4%BB%B6/" title="【GolangBot】37-写文件">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">【GolangBot】37-写文件</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/%E3%80%90GolangBot%E3%80%9135-%E5%8F%8D%E5%B0%84/" title="【GolangBot】35-反射">
+                        <span class="hidden-mobile">【GolangBot】35-反射</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <link rel="stylesheet" type="text/css" href="https://cdn.jsdmirror.com/gh/muzihuaner/deng@main/deng.css"> <!-- 灯笼1 --> <div class="deng-box"> <div class="deng"> <div class="xian"></div> <div class="deng-a"> <div class="deng-b"><div class="deng-t">年</div></div> </div> <div class="shui shui-a"><div class="shui-c"></div><div class="shui-b"></div></div> </div> </div>
+<!-- 灯笼2 --> <div class="deng-box1"> <div class="deng"> <div class="xian"></div> <div class="deng-a"> <div class="deng-b"><div class="deng-t">新</div></div> </div> <div class="shui shui-a"><div class="shui-c"></div><div class="shui-b"></div></div> </div> </div>
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

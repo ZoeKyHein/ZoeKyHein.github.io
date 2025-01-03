@@ -1,0 +1,756 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/icon.png">
+  <link rel="icon" href="/img/icon.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#ac9343">
+  <meta name="author" content="ZoeKyHein">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="欢迎来到 Golang 教程系列 的第 35 个教程。 反射是 Go 中的高级主题之一。我将尽量使其简单易懂。 本教程包含以下部分：  什么是反射？ 为什么需要检查变量并找到其类型？ reflect 包 reflect.Type 和 reflect.Value reflect.Kind NumField() 和 Field() 方法 Int() 和 String() 方法   完整程序 是否应该使">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【GolangBot】35-反射">
+<meta property="og:url" content="https://zoekyhein.github.io/%E3%80%90GolangBot%E3%80%9135-%E5%8F%8D%E5%B0%84/index.html">
+<meta property="og:site_name" content="传火祭祀场">
+<meta property="og:description" content="欢迎来到 Golang 教程系列 的第 35 个教程。 反射是 Go 中的高级主题之一。我将尽量使其简单易懂。 本教程包含以下部分：  什么是反射？ 为什么需要检查变量并找到其类型？ reflect 包 reflect.Type 和 reflect.Value reflect.Kind NumField() 和 Field() 方法 Int() 和 String() 方法   完整程序 是否应该使">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-12-26T12:00:58.000Z">
+<meta property="article:modified_time" content="2025-01-03T01:30:04.016Z">
+<meta property="article:author" content="ZoeKyHein">
+<meta property="article:tag" content="Golang">
+<meta property="article:tag" content="教程">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>【GolangBot】35-反射 - 传火祭祀场</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"zoekyhein.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"💥","loop":false,"scope":["home"]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>传火祭祀场</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/golangbot" target="_self">
+                <i class="iconfont icon-book"></i>
+                <span>Go教程</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/sunKnight.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">【GolangBot】35-反射</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-12-26 12:00" pubdate>
+          2024年12月26日 中午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          21 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">【GolangBot】35-反射</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>欢迎来到 <a href="../golangbot/">Golang 教程系列</a> 的第 35 个教程。</p>
+<p>反射是 Go 中的高级主题之一。我将尽量使其简单易懂。</p>
+<p>本教程包含以下部分：</p>
+<ul>
+<li>什么是反射？</li>
+<li>为什么需要检查变量并找到其类型？</li>
+<li>reflect 包<ul>
+<li>reflect.Type 和 reflect.Value</li>
+<li>reflect.Kind</li>
+<li>NumField() 和 Field() 方法</li>
+<li>Int() 和 String() 方法</li>
+</ul>
+</li>
+<li>完整程序</li>
+<li>是否应该使用反射？</li>
+</ul>
+<p>让我们逐一讨论这些部分。</p>
+<h3 id="什么是反射？"><a href="#什么是反射？" class="headerlink" title="什么是反射？"></a>什么是反射？</h3><p>反射是程序在运行时检查其变量和值并找到其类型的能力。你可能还不理解这意味着什么，但没关系。通过本教程的学习，你会对反射有一个清晰的理解，所以请继续阅读。</p>
+<h3 id="为什么需要检查变量并找到其类型？"><a href="#为什么需要检查变量并找到其类型？" class="headerlink" title="为什么需要检查变量并找到其类型？"></a>为什么需要检查变量并找到其类型？</h3><p>学习反射时，第一个问题通常是：为什么我们需要在运行时检查<a href="../%E3%80%90GolangBot%E3%80%913-%E5%8F%98%E9%87%8F">变量</a>并找到其类型，而程序中的每个变量都是由我们定义的，我们在编译时就已经知道其类型了。嗯，大多数情况下确实如此，但并非总是如此。</p>
+<p>让我解释一下我的意思。让我们编写一个简单的程序。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;fmt&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	i := <span class="hljs-number">10</span><br>	fmt.Printf(<span class="hljs-string">&quot;%d %T&quot;</span>, i, i)<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/1oZzPCCG2Qw">在 Playground 中运行</a></p>
+<p>在上面的程序中，<code>i</code> 的类型在编译时是已知的，我们在下一行打印它。这里没有什么神奇的地方。</p>
+<p>现在让我们理解为什么需要在运行时知道变量的类型。假设我们想编写一个简单的<a href="../%E3%80%90GolangBot%E3%80%916-%E5%87%BD%E6%95%B0">函数</a>，它将接受一个<a href="../%E3%80%90GolangBot%E3%80%9116-%E7%BB%93%E6%9E%84%E4%BD%93">结构体</a>作为参数，并使用它创建一个 SQL 插入查询。</p>
+<p>考虑以下程序：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;fmt&quot;</span><br>)<br><br><span class="hljs-keyword">type</span> order <span class="hljs-keyword">struct</span> &#123;<br>	ordId      <span class="hljs-type">int</span><br>	customerId <span class="hljs-type">int</span><br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	o := order&#123;<br>		ordId:      <span class="hljs-number">1234</span>,<br>		customerId: <span class="hljs-number">567</span>,<br>	&#125;<br>	fmt.Println(o)<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/0wLQAVErHuH">在 Playground 中运行</a></p>
+<p>我们需要编写一个函数，它将上述程序中的结构体 <code>o</code> 作为参数，并返回以下 SQL 插入查询：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs fallback">insert into order values(1234, 567)<br></code></pre></td></tr></table></figure>
+
+<p>这个函数很容易编写。让我们现在就来编写它。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;fmt&quot;</span><br>)<br><br><span class="hljs-keyword">type</span> order <span class="hljs-keyword">struct</span> &#123;<br>	ordId      <span class="hljs-type">int</span><br>	customerId <span class="hljs-type">int</span><br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">createQuery</span><span class="hljs-params">(o order)</span></span> <span class="hljs-type">string</span> &#123;<br>	i := fmt.Sprintf(<span class="hljs-string">&quot;insert into order values(%d, %d)&quot;</span>, o.ordId, o.customerId)<br>	<span class="hljs-keyword">return</span> i<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	o := order&#123;<br>		ordId:      <span class="hljs-number">1234</span>,<br>		customerId: <span class="hljs-number">567</span>,<br>	&#125;<br>	fmt.Println(createQuery(o))<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/jhz4VHKIlQ5">在 Playground 中运行</a></p>
+<p>第 12 行的 <code>createQuery</code> 函数通过使用 <code>o</code> 的 <code>ordId</code> 和 <code>customerId</code> 字段创建插入查询。该程序将输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs fallback">insert into order values(1234, 567)<br></code></pre></td></tr></table></figure>
+
+<p>现在让我们将查询生成器提升到一个新的水平。如果我们想泛化我们的查询生成器，使其适用于任何结构体，该怎么办？让我通过一个程序来解释我的意思。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">type</span> order <span class="hljs-keyword">struct</span> &#123;<br>	ordId      <span class="hljs-type">int</span><br>	customerId <span class="hljs-type">int</span><br>&#125;<br><br><span class="hljs-keyword">type</span> employee <span class="hljs-keyword">struct</span> &#123;<br>	name <span class="hljs-type">string</span><br>	id <span class="hljs-type">int</span><br>	address <span class="hljs-type">string</span><br>	salary <span class="hljs-type">int</span><br>	country <span class="hljs-type">string</span><br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">createQuery</span><span class="hljs-params">(q <span class="hljs-keyword">interface</span>&#123;&#125;)</span></span> <span class="hljs-type">string</span> &#123;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>我们的目标是完成上述程序中第 16 行的 <code>createQuery</code> 函数，使其接受任何结构体作为参数，并根据结构体字段创建插入查询。</p>
+<p>例如，如果我们传递以下结构体：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs go">o := order &#123;<br>	ordId: <span class="hljs-number">1234</span>,<br>	customerId: <span class="hljs-number">567</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>我们的 <code>createQuery</code> 函数应返回：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs fallback">insert into order values (1234, 567)<br></code></pre></td></tr></table></figure>
+
+<p>同样，如果我们传递：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs go">e := employee &#123;<br>	name: <span class="hljs-string">&quot;Naveen&quot;</span>,<br>	id: <span class="hljs-number">565</span>,<br>	address: <span class="hljs-string">&quot;Science Park Road, Singapore&quot;</span>,<br>	salary: <span class="hljs-number">90000</span>,<br>	country: <span class="hljs-string">&quot;Singapore&quot;</span>,<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>它应返回：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs fallback">insert into employee values(&quot;Naveen&quot;, 565, &quot;Science Park Road, Singapore&quot;, 90000, &quot;Singapore&quot;)<br></code></pre></td></tr></table></figure>
+
+<p>由于 <code>createQuery</code> 函数应适用于任何结构体，因此它接受一个<a href="../%E3%80%90GolangBot%E3%80%9118-%E6%8E%A5%E5%8F%A3-I/#%E7%A9%BA%E6%8E%A5%E5%8F%A3"><em>interface{}</em></a>作为参数。为简单起见，我们只处理包含 <code>string</code> 和 <code>int</code> 类型字段的结构体，但这可以扩展到任何类型。</p>
+<p><code>createQuery</code> 函数应适用于任何结构体。编写此函数的唯一方法是在运行时检查传递给它的结构体参数的类型，找到其字段，然后创建查询。这就是反射的用武之地。在教程的后续步骤中，我们将学习如何使用 <code>reflect</code> 包实现这一点。</p>
+<h3 id="reflect-包"><a href="#reflect-包" class="headerlink" title="reflect 包"></a>reflect 包</h3><p><a target="_blank" rel="noopener" href="https://golang.org/pkg/reflect/">reflect</a> 包在 Go 中实现了运行时反射。reflect 包有助于识别<a href="../%E3%80%90GolangBot%E3%80%9118-%E6%8E%A5%E5%8F%A3-I/#%E7%A9%BA%E6%8E%A5%E5%8F%A3"><em>interface{}</em></a>变量的具体类型和值。这正是我们所需要的。<code>createQuery</code> 函数接受一个 <code>interface&#123;&#125;</code> 参数，并且需要根据 <code>interface&#123;&#125;</code> 参数的具体类型和值创建查询。这正是 reflect 包的作用。</p>
+<p>在编写我们的通用查询生成器程序之前，我们需要先了解 reflect 包中的一些类型和方法。让我们逐一看看它们。</p>
+<h4 id="reflect-Type-和-reflect-Value"><a href="#reflect-Type-和-reflect-Value" class="headerlink" title="reflect.Type 和 reflect.Value"></a>reflect.Type 和 reflect.Value</h4><p><code>interface&#123;&#125;</code> 的具体类型由 <a target="_blank" rel="noopener" href="https://golang.org/pkg/reflect/#Type">reflect.Type</a> 表示，其基础值由 <a target="_blank" rel="noopener" href="https://golang.org/pkg/reflect/#Value">reflect.Value</a> 表示。有两个函数 <a target="_blank" rel="noopener" href="https://golang.org/pkg/reflect/#TypeOf">reflect.TypeOf()</a> 和 <a target="_blank" rel="noopener" href="https://golang.org/pkg/reflect/#ValueOf">reflect.ValueOf()</a>，它们分别返回 <code>reflect.Type</code> 和 <code>reflect.Value</code>。这两种类型是创建我们的查询生成器的基础。让我们编写一个简单的示例来理解这两种类型。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;fmt&quot;</span><br>	<span class="hljs-string">&quot;reflect&quot;</span><br>)<br><br><span class="hljs-keyword">type</span> order <span class="hljs-keyword">struct</span> &#123;<br>	ordId      <span class="hljs-type">int</span><br>	customerId <span class="hljs-type">int</span><br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">createQuery</span><span class="hljs-params">(q <span class="hljs-keyword">interface</span>&#123;&#125;)</span></span> &#123;<br>	t := reflect.TypeOf(q)<br>	v := reflect.ValueOf(q)<br>	fmt.Println(<span class="hljs-string">&quot;Type &quot;</span>, t)<br>	fmt.Println(<span class="hljs-string">&quot;Value &quot;</span>, v)<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	o := order&#123;<br>		ordId:      <span class="hljs-number">456</span>,<br>		customerId: <span class="hljs-number">56</span>,<br>	&#125;<br>	createQuery(o)<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/81BS-bEfbCg">在 Playground 中运行</a></p>
+<p>在上面的程序中，第 13 行的 <code>createQuery</code> 函数接受一个 <code>interface&#123;&#125;</code> 作为参数。第 14 行的 <a target="_blank" rel="noopener" href="https://golang.org/pkg/reflect/#TypeOf">reflect.TypeOf</a> 函数接受一个 <code>interface&#123;&#125;</code> 作为参数，并返回包含传递给它的 <code>interface&#123;&#125;</code> 参数的具体类型的 <a target="_blank" rel="noopener" href="https://golang.org/pkg/reflect/#Type">reflect.Type</a>。同样，第 15 行的 <a target="_blank" rel="noopener" href="https://golang.org/pkg/reflect/#ValueOf">reflect.ValueOf</a> 函数接受一个 <code>interface&#123;&#125;</code> 作为参数，并返回包含传递给它的 <code>interface&#123;&#125;</code> 参数的基础值的 <a target="_blank" rel="noopener" href="https://golang.org/pkg/reflect/#Value">reflect.Value</a>。</p>
+<p>上面的程序打印：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs fallback">Type  main.order<br>Value  &#123;456 56&#125;<br></code></pre></td></tr></table></figure>
+
+<p>从输出中可以看出，程序打印了 <code>interface&#123;&#125;</code> 的具体类型和值。</p>
+<h4 id="reflect-Kind"><a href="#reflect-Kind" class="headerlink" title="reflect.Kind"></a>reflect.Kind</h4><p>反射包中还有一个重要的类型叫做 <a target="_blank" rel="noopener" href="https://golang.org/pkg/reflect/#Kind">Kind</a>。</p>
+<p>反射包中的 <code>Kind</code> 和 <code>Type</code> 类型可能看起来很相似，但它们有一个区别，下面的程序将清楚地展示这一点。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;fmt&quot;</span><br>	<span class="hljs-string">&quot;reflect&quot;</span><br>)<br><br><span class="hljs-keyword">type</span> order <span class="hljs-keyword">struct</span> &#123;<br>	ordId      <span class="hljs-type">int</span><br>	customerId <span class="hljs-type">int</span><br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">createQuery</span><span class="hljs-params">(q <span class="hljs-keyword">interface</span>&#123;&#125;)</span></span> &#123;<br>	t := reflect.TypeOf(q)<br>	k := t.Kind()<br>	fmt.Println(<span class="hljs-string">&quot;Type &quot;</span>, t)<br>	fmt.Println(<span class="hljs-string">&quot;Kind &quot;</span>, k)<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	o := order&#123;<br>		ordId:      <span class="hljs-number">456</span>,<br>		customerId: <span class="hljs-number">56</span>,<br>	&#125;<br>	createQuery(o)<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/Xw3JIzCm54T">在 Playground 中运行</a></p>
+<p>上面的程序输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs fallback">Type  main.order<br>Kind  struct<br></code></pre></td></tr></table></figure>
+
+<p>我想你现在应该清楚了两者之间的区别。<code>Type</code> 表示 <code>interface&#123;&#125;</code> 的实际类型，在本例中是 <strong>main.Order</strong>，而 <code>Kind</code> 表示该类型的特定种类。在本例中，它是一个 <strong>struct</strong>。</p>
+<h4 id="NumField-和-Field-方法"><a href="#NumField-和-Field-方法" class="headerlink" title="NumField() 和 Field() 方法"></a>NumField() 和 Field() 方法</h4><p><a target="_blank" rel="noopener" href="https://golang.org/pkg/reflect/#Value.NumField">NumField()</a> 方法返回结构体中的字段数，<a target="_blank" rel="noopener" href="https://golang.org/pkg/reflect/#Value.Field">Field(i int)</a> 方法返回第 <code>i</code> 个字段的 <code>reflect.Value</code>。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;fmt&quot;</span><br>	<span class="hljs-string">&quot;reflect&quot;</span><br>)<br><br><span class="hljs-keyword">type</span> order <span class="hljs-keyword">struct</span> &#123;<br>	ordId      <span class="hljs-type">int</span><br>	customerId <span class="hljs-type">int</span><br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">createQuery</span><span class="hljs-params">(q <span class="hljs-keyword">interface</span>&#123;&#125;)</span></span> &#123;<br>	<span class="hljs-keyword">if</span> reflect.ValueOf(q).Kind() == reflect.Struct &#123;<br>		v := reflect.ValueOf(q)<br>		fmt.Println(<span class="hljs-string">&quot;Number of fields&quot;</span>, v.NumField())<br>		<span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; v.NumField(); i++ &#123;<br>			fmt.Printf(<span class="hljs-string">&quot;Field:%d type:%T value:%v\n&quot;</span>, i, v.Field(i), v.Field(i))<br>		&#125;<br>	&#125;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	o := order&#123;<br>		ordId:      <span class="hljs-number">456</span>,<br>		customerId: <span class="hljs-number">56</span>,<br>	&#125;<br>	createQuery(o)<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/FBHfJfuTaEe">在 Playground 中运行</a></p>
+<p>在上面的程序中，第 14 行我们首先检查 <code>q</code> 的 <code>Kind</code> 是否为 <code>struct</code>，因为 <code>NumField</code> 方法仅适用于结构体。程序的其余部分不言自明。该程序输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs fallback">Number of fields 2<br>Field:0 type:reflect.Value value:456<br>Field:1 type:reflect.Value value:56<br></code></pre></td></tr></table></figure>
+
+<h4 id="Int-和-String-方法"><a href="#Int-和-String-方法" class="headerlink" title="Int() 和 String() 方法"></a>Int() 和 String() 方法</h4><p><a target="_blank" rel="noopener" href="https://golang.org/pkg/reflect/#Value.Int">Int</a> 和 <a target="_blank" rel="noopener" href="https://golang.org/pkg/reflect/#Value.String">String</a> 方法帮助将 <code>reflect.Value</code> 提取为 <code>int64</code> 和 <code>string</code>。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;fmt&quot;</span><br>	<span class="hljs-string">&quot;reflect&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	a := <span class="hljs-number">56</span><br>	x := reflect.ValueOf(a).Int()<br>	fmt.Printf(<span class="hljs-string">&quot;type:%T value:%v\n&quot;</span>, x, x)<br>	b := <span class="hljs-string">&quot;Naveen&quot;</span><br>	y := reflect.ValueOf(b).String()<br>	fmt.Printf(<span class="hljs-string">&quot;type:%T value:%v\n&quot;</span>, y, y)<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/UIllrLVoGwI">在 Playground 中运行</a></p>
+<p>在上面的程序中，第 10 行我们将 <code>reflect.Value</code> 提取为 <code>int64</code>，第 13 行我们将其提取为 <code>string</code>。该程序打印：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs fallback">type:int64 value:56<br>type:string value:Naveen<br></code></pre></td></tr></table></figure>
+
+<h3 id="完整程序"><a href="#完整程序" class="headerlink" title="完整程序"></a>完整程序</h3><p>现在我们已经掌握了足够的知识来完成我们的查询生成器，让我们继续完成它。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;fmt&quot;</span><br>	<span class="hljs-string">&quot;reflect&quot;</span><br>)<br><br><span class="hljs-keyword">type</span> order <span class="hljs-keyword">struct</span> &#123;<br>	ordId      <span class="hljs-type">int</span><br>	customerId <span class="hljs-type">int</span><br>&#125;<br><br><span class="hljs-keyword">type</span> employee <span class="hljs-keyword">struct</span> &#123;<br>	name    <span class="hljs-type">string</span><br>	id      <span class="hljs-type">int</span><br>	address <span class="hljs-type">string</span><br>	salary  <span class="hljs-type">int</span><br>	country <span class="hljs-type">string</span><br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">createQuery</span><span class="hljs-params">(q <span class="hljs-keyword">interface</span>&#123;&#125;)</span></span> &#123;<br>	<span class="hljs-keyword">if</span> reflect.ValueOf(q).Kind() == reflect.Struct &#123;<br>		t := reflect.TypeOf(q).Name()<br>		query := fmt.Sprintf(<span class="hljs-string">&quot;insert into %s values(&quot;</span>, t)<br>		v := reflect.ValueOf(q)<br>		<span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; v.NumField(); i++ &#123;<br>			<span class="hljs-keyword">switch</span> v.Field(i).Kind() &#123;<br>			<span class="hljs-keyword">case</span> reflect.Int:<br>				<span class="hljs-keyword">if</span> i == <span class="hljs-number">0</span> &#123;<br>					query = fmt.Sprintf(<span class="hljs-string">&quot;%s%d&quot;</span>, query, v.Field(i).Int())<br>				&#125; <span class="hljs-keyword">else</span> &#123;<br>					query = fmt.Sprintf(<span class="hljs-string">&quot;%s, %d&quot;</span>, query, v.Field(i).Int())<br>				&#125;<br>			<span class="hljs-keyword">case</span> reflect.String:<br>				<span class="hljs-keyword">if</span> i == <span class="hljs-number">0</span> &#123;<br>					query = fmt.Sprintf(<span class="hljs-string">&quot;%s\&quot;%s\&quot;&quot;</span>, query, v.Field(i).String())<br>				&#125; <span class="hljs-keyword">else</span> &#123;<br>					query = fmt.Sprintf(<span class="hljs-string">&quot;%s, \&quot;%s\&quot;&quot;</span>, query, v.Field(i).String())<br>				&#125;<br>			<span class="hljs-keyword">default</span>:<br>				fmt.Println(<span class="hljs-string">&quot;Unsupported type&quot;</span>)<br>				<span class="hljs-keyword">return</span><br>			&#125;<br>		&#125;<br>		query = fmt.Sprintf(<span class="hljs-string">&quot;%s)&quot;</span>, query)<br>		fmt.Println(query)<br>		<span class="hljs-keyword">return</span><br>	&#125;<br>	fmt.Println(<span class="hljs-string">&quot;unsupported type&quot;</span>)<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	o := order&#123;<br>		ordId:      <span class="hljs-number">456</span>,<br>		customerId: <span class="hljs-number">56</span>,<br>	&#125;<br>	createQuery(o)<br><br>	e := employee&#123;<br>		name:    <span class="hljs-string">&quot;Naveen&quot;</span>,<br>		id:      <span class="hljs-number">565</span>,<br>		address: <span class="hljs-string">&quot;Coimbatore&quot;</span>,<br>		salary:  <span class="hljs-number">90000</span>,<br>		country: <span class="hljs-string">&quot;India&quot;</span>,<br>	&#125;<br>	createQuery(e)<br>	i := <span class="hljs-number">90</span><br>	createQuery(i)<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/82Bi4RU5c7W">在 Playground 中运行</a></p>
+<p>在第 22 行，我们首先检查传递的参数是否为 <code>struct</code>。在第 23 行，我们使用 <code>Name()</code> 方法从其 <code>reflect.Type</code> 中获取结构体的名称。在下一行，我们使用 <code>t</code> 并开始创建查询。</p>
+<p>第 28 行的 <a href="../%E3%80%90GolangBot%E3%80%9110-switch%E8%AF%AD%E5%8F%A5">case</a> 语句检查当前字段是否为 <code>reflect.Int</code>，如果是，我们使用 <code>Int()</code> 方法将该字段的值提取为 <code>int64</code>。<a href="../%E3%80%90GolangBot%E3%80%918-if-else%E8%AF%AD%E5%8F%A5">if else</a> 语句用于处理边缘情况。请添加日志以理解为什么需要它。类似的逻辑用于在第 34 行提取 <code>string</code>。</p>
+<p>我们还添加了检查，以防止在将不受支持的类型传递给 <code>createQuery</code> 函数时程序崩溃。程序的其余部分不言自明。我建议在适当的位置添加日志并检查其输出，以更好地理解该程序。</p>
+<p>该程序打印：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs fallback">insert into order values(456, 56)<br>insert into employee values(&quot;Naveen&quot;, 565, &quot;Coimbatore&quot;, 90000, &quot;India&quot;)<br>unsupported type<br></code></pre></td></tr></table></figure>
+
+<p>我将把将字段名称添加到输出查询的练习留给读者。请尝试更改程序以打印以下格式的查询：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs fallback">insert into order(ordId, customerId) values(456, 56)<br></code></pre></td></tr></table></figure>
+
+<h3 id="是否应该使用反射？"><a href="#是否应该使用反射？" class="headerlink" title="是否应该使用反射？"></a>是否应该使用反射？</h3><p>在展示了反射的实际用途之后，现在出现了一个真正的问题。你应该使用反射吗？我想引用 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Rob_Pike">Rob Pike</a> 关于使用反射的谚语来回答这个问题。</p>
+<p><em>清晰胜于聪明。反射从来都不清晰。</em></p>
+<p>反射是 Go 中一个非常强大和高级的概念，应该谨慎使用。使用反射编写清晰且可维护的代码非常困难。应尽可能避免使用它，仅在绝对必要时使用。</p>
+<p><strong>下一个教程 - <a href="../%E3%80%90GolangBot%E3%80%9136-%E8%AF%BB%E6%96%87%E4%BB%B6">读取文件</a></strong></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E5%BF%83%E5%BE%97/" class="category-chain-item">学习心得</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E5%BF%83%E5%BE%97/GolangBot/" class="category-chain-item">GolangBot</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Golang/" class="print-no-link">#Golang</a>
+      
+        <a href="/tags/%E6%95%99%E7%A8%8B/" class="print-no-link">#教程</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>【GolangBot】35-反射</div>
+      <div>https://zoekyhein.github.io/【GolangBot】35-反射/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>ZoeKyHein</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年12月26日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/%E3%80%90GolangBot%E3%80%9136-%E8%AF%BB%E6%96%87%E4%BB%B6/" title="【GolangBot】36-读文件">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">【GolangBot】36-读文件</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/%E3%80%90GolangBot%E3%80%9134-%E4%B8%80%E7%AD%89%E5%85%AC%E6%B0%91%EF%BC%9A%E5%87%BD%E6%95%B0/" title="【GolangBot】34-一等公民：函数">
+                        <span class="hidden-mobile">【GolangBot】34-一等公民：函数</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <link rel="stylesheet" type="text/css" href="https://cdn.jsdmirror.com/gh/muzihuaner/deng@main/deng.css"> <!-- 灯笼1 --> <div class="deng-box"> <div class="deng"> <div class="xian"></div> <div class="deng-a"> <div class="deng-b"><div class="deng-t">年</div></div> </div> <div class="shui shui-a"><div class="shui-c"></div><div class="shui-b"></div></div> </div> </div>
+<!-- 灯笼2 --> <div class="deng-box1"> <div class="deng"> <div class="xian"></div> <div class="deng-a"> <div class="deng-b"><div class="deng-t">新</div></div> </div> <div class="shui shui-a"><div class="shui-c"></div><div class="shui-b"></div></div> </div> </div>
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

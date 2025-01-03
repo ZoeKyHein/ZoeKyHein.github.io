@@ -1,0 +1,759 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/icon.png">
+  <link rel="icon" href="/img/icon.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#ac9343">
+  <meta name="author" content="ZoeKyHein">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="欢迎来到Golang系列教程第14篇。 字符串在 Go 中值得特别提及，因为与其他语言相比，它们的实现有所不同。 什么是字符串？在 Go 中，字符串是字节的切片。可以通过将一组字符用双引号 &quot;&quot; 包括起来来创建字符串。 让我们通过一个简单的示例来创建一个 string 并打印它。 12345678910package mainimport (	&quot;fmt&quot;)f">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【GolangBot】14-Strings">
+<meta property="og:url" content="https://zoekyhein.github.io/%E3%80%90GolangBot%E3%80%9114-Strings/index.html">
+<meta property="og:site_name" content="传火祭祀场">
+<meta property="og:description" content="欢迎来到Golang系列教程第14篇。 字符串在 Go 中值得特别提及，因为与其他语言相比，它们的实现有所不同。 什么是字符串？在 Go 中，字符串是字节的切片。可以通过将一组字符用双引号 &quot;&quot; 包括起来来创建字符串。 让我们通过一个简单的示例来创建一个 string 并打印它。 12345678910package mainimport (	&quot;fmt&quot;)f">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-12-24T08:51:01.000Z">
+<meta property="article:modified_time" content="2025-01-03T01:30:04.016Z">
+<meta property="article:author" content="ZoeKyHein">
+<meta property="article:tag" content="Golang">
+<meta property="article:tag" content="教程">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>【GolangBot】14-Strings - 传火祭祀场</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"zoekyhein.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"💥","loop":false,"scope":["home"]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>传火祭祀场</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/golangbot" target="_self">
+                <i class="iconfont icon-book"></i>
+                <span>Go教程</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/sunKnight.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">【GolangBot】14-Strings</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-12-24 08:51" pubdate>
+          2024年12月24日 早上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.5k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          22 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">【GolangBot】14-Strings</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>欢迎来到<a href="../golangbot/">Golang系列教程</a>第14篇。</p>
+<p>字符串在 Go 中值得特别提及，因为与其他语言相比，它们的实现有所不同。</p>
+<h3 id="什么是字符串？"><a href="#什么是字符串？" class="headerlink" title="什么是字符串？"></a>什么是字符串？</h3><p><strong>在 Go 中，字符串是字节的<a href="../%E3%80%90GolangBot%E3%80%9111-%E6%95%B0%E7%BB%84%E5%92%8C%E5%88%87%E7%89%87/">切片</a>。可以通过将一组字符用双引号 <code>&quot;&quot;</code> 包括起来来创建字符串。</strong></p>
+<p>让我们通过一个简单的示例来创建一个 <code>string</code> 并打印它。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;fmt&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	name := <span class="hljs-string">&quot;Hello World&quot;</span><br>	fmt.Println(name)<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/o9OVDgEMU0">Run in playground</a></p>
+<p>上述程序将打印 <code>Hello World</code>。</p>
+<p>Go 中的字符串是<a target="_blank" rel="noopener" href="https://naveenr.net/unicode-character-set-and-utf-8-utf-16-utf-32-encoding/">符合 Unicode 标准</a>的，并且采用<a target="_blank" rel="noopener" href="https://naveenr.net/unicode-character-set-and-utf-8-utf-16-utf-32-encoding/">UTF-8 编码</a>。</p>
+<h3 id="访问字符串的各个字节"><a href="#访问字符串的各个字节" class="headerlink" title="访问字符串的各个字节"></a>访问字符串的各个字节</h3><p>由于字符串是字节的切片，因此可以访问字符串的每个字节。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;fmt&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">printBytes</span><span class="hljs-params">(s <span class="hljs-type">string</span>)</span></span> &#123;<br>	fmt.Printf(<span class="hljs-string">&quot;Bytes: &quot;</span>)<br>	<span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; <span class="hljs-built_in">len</span>(s); i++ &#123;<br>		fmt.Printf(<span class="hljs-string">&quot;%x &quot;</span>, s[i])<br>	&#125;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	name := <span class="hljs-string">&quot;Hello World&quot;</span><br>	fmt.Printf(<span class="hljs-string">&quot;String: %s\n&quot;</span>, name)<br>	printBytes(name)<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/B3KgBBQhiN9">Run in playground</a></p>
+<p><strong>%s 是用于打印字符串的格式说明符。</strong> 在上述程序的第 16 行，打印了输入的字符串。在第 9 行，<strong><code>len(s)</code> 返回字符串中的字节数</strong>，并使用<a href="../%E3%80%90GolangBot%E3%80%919-%E5%BE%AA%E7%8E%AF/">for 循环</a>以十六进制格式打印这些字节。**%x 是表示十六进制的格式说明符。**上述程序的输出为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs fallback">String: Hello World<br>Bytes: 48 65 6c 6c 6f 20 57 6f 72 6c 64  <br></code></pre></td></tr></table></figure>
+
+<p>这些是 <code>Hello World</code> 的 [Unicode UTF-8 编码](<a target="_blank" rel="noopener" href="https://mothereff.in/utf-8#Hello">https://mothereff.in/utf-8#Hello</a> World)值。要更好地理解字符串，需要对 Unicode 和 UTF-8 有基本的了解。推荐阅读 <a target="_blank" rel="noopener" href="https://naveenr.net/unicode-character-set-and-utf-8-utf-16-utf-32-encoding/">https://naveenr.net/unicode-character-set-and-utf-8-utf-16-utf-32-encoding/</a> 以了解更多关于 Unicode 和 UTF-8 的内容。</p>
+<h3 id="访问字符串中的单个字符"><a href="#访问字符串中的单个字符" class="headerlink" title="访问字符串中的单个字符"></a>访问字符串中的单个字符</h3><p>让我们稍微修改一下上面的程序，以打印字符串的字符。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;fmt&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">printBytes</span><span class="hljs-params">(s <span class="hljs-type">string</span>)</span></span> &#123;<br>	fmt.Printf(<span class="hljs-string">&quot;Bytes: &quot;</span>)<br>	<span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; <span class="hljs-built_in">len</span>(s); i++ &#123;<br>		fmt.Printf(<span class="hljs-string">&quot;%x &quot;</span>, s[i])<br>	&#125;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">printChars</span><span class="hljs-params">(s <span class="hljs-type">string</span>)</span></span> &#123;<br>	fmt.Printf(<span class="hljs-string">&quot;Characters: &quot;</span>)<br>	<span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; <span class="hljs-built_in">len</span>(s); i++ &#123;<br>		fmt.Printf(<span class="hljs-string">&quot;%c &quot;</span>, s[i])<br>	&#125;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	name := <span class="hljs-string">&quot;Hello World&quot;</span><br>	fmt.Printf(<span class="hljs-string">&quot;String: %s\n&quot;</span>, name)<br>	printChars(name)<br>	fmt.Printf(<span class="hljs-string">&quot;\n&quot;</span>)<br>	printBytes(name)<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/ZkXmyVNsqv7">Run in playground</a></p>
+<p>在上面程序的第 17 行，<code>%c</code> 格式说明符用于在 <code>printChars</code> 方法中打印字符串的字符。程序输出如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs fallback">String: Hello World<br>Characters: H e l l o   W o r l d <br>Bytes: 48 65 6c 6c 6f 20 57 6f 72 6c 64 <br></code></pre></td></tr></table></figure>
+
+<p>尽管上面的程序看起来是访问字符串中各个字符的合法方式，但实际上存在一个严重的漏洞。我们来看看这个漏洞是什么。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;fmt&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">printBytes</span><span class="hljs-params">(s <span class="hljs-type">string</span>)</span></span> &#123;<br>	fmt.Printf(<span class="hljs-string">&quot;Bytes: &quot;</span>)<br>	<span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; <span class="hljs-built_in">len</span>(s); i++ &#123;<br>		fmt.Printf(<span class="hljs-string">&quot;%x &quot;</span>, s[i])<br>	&#125;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">printChars</span><span class="hljs-params">(s <span class="hljs-type">string</span>)</span></span> &#123;<br>	fmt.Printf(<span class="hljs-string">&quot;Characters: &quot;</span>)<br>	<span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; <span class="hljs-built_in">len</span>(s); i++ &#123;<br>		fmt.Printf(<span class="hljs-string">&quot;%c &quot;</span>, s[i])<br>	&#125;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	name := <span class="hljs-string">&quot;Hello World&quot;</span><br>	fmt.Printf(<span class="hljs-string">&quot;String: %s\n&quot;</span>, name)<br>	printChars(name)<br>	fmt.Printf(<span class="hljs-string">&quot;\n&quot;</span>)<br>	printBytes(name)<br>	fmt.Printf(<span class="hljs-string">&quot;\n\n&quot;</span>)<br>	name = <span class="hljs-string">&quot;Señor&quot;</span><br>	fmt.Printf(<span class="hljs-string">&quot;String: %s\n&quot;</span>, name)<br>	printChars(name)<br>	fmt.Printf(<span class="hljs-string">&quot;\n&quot;</span>)<br>	printBytes(name)<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/2hyVf8l9fiO">Run in playground</a></p>
+<p>上面的程序的输出是</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs fallback">String: Hello World<br>Characters: H e l l o   W o r l d <br>Bytes: 48 65 6c 6c 6f 20 57 6f 72 6c 64 <br><br>String: Señor<br>Characters: S e Ã ± o r <br>Bytes: 53 65 c3 b1 6f 72 <br></code></pre></td></tr></table></figure>
+
+<p>在上面的程序第30行，我们尝试打印<strong>Señor</strong>的字符，结果输出为<strong>S e Ã ± o r</strong>，这是错误的。为什么<code>Señor</code>会出错，而<code>Hello World</code>却能正常工作呢？原因是<code>ñ</code>的Unicode代码点是<code>U+00F1</code>，其<a target="_blank" rel="noopener" href="https://mothereff.in/utf-8#%C3%B1">UTF-8编码</a>占用2个字节<code>c3</code>和<code>b1</code>。我们在尝试打印字符时，假设每个代码点仅占用一个字节，这是错误的。<strong>在UTF-8编码中，一个代码点可能占用多个字节</strong>。那么我们该如何解决这个问题呢？这就是<strong>rune</strong>的作用所在。</p>
+<h3 id="Rune"><a href="#Rune" class="headerlink" title="Rune"></a>Rune</h3><p>在Go中，rune是一个内建类型，它是int32的别名。Rune表示Go中的Unicode代码点。无论代码点占用多少字节，都可以用rune表示。让我们修改上面的程序，使用rune来打印字符。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;fmt&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">printBytes</span><span class="hljs-params">(s <span class="hljs-type">string</span>)</span></span> &#123;<br>	fmt.Printf(<span class="hljs-string">&quot;Bytes: &quot;</span>)<br>	<span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; <span class="hljs-built_in">len</span>(s); i++ &#123;<br>		fmt.Printf(<span class="hljs-string">&quot;%x &quot;</span>, s[i])<br>	&#125;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">printChars</span><span class="hljs-params">(s <span class="hljs-type">string</span>)</span></span> &#123;<br>	fmt.Printf(<span class="hljs-string">&quot;Characters: &quot;</span>)<br>	runes := []<span class="hljs-type">rune</span>(s)<br>	<span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; <span class="hljs-built_in">len</span>(runes); i++ &#123;<br>		fmt.Printf(<span class="hljs-string">&quot;%c &quot;</span>, runes[i])<br>	&#125;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	name := <span class="hljs-string">&quot;Hello World&quot;</span><br>	fmt.Printf(<span class="hljs-string">&quot;String: %s\n&quot;</span>, name)<br>	printChars(name)<br>	fmt.Printf(<span class="hljs-string">&quot;\n&quot;</span>)<br>	printBytes(name)<br>	fmt.Printf(<span class="hljs-string">&quot;\n\n&quot;</span>)<br>	name = <span class="hljs-string">&quot;Señor&quot;</span><br>	fmt.Printf(<span class="hljs-string">&quot;String: %s\n&quot;</span>, name)<br>	printChars(name)<br>	fmt.Printf(<span class="hljs-string">&quot;\n&quot;</span>)<br>	printBytes(name)<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/n8rsfagm2SJ">Run in playground</a></p>
+<p>在上面的程序第16行，字符串被转换为<a href="../%E3%80%90GolangBot%E3%80%9111-%E6%95%B0%E7%BB%84%E5%92%8C%E5%88%87%E7%89%87/">rune切片</a>。然后，我们遍历该切片并显示字符。该程序输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs fallback">String: Hello World<br>Characters: H e l l o   W o r l d <br>Bytes: 48 65 6c 6c 6f 20 57 6f 72 6c 64 <br><br>String: Señor<br>Characters: S e ñ o r <br>Bytes: 53 65 c3 b1 6f 72 <br></code></pre></td></tr></table></figure>
+
+<p>上面的输出是完美的。正是我们想要的 😀。</p>
+<h3 id="使用-for-range-循环访问单个-rune"><a href="#使用-for-range-循环访问单个-rune" class="headerlink" title="使用 for range 循环访问单个 rune"></a>使用 for range 循环访问单个 rune</h3><p>上面的程序是迭代字符串中单个 rune 的完美方式。但是 Go 提供了一个更简单的方法，使用 <strong>for range</strong> 循环。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (  <br>    <span class="hljs-string">&quot;fmt&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">charsAndBytePosition</span><span class="hljs-params">(s <span class="hljs-type">string</span>)</span></span> &#123;<br>	<span class="hljs-keyword">for</span> index, <span class="hljs-type">rune</span> := <span class="hljs-keyword">range</span> s &#123;<br>		fmt.Printf(<span class="hljs-string">&quot;%c starts at byte %d\n&quot;</span>, <span class="hljs-type">rune</span>, index)<br>	&#125;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;  <br>    name := <span class="hljs-string">&quot;Señor&quot;</span><br>    charsAndBytePosition(name)<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/0ldNBeffjYI">Run in playground</a></p>
+<p>在上面的程序的第8行，使用 <code>for range</code> 循环迭代字符串。循环返回了每个 rune 开始的位置以及该 rune 本身。该程序的输出为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs fallback">S starts at byte 0<br>e starts at byte 1<br>ñ starts at byte 2<br>o starts at byte 4<br>r starts at byte 5<br></code></pre></td></tr></table></figure>
+
+<p>从上面的输出可以看出，<code>ñ</code> 占用了 2 个字节，因为下一个字符 <code>o</code> 从字节 4 开始，而不是从字节 3 开始 😀。</p>
+<h3 id="从字节切片创建字符串"><a href="#从字节切片创建字符串" class="headerlink" title="从字节切片创建字符串"></a>从字节切片创建字符串</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;fmt&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	byteSlice := []<span class="hljs-type">byte</span>&#123;<span class="hljs-number">0x43</span>, <span class="hljs-number">0x61</span>, <span class="hljs-number">0x66</span>, <span class="hljs-number">0xC3</span>, <span class="hljs-number">0xA9</span>&#125;<br>	str := <span class="hljs-type">string</span>(byteSlice)<br>	fmt.Println(str)<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/Vr9pf8X8xO">Run in playground</a></p>
+<p><em>byteSlice</em> 在上面程序的第8行包含了字符串 <code>Café</code> 的 <a target="_blank" rel="noopener" href="https://mothereff.in/utf-8#Caf%C3%A9">UTF-8 编码</a> 十六进制字节。程序输出</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs fallback">Café<br></code></pre></td></tr></table></figure>
+
+<p>如果我们有十六进制值的十进制等价物，上面的程序还会有效吗？让我们来检查一下。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;fmt&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	byteSlice := []<span class="hljs-type">byte</span>&#123;<span class="hljs-number">67</span>, <span class="hljs-number">97</span>, <span class="hljs-number">102</span>, <span class="hljs-number">195</span>, <span class="hljs-number">169</span>&#125;<span class="hljs-comment">//decimal equivalent of &#123;&#x27;\x43&#x27;, &#x27;\x61&#x27;, &#x27;\x66&#x27;, &#x27;\xC3&#x27;, &#x27;\xA9&#x27;&#125;</span><br>	str := <span class="hljs-type">string</span>(byteSlice)<br>	fmt.Println(str)<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/jgsRowW6XN">Run in playground</a></p>
+<p>十进制值也可以正常工作，上面的程序将打印 <code>Café</code>。</p>
+<h3 id="从-rune-切片创建字符串"><a href="#从-rune-切片创建字符串" class="headerlink" title="从 rune 切片创建字符串"></a>从 rune 切片创建字符串</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;fmt&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	runeSlice := []<span class="hljs-type">rune</span>&#123;<span class="hljs-number">0x0053</span>, <span class="hljs-number">0x0065</span>, <span class="hljs-number">0x00f1</span>, <span class="hljs-number">0x006f</span>, <span class="hljs-number">0x0072</span>&#125;<br>	str := <span class="hljs-type">string</span>(runeSlice)<br>	fmt.Println(str)<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/m8wTMOpYJP">Run in playground</a></p>
+<p>在上面的程序中，<code>runeSlice</code> 包含字符串 <code>Señor</code> 的 Unicode 代码点的十六进制表示。程序的输出是：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs fallback">Señor<br></code></pre></td></tr></table></figure>
+
+<h3 id="字符串长度"><a href="#字符串长度" class="headerlink" title="字符串长度"></a>字符串长度</h3><p>可以使用 <a target="_blank" rel="noopener" href="https://golang.org/pkg/unicode/utf8/#RuneCountInString">utf8 包</a> 的 <code>RuneCountInString(s string) (n int)</code> 函数来获取字符串的长度。该方法接受一个字符串作为参数，并返回其中的 rune 数量。</p>
+<p>如前所述，<code>len(s)</code> 用于获取字符串的字节数，而不是字符串的长度。正如我们之前讨论的那样，一些 Unicode 字符的代码点占用了超过 1 个字节。使用 <code>len</code> 来计算这些字符串的长度会返回不正确的字符串长度。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;fmt&quot;</span><br>	<span class="hljs-string">&quot;unicode/utf8&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	word1 := <span class="hljs-string">&quot;Señor&quot;</span><br>	fmt.Printf(<span class="hljs-string">&quot;String: %s\n&quot;</span>, word1)<br>	fmt.Printf(<span class="hljs-string">&quot;Length: %d\n&quot;</span>, utf8.RuneCountInString(word1))<br>	fmt.Printf(<span class="hljs-string">&quot;Number of bytes: %d\n&quot;</span>, <span class="hljs-built_in">len</span>(word1))<br><br>	fmt.Printf(<span class="hljs-string">&quot;\n&quot;</span>)<br>	word2 := <span class="hljs-string">&quot;Pets&quot;</span><br>	fmt.Printf(<span class="hljs-string">&quot;String: %s\n&quot;</span>, word2)<br>	fmt.Printf(<span class="hljs-string">&quot;Length: %d\n&quot;</span>, utf8.RuneCountInString(word2))<br>	fmt.Printf(<span class="hljs-string">&quot;Number of bytes: %d\n&quot;</span>, <span class="hljs-built_in">len</span>(word2))<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/KBQg1qagnfC">Run in playground</a></p>
+<p>上面的程序将会输出</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs fallback">String: Señor<br>Length: 5<br>Number of bytes: 6<br><br>String: Pets<br>Length: 4<br>Number of bytes: 4<br></code></pre></td></tr></table></figure>
+
+<p>上述输出确认了 <code>len(s)</code> 和 <code>RuneCountInString(s)</code> 返回的值不同 😀。</p>
+<h3 id="字符串比较"><a href="#字符串比较" class="headerlink" title="字符串比较"></a>字符串比较</h3><p>使用 <code>==</code> 运算符可以比较两个字符串是否相等。如果两个字符串相等，则结果为 <code>true</code>，否则为 <code>false</code>。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;fmt&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">compareStrings</span><span class="hljs-params">(str1 <span class="hljs-type">string</span>, str2 <span class="hljs-type">string</span>)</span></span> &#123;<br>	<span class="hljs-keyword">if</span> str1 == str2 &#123;<br>		fmt.Printf(<span class="hljs-string">&quot;%s and %s are equal\n&quot;</span>, str1, str2)<br>		<span class="hljs-keyword">return</span><br>	&#125;<br>	fmt.Printf(<span class="hljs-string">&quot;%s and %s are not equal\n&quot;</span>, str1, str2)<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	string1 := <span class="hljs-string">&quot;Go&quot;</span><br>	string2 := <span class="hljs-string">&quot;Go&quot;</span><br>	compareStrings(string1, string2)<br>	<br>	string3 := <span class="hljs-string">&quot;hello&quot;</span><br>	string4 := <span class="hljs-string">&quot;world&quot;</span><br>	compareStrings(string3, string4)<br><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/JEAMexbvJ1s">Run in playground</a></p>
+<p>在上面的 <code>compareStrings</code> 函数中，第 8 行使用 <code>==</code> 运算符比较两个字符串 <code>str1</code> 和 <code>str2</code> 是否相等。如果它们相等，则打印相应的消息，并且 <a href="../%E3%80%90GolangBot%E3%80%916-%E5%87%BD%E6%95%B0/">函数</a> 返回。</p>
+<p>上述程序打印：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs fallback">Go and Go are equal<br>hello and world are not equal<br></code></pre></td></tr></table></figure>
+
+<h3 id="字符串拼接"><a href="#字符串拼接" class="headerlink" title="字符串拼接"></a>字符串拼接</h3><p>在 Go 中，有多种方法可以进行字符串拼接。我们来看其中的几种方法。</p>
+<p>最简单的字符串拼接方式是使用 <code>+</code> 运算符。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;fmt&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	string1 := <span class="hljs-string">&quot;Go&quot;</span><br>	string2 := <span class="hljs-string">&quot;is awesome&quot;</span><br>	result := string1 + <span class="hljs-string">&quot; &quot;</span> + string2<br>	fmt.Println(result)<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/RCL8SGkrBe9">Run in playground</a></p>
+<p>在上面的程序中，程序的第10行将 <code>string1</code> 和 <code>string2</code> 用一个空格连接起来。该程序输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs fallback">Go is awesome<br></code></pre></td></tr></table></figure>
+
+<p>第二种连接字符串的方法是使用 <code>fmt</code> 包中的 <a target="_blank" rel="noopener" href="https://golang.org/pkg/fmt/#Sprintf">Sprintf</a> 函数。</p>
+<p><code>Sprintf</code> 函数根据输入的格式说明符格式化字符串，并返回结果字符串。让我们使用 <code>Sprintf</code> 函数重写上面的程序。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;fmt&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	string1 := <span class="hljs-string">&quot;Go&quot;</span><br>	string2 := <span class="hljs-string">&quot;is awesome&quot;</span><br>	result := fmt.Sprintf(<span class="hljs-string">&quot;%s %s&quot;</span>, string1, string2)<br>	fmt.Println(result)<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/AgqI29aQQDu">Run in playground</a></p>
+<p>在上面的程序中，第10行的 <code>%s %s</code> 是 <code>Sprintf</code> 的格式说明符输入。这个格式说明符接收两个字符串作为输入，并且它们之间有一个空格。这样就会将两个字符串连接起来，中间有一个空格。结果字符串会被存储在 <code>result</code> 变量中。该程序也会打印：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs fallback">Go is awesome<br></code></pre></td></tr></table></figure>
+
+<h3 id="字符串是不可变的"><a href="#字符串是不可变的" class="headerlink" title="字符串是不可变的"></a>字符串是不可变的</h3><p>在 Go 中，字符串是不可变的。一旦字符串被创建，就无法修改它。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (  <br>    <span class="hljs-string">&quot;fmt&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">mutate</span><span class="hljs-params">(s <span class="hljs-type">string</span>)</span></span><span class="hljs-type">string</span> &#123;<br>	s[<span class="hljs-number">0</span>] = <span class="hljs-string">&#x27;a&#x27;</span><span class="hljs-comment">//any valid unicode character within single quote is a rune </span><br>	<span class="hljs-keyword">return</span> s<br>&#125;<br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;  <br>    h := <span class="hljs-string">&quot;hello&quot;</span><br>    fmt.Println(mutate(h))<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/bv4SlSd_hp">Run in playground</a></p>
+<p>在上面的程序的第 8 行，我们试图将字符串的第一个字符更改为 <code>&#39;a&#39;</code>。在单引号内的任何有效 Unicode 字符都是一个 rune。我们尝试将 rune <code>a</code> 赋值给切片的第零个位置。这是不允许的，因为字符串是不可变的，因此程序无法编译并报错 <strong>.&#x2F;prog.go:8:7: cannot assign to s[0]</strong>。</p>
+<p>为了解决字符串不可变的问题，可以将字符串转换为 <a href="../%E3%80%90GolangBot%E3%80%9111-%E6%95%B0%E7%BB%84%E5%92%8C%E5%88%87%E7%89%87/">rune 切片</a>，然后在该切片上进行所需的修改，最后将其转换回一个新的字符串。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (  <br>    <span class="hljs-string">&quot;fmt&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">mutate</span><span class="hljs-params">(s []<span class="hljs-type">rune</span>)</span></span> <span class="hljs-type">string</span> &#123;<br>	s[<span class="hljs-number">0</span>] = <span class="hljs-string">&#x27;a&#x27;</span> <br>	<span class="hljs-keyword">return</span> <span class="hljs-type">string</span>(s)<br>&#125;<br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;  <br>    h := <span class="hljs-string">&quot;hello&quot;</span><br>    fmt.Println(mutate([]<span class="hljs-type">rune</span>(h)))<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/GL1cm17IP1">Run in playground</a></p>
+<p>在上面的程序的第 7 行，<code>mutate</code> 函数接受一个 rune 切片作为参数。然后，它将切片的第一个元素更改为 <code>&#39;a&#39;</code>，并将 rune 切片转换回字符串并返回。在程序的第 13 行调用了这个方法。<code>h</code> 被转换为 rune 切片并传递给 <code>mutate</code>。这个程序的输出是 <code>aello</code>。</p>
+<p>我已经将我们讨论过的内容整合到一个 GitHub 程序中，你可以 <a target="_blank" rel="noopener" href="https://github.com/golangbot/stringsexplained">点击这里下载</a>。</p>
+<p>这就是关于字符串的所有内容。祝你有个愉快的一天！</p>
+<p><strong>下一篇教程 - <a href="../%E3%80%90GolangBot%E3%80%9115-%E6%8C%87%E9%92%88/">指针</a></strong></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E5%BF%83%E5%BE%97/" class="category-chain-item">学习心得</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E5%BF%83%E5%BE%97/GolangBot/" class="category-chain-item">GolangBot</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Golang/" class="print-no-link">#Golang</a>
+      
+        <a href="/tags/%E6%95%99%E7%A8%8B/" class="print-no-link">#教程</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>【GolangBot】14-Strings</div>
+      <div>https://zoekyhein.github.io/【GolangBot】14-Strings/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>ZoeKyHein</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年12月24日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/%E3%80%90GolangBot%E3%80%9115-%E6%8C%87%E9%92%88/" title="【GolangBot】15-指针">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">【GolangBot】15-指针</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/%E3%80%90GolangBot%E3%80%9113-Maps/" title="【GolangBot】13-Maps">
+                        <span class="hidden-mobile">【GolangBot】13-Maps</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <link rel="stylesheet" type="text/css" href="https://cdn.jsdmirror.com/gh/muzihuaner/deng@main/deng.css"> <!-- 灯笼1 --> <div class="deng-box"> <div class="deng"> <div class="xian"></div> <div class="deng-a"> <div class="deng-b"><div class="deng-t">年</div></div> </div> <div class="shui shui-a"><div class="shui-c"></div><div class="shui-b"></div></div> </div> </div>
+<!-- 灯笼2 --> <div class="deng-box1"> <div class="deng"> <div class="xian"></div> <div class="deng-a"> <div class="deng-b"><div class="deng-t">新</div></div> </div> <div class="shui shui-a"><div class="shui-c"></div><div class="shui-b"></div></div> </div> </div>
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

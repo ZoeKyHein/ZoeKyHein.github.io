@@ -1,0 +1,736 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/icon.png">
+  <link rel="icon" href="/img/icon.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#ac9343">
+  <meta name="author" content="ZoeKyHein">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="欢迎来到Golang教程系列的第9课 循环用于重复执行一段代码，直到满足某个条件为止。 在Go中，for 是唯一的循环。Go没有像C语言那样的while或do while循环。 for 循环语法12for 初始化; 条件; 后续操作 &#123;&#125;  初始化语句只会执行一次。循环初始化后，会检查条件。如果条件为真，则会执行 &#123;&#125; 中的循环体代码，然后执行后续操作语句。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【GolangBot】9-循环">
+<meta property="og:url" content="https://zoekyhein.github.io/%E3%80%90GolangBot%E3%80%919-%E5%BE%AA%E7%8E%AF/index.html">
+<meta property="og:site_name" content="传火祭祀场">
+<meta property="og:description" content="欢迎来到Golang教程系列的第9课 循环用于重复执行一段代码，直到满足某个条件为止。 在Go中，for 是唯一的循环。Go没有像C语言那样的while或do while循环。 for 循环语法12for 初始化; 条件; 后续操作 &#123;&#125;  初始化语句只会执行一次。循环初始化后，会检查条件。如果条件为真，则会执行 &#123;&#125; 中的循环体代码，然后执行后续操作语句。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-12-19T18:48:57.000Z">
+<meta property="article:modified_time" content="2025-01-03T01:30:04.020Z">
+<meta property="article:author" content="ZoeKyHein">
+<meta property="article:tag" content="Golang">
+<meta property="article:tag" content="教程">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>【GolangBot】9-循环 - 传火祭祀场</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"zoekyhein.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"💥","loop":false,"scope":["home"]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>传火祭祀场</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/golangbot" target="_self">
+                <i class="iconfont icon-book"></i>
+                <span>Go教程</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/sunKnight.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">【GolangBot】9-循环</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-12-19 18:48" pubdate>
+          2024年12月19日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          17 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">【GolangBot】9-循环</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>欢迎来到<a href="../golangbot/">Golang教程系列</a>的第9课</p>
+<p>循环用于重复执行一段代码，直到满足某个条件为止。</p>
+<p>在Go中，<code>for</code> 是唯一的循环。Go没有像C语言那样的<code>while</code>或<code>do while</code>循环。</p>
+<h3 id="for-循环语法"><a href="#for-循环语法" class="headerlink" title="for 循环语法"></a>for 循环语法</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">for</span> 初始化; 条件; 后续操作 &#123;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>初始化语句只会执行一次。循环初始化后，会检查条件。如果条件为真，则会执行 <code>&#123;&#125;</code> 中的循环体代码，然后执行后续操作语句。后续操作语句会在每次成功迭代后执行。执行完后续操作语句后，会再次检查条件。如果条件为真，循环将继续执行，否则<code>for</code>循环终止。</p>
+<p>在Go中，初始化、条件和后续操作这三个部分都是可选的。让我们通过一个例子来更好地理解<code>for</code>循环。</p>
+<h3 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h3><p>我们来写一个程序，使用<code>for</code>循环打印从1到10的数字。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;fmt&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	<span class="hljs-keyword">for</span> i := <span class="hljs-number">1</span>; i &lt;= <span class="hljs-number">10</span>; i++ &#123;<br>		fmt.Printf(<span class="hljs-string">&quot;%d &quot;</span>, i)<br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://go.dev/play/p/C7lOa1D_0-1">在Playground中运行</a></p>
+<p>在上述程序中，<code>i</code>被初始化为1。条件语句检查<code>i &lt;= 10</code>是否为真。如果条件为真，则打印<code>i</code>的值，否则循环终止。后续操作语句在每次迭代结束时将<code>i</code>增加1。一旦<code>i</code>大于10，循环终止。</p>
+<p>上述程序将打印：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs fallback">1 2 3 4 5 6 7 8 9 10<br></code></pre></td></tr></table></figure>
+
+<p>在<code>for</code>循环中声明的变量只能在循环的作用域内访问。因此，<code>i</code>无法在<code>for</code>循环体外部访问。</p>
+<h3 id="break"><a href="#break" class="headerlink" title="break"></a>break</h3><p><code>break</code>语句用于在<code>for</code>循环完成正常执行之前中断循环，并将控制转移到<code>for</code>循环之后的代码行。</p>
+<p>让我们修改上述程序，使其在打印到5时中断。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;fmt&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	<span class="hljs-keyword">for</span> i := <span class="hljs-number">1</span>; i &lt;= <span class="hljs-number">10</span>; i++ &#123;<br>		<span class="hljs-keyword">if</span> i &gt; <span class="hljs-number">5</span> &#123;<br>			<span class="hljs-keyword">break</span> <span class="hljs-comment">//如果i &gt; 5，循环终止</span><br>		&#125;<br>		fmt.Printf(<span class="hljs-string">&quot;%d &quot;</span>, i)<br>	&#125;<br>	fmt.Printf(<span class="hljs-string">&quot;</span><br><span class="hljs-string">loop ended&quot;</span>)<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://go.dev/play/p/v5MIpHz6H6J">在Playground中运行</a></p>
+<p>在上述程序中，每次迭代都会检查<code>i</code>的值。如果<code>i</code>大于5，则执行<code>break</code>并终止循环。随后执行循环之后的打印语句。上述程序将输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs fallback">1 2 3 4 5 <br>loop ended<br></code></pre></td></tr></table></figure>
+
+<h3 id="continue"><a href="#continue" class="headerlink" title="continue"></a>continue</h3><p><code>continue</code>语句用于跳过当前迭代的剩余代码。<code>for</code>循环中<code>continue</code>之后的所有代码在当前迭代中将不会被执行。循环将直接跳到下一次迭代。</p>
+<p>让我们编写一个程序，使用<code>continue</code>打印1到10之间的所有奇数。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;fmt&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	<span class="hljs-keyword">for</span> i := <span class="hljs-number">1</span>; i &lt;= <span class="hljs-number">10</span>; i++ &#123;<br>		<span class="hljs-keyword">if</span> i%<span class="hljs-number">2</span> == <span class="hljs-number">0</span> &#123;<br>			<span class="hljs-keyword">continue</span><br>		&#125;<br>		fmt.Printf(<span class="hljs-string">&quot;%d &quot;</span>, i)<br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://go.dev/play/p/ZGsEFZzxYhD">在Playground中运行</a></p>
+<p>在上述程序中，第9行检查<code>i</code>除以2的余数是否为0。如果为0，则数字是偶数，执行<code>continue</code>语句，控制直接跳到循环的下一次迭代。因此，<code>continue</code>后的打印语句不会被调用，循环进入下一次迭代。上述程序的输出为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs fallback">1 3 5 7 9<br></code></pre></td></tr></table></figure>
+
+<h3 id="嵌套循环"><a href="#嵌套循环" class="headerlink" title="嵌套循环"></a>嵌套循环</h3><p>一个<code>for</code>循环如果里面还有另一个<code>for</code>循环，那它就被称为嵌套循环。</p>
+<p>我们写个程序打印如下序列来了解嵌套循环。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs fallback">*<br>**<br>***<br>****<br>*****<br></code></pre></td></tr></table></figure>
+
+<p>下面的程序使用嵌套打印序列。第8行的变量<code>n</code>存储了序列的行数。在我们的示例中是<code>5</code>。外层循环<code>i</code>从<code>0</code>迭代到<code>4</code>，内层循环<code>j</code>从<code>0</code>迭代到当前<code>i</code>的值。内层循环每次迭代都会打印<code>*</code>，外层循环每次迭代都会打印一个空行。运行这个程序你会看到序列打印出来作为输出。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;fmt&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	n := <span class="hljs-number">5</span><br>	<span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; n; i++ &#123;<br>		<span class="hljs-keyword">for</span> j := <span class="hljs-number">0</span>; j &lt;= i; j++ &#123;<br>			fmt.Print(<span class="hljs-string">&quot;*&quot;</span>)<br>		&#125;<br>		fmt.Println()<br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://go.dev/play/p/0rq8fWjVDLb">Run in playground</a></p>
+<h3 id="标签"><a href="#标签" class="headerlink" title="标签"></a>标签</h3><p>标签可以用来从内层循环内部终止外层循环。让我们用一个简单的例子来理解这是什么意思。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;fmt&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	<span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">3</span>; i++ &#123;<br>		<span class="hljs-keyword">for</span> j := <span class="hljs-number">1</span>; j &lt; <span class="hljs-number">4</span>; j++ &#123;<br>			fmt.Printf(<span class="hljs-string">&quot;i = %d , j = %d\n&quot;</span>, i, j)<br>		&#125;<br><br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://go.dev/play/p/BnCKho2x5hM">Run in playground</a></p>
+<p>上面的程序的作用不言自明，它会打印</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs fallback">i = 0 , j = 1<br>i = 0 , j = 2<br>i = 0 , j = 3<br>i = 1 , j = 1<br>i = 1 , j = 2<br>i = 1 , j = 3<br>i = 2 , j = 1<br>i = 2 , j = 2<br>i = 2 , j = 3<br></code></pre></td></tr></table></figure>
+
+<p>在这里没什么特别的:)。</p>
+<p>如果我想在<code>i</code>和<code>j</code>相等的时候停止打印该怎么办呢？为了达成目的，我们需要从外层<code>for</code>循环<code>break</code>。当内层<code>for</code>循环<code>i</code>和<code>j</code>相等的时候添加一个<code>break</code>，将会只结束内层<code>for</code>循环。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;fmt&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	<span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">3</span>; i++ &#123;<br>		<span class="hljs-keyword">for</span> j := <span class="hljs-number">1</span>; j &lt; <span class="hljs-number">4</span>; j++ &#123;<br>			fmt.Printf(<span class="hljs-string">&quot;i = %d , j = %d\n&quot;</span>, i, j)<br>			<span class="hljs-keyword">if</span> i == j &#123;<br>				<span class="hljs-keyword">break</span><br>			&#125;<br>		&#125;<br><br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://go.dev/play/p/uMjbF8Ii41d">Run in playground</a></p>
+<p>在上面的程序中，我已经在第10行内层<code>for</code>循环<code>i</code>和<code>j</code>相等的时候添加了一个<code>break</code>。这只是<code>break</code>掉了内层循环，而外层循环还在继续。这个程序将会打印</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs fallback">i = 0 , j = 1<br>i = 0 , j = 2<br>i = 0 , j = 3<br>i = 1 , j = 1<br>i = 2 , j = 1<br>i = 2 , j = 2<br></code></pre></td></tr></table></figure>
+
+<p>这不是我们预期的输出。我们需要在<code>i</code>和<code>j</code>相等的时候停止打印，比如他们都等于<code>1</code>的时候。</p>
+<p>这时就需要标签来救我们了。标签可以用来终止外层循环。我们用标签重写上面的程序。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;fmt&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>outer:<br>	<span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">3</span>; i++ &#123;<br>		<span class="hljs-keyword">for</span> j := <span class="hljs-number">1</span>; j &lt; <span class="hljs-number">4</span>; j++ &#123;<br>			fmt.Printf(<span class="hljs-string">&quot;i = %d , j = %d\n&quot;</span>, i, j)<br>			<span class="hljs-keyword">if</span> i == j &#123;<br>				<span class="hljs-keyword">break</span> outer<br>			&#125;<br>		&#125;<br><br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://go.dev/play/p/BI10Rmp_Z3y">Run in playground</a></p>
+<p>在上面的程序中，我们已经为外层循环在第8行添加了一个<code>outer</code>标签，并且我们在第13行已通过指定标签break了外层循环。这个程序将会在<code>i</code>和<code>j</code>相等的时候停止打印。程序将会输出</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs fallback">i = 0 , j = 1<br>i = 0 , j = 2<br>i = 0 , j = 3<br>i = 1 , j = 1<br></code></pre></td></tr></table></figure>
+
+<h3 id="使用for循环实现while循环"><a href="#使用for循环实现while循环" class="headerlink" title="使用for循环实现while循环"></a>使用for循环实现while循环</h3><p>我们在前面讨论过，<code>for</code>循环是go中唯一可用的循环语句。我们可以使用for循环的变体来实现<code>while</code>循环的功能。让我们来讨论一下如何实现。下面的程序打印从0到10的所有偶数。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;fmt&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	i := <span class="hljs-number">0</span><br>	<span class="hljs-keyword">for</span> ;i &lt;= <span class="hljs-number">10</span>; &#123; <span class="hljs-comment">// initialisation and post are omitted</span><br>		fmt.Printf(<span class="hljs-string">&quot;%d &quot;</span>, i)<br>		i += <span class="hljs-number">2</span><br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://go.dev/play/p/xstHXjQrWcc">Run in playground</a></p>
+<p>我们已经知道for循环的所有三个组成部分，即初始化、条件和后置条件，它们都是可选的。在山脉呢程序中忽略了初始化和后置条件。<code>i</code>在循环外面被初始化为<code>0</code>。只要<code>i&lt;=10</code>循环就会执行。<code>i</code>在循环内每次加<code>2</code>。上面的程序将会打印<code>0 2 4 6 8 10 </code>。</p>
+<p>上面程序中循环的封号也可以被省略。这种格式可以看作是<code>while</code>循环的一种替代格式。上面的程序可以重写为</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;fmt&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	i := <span class="hljs-number">0</span><br>	<span class="hljs-keyword">for</span> i &lt;= <span class="hljs-number">10</span> &#123; <span class="hljs-comment">//semicolons are ommitted and only condition is present. This is similar to while loop.</span><br>		fmt.Printf(<span class="hljs-string">&quot;%d &quot;</span>, i)<br>		i += <span class="hljs-number">2</span><br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://go.dev/play/p/4kU5944zDto">Run in playground</a></p>
+<h3 id="多重变量声明"><a href="#多重变量声明" class="headerlink" title="多重变量声明"></a>多重变量声明</h3><p>在一个<code>for</code>循环中声明和操作多个变量也是可以的。让我们写一个程序，用多重变量声明来打印如下的序列。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs fallback">10 * 1 = 10<br>11 * 2 = 22<br>12 * 3 = 36<br>13 * 4 = 52<br>14 * 5 = 70<br>15 * 6 = 90<br>16 * 7 = 112<br>17 * 8 = 136<br>18 * 9 = 162<br>19 * 10 = 190<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;fmt&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	<span class="hljs-keyword">for</span> no, i := <span class="hljs-number">10</span>, <span class="hljs-number">1</span>; i &lt;= <span class="hljs-number">10</span> &amp;&amp; no &lt;= <span class="hljs-number">19</span>; i, no = i+<span class="hljs-number">1</span>, no+<span class="hljs-number">1</span> &#123; <span class="hljs-comment">//multiple initialisation and increment</span><br>		fmt.Printf(<span class="hljs-string">&quot;%d * %d = %d\n&quot;</span>, no, i, no*i)<br>	&#125;<br><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://go.dev/play/p/oFcmLl3NHzK">Run in playground</a></p>
+<p>在上面的程序中<code>no</code>和<code>i</code>被声明，并且分别被初始化为10和1。每次循环结束后它们增加1。布尔操作符<code>&amp;&amp;</code>被用在条件里，它用来确保<code>i</code>小于等于10并且<code>no</code>小于等于19。</p>
+<h3 id="死循环"><a href="#死循环" class="headerlink" title="死循环"></a>死循环</h3><p>创建一个死循环的语法如下，</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">for</span> &#123;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>下面的程序将会持续不断地打印<code>Hello World</code>。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> <span class="hljs-string">&quot;fmt&quot;</span><br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	<span class="hljs-keyword">for</span> &#123;<br>		fmt.Println(<span class="hljs-string">&quot;Hello World&quot;</span>)<br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>如果你尝试着在<a target="_blank" rel="noopener" href="https://go.dev/play/p/3Dmj7QVbQJz">在线环境</a>运行上面的程序，你会得到错误<code>timeout running program</code>。请试着在你的本地环境运行，打印无限多的”Hello World”。</p>
+<p>还有一种结构<strong>range</strong>可以在<code>for</code>循环中用于<a href="../%E3%80%90GolangBot%E3%80%9111-%E6%95%B0%E7%BB%84%E5%92%8C%E5%88%87%E7%89%87/">数组操作</a>。我们将会在数组章节来探讨它。</p>
+<p><strong>下一篇教程 - <a href="../%E3%80%90GolangBot%E3%80%9110-switch%E8%AF%AD%E5%8F%A5/">switch语句</a></strong></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E5%BF%83%E5%BE%97/" class="category-chain-item">学习心得</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E5%BF%83%E5%BE%97/GolangBot/" class="category-chain-item">GolangBot</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Golang/" class="print-no-link">#Golang</a>
+      
+        <a href="/tags/%E6%95%99%E7%A8%8B/" class="print-no-link">#教程</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>【GolangBot】9-循环</div>
+      <div>https://zoekyhein.github.io/【GolangBot】9-循环/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>ZoeKyHein</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年12月19日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/%E3%80%90GolangBot%E3%80%9110-switch%E8%AF%AD%E5%8F%A5/" title="【GolangBot】10-switch语句">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">【GolangBot】10-switch语句</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/%E3%80%90GolangBot%E3%80%918-if-else%E8%AF%AD%E5%8F%A5/" title="【GolangBot】8-if else语句">
+                        <span class="hidden-mobile">【GolangBot】8-if else语句</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <link rel="stylesheet" type="text/css" href="https://cdn.jsdmirror.com/gh/muzihuaner/deng@main/deng.css"> <!-- 灯笼1 --> <div class="deng-box"> <div class="deng"> <div class="xian"></div> <div class="deng-a"> <div class="deng-b"><div class="deng-t">年</div></div> </div> <div class="shui shui-a"><div class="shui-c"></div><div class="shui-b"></div></div> </div> </div>
+<!-- 灯笼2 --> <div class="deng-box1"> <div class="deng"> <div class="xian"></div> <div class="deng-a"> <div class="deng-b"><div class="deng-t">新</div></div> </div> <div class="shui shui-a"><div class="shui-c"></div><div class="shui-b"></div></div> </div> </div>
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

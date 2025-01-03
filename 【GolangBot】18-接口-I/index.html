@@ -1,0 +1,742 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/icon.png">
+  <link rel="icon" href="/img/icon.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#ac9343">
+  <meta name="author" content="ZoeKyHein">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="欢迎来到 Go 语言教程系列 的第 18 讲。这是接口教程两个部分中的第一部分。 什么是接口？在 Go 中，接口是一组方法签名的集合。当一个类型为接口中的所有方法提供定义时，就称该类型实现了这个接口。 这与面向对象编程世界很相似。接口指定了一个类型应该有哪些方法，而类型决定如何实现这些方法。 例如 WashingMachine 可以是一个带有方法签名 Cleaning() 和 Drying() 的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【GolangBot】18-接口 I">
+<meta property="og:url" content="https://zoekyhein.github.io/%E3%80%90GolangBot%E3%80%9118-%E6%8E%A5%E5%8F%A3-I/index.html">
+<meta property="og:site_name" content="传火祭祀场">
+<meta property="og:description" content="欢迎来到 Go 语言教程系列 的第 18 讲。这是接口教程两个部分中的第一部分。 什么是接口？在 Go 中，接口是一组方法签名的集合。当一个类型为接口中的所有方法提供定义时，就称该类型实现了这个接口。 这与面向对象编程世界很相似。接口指定了一个类型应该有哪些方法，而类型决定如何实现这些方法。 例如 WashingMachine 可以是一个带有方法签名 Cleaning() 和 Drying() 的">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-12-24T14:52:41.000Z">
+<meta property="article:modified_time" content="2025-01-03T01:30:04.016Z">
+<meta property="article:author" content="ZoeKyHein">
+<meta property="article:tag" content="Golang">
+<meta property="article:tag" content="教程">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>【GolangBot】18-接口 I - 传火祭祀场</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"zoekyhein.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"💥","loop":false,"scope":["home"]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>传火祭祀场</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/golangbot" target="_self">
+                <i class="iconfont icon-book"></i>
+                <span>Go教程</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/sunKnight.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">【GolangBot】18-接口 I</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-12-24 14:52" pubdate>
+          2024年12月24日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          22 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">【GolangBot】18-接口 I</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>欢迎来到 <a href="../golangbot/">Go 语言教程系列</a> 的第 18 讲。这是接口教程两个部分中的第一部分。</p>
+<h3 id="什么是接口？"><a href="#什么是接口？" class="headerlink" title="什么是接口？"></a>什么是接口？</h3><p><strong>在 Go 中，接口是一组方法签名的集合。当一个类型为接口中的所有方法提供定义时，就称该类型实现了这个接口。</strong> 这与面向对象编程世界很相似。接口指定了一个类型应该有哪些<a target="_blank" rel="noopener" href="https://golangbot.com/methods/">方法</a>，而类型决定如何实现这些方法。</p>
+<p>例如 <em>WashingMachine</em> 可以是一个带有<a href="../%E3%80%90GolangBot%E3%80%9117-%E6%96%B9%E6%B3%95/">方法</a>签名 <em>Cleaning()</em> 和 <em>Drying()</em> 的接口。任何提供了 <em>Cleaning()</em> 和 <em>Drying()</em> 方法定义的类型都被认为实现了 <em>WashingMachine</em> 接口。</p>
+<h3 id="声明和实现接口"><a href="#声明和实现接口" class="headerlink" title="声明和实现接口"></a>声明和实现接口</h3><p>让我们直接通过一个创建和实现接口的程序来学习。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>    <span class="hljs-string">&quot;fmt&quot;</span><br>)<br><br><span class="hljs-comment">//interface definition</span><br><span class="hljs-keyword">type</span> VowelsFinder <span class="hljs-keyword">interface</span> &#123;<br>    FindVowels() []<span class="hljs-type">rune</span><br>&#125;<br><br><span class="hljs-keyword">type</span> MyString <span class="hljs-type">string</span><br><br><span class="hljs-comment">//MyString implements VowelsFinder</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(ms MyString)</span></span> FindVowels() []<span class="hljs-type">rune</span> &#123;<br>    <span class="hljs-keyword">var</span> vowels []<span class="hljs-type">rune</span><br>    <span class="hljs-keyword">for</span> _, <span class="hljs-type">rune</span> := <span class="hljs-keyword">range</span> ms &#123;<br>        <span class="hljs-keyword">if</span> <span class="hljs-type">rune</span> == <span class="hljs-string">&#x27;a&#x27;</span> || <span class="hljs-type">rune</span> == <span class="hljs-string">&#x27;e&#x27;</span> || <span class="hljs-type">rune</span> == <span class="hljs-string">&#x27;i&#x27;</span> || <span class="hljs-type">rune</span> == <span class="hljs-string">&#x27;o&#x27;</span> || <span class="hljs-type">rune</span> == <span class="hljs-string">&#x27;u&#x27;</span> &#123;<br>            vowels = <span class="hljs-built_in">append</span>(vowels, <span class="hljs-type">rune</span>)<br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">return</span> vowels<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>    name := MyString(<span class="hljs-string">&quot;Sam Anderson&quot;</span>)<br>    <span class="hljs-keyword">var</span> v VowelsFinder<br>    v = name <span class="hljs-comment">// possible since MyString implements VowelsFinder</span><br>    fmt.Printf(<span class="hljs-string">&quot;Vowels are %c&quot;</span>, v.FindVowels())<br><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/F-T3S_wNNB">在 playground 中运行</a></p>
+<p>上述程序第 8 行创建了一个名为 <code>VowelsFinder</code> 的接口类型，该接口有一个方法 <code>FindVowels() []rune</code>。</p>
+<p>接下来一行创建了一个 <code>MyString</code> 类型。</p>
+<p><strong>在第 15 行，我们为接收者类型 <code>MyString</code> 添加了方法 <code>FindVowels() []rune</code>。现在可以说 <code>MyString</code> 实现了接口 <code>VowelsFinder</code>。</strong> 这与其他语言（如 Java）有很大不同，在 Java 中，一个类必须使用 <code>implements</code> 关键字显式声明它实现了一个接口。<strong>在 Go 中不需要这样做，如果一个类型包含了接口声明的所有方法，那么这个类型就隐式地实现了该接口。</strong></p>
+<p>在第 28 行，我们将 <code>MyString</code> 类型的 <code>name</code> 赋值给 VowelsFinder 类型的 v。这是可能的，因为 <code>MyString</code> 实现了 <code>VowelsFinder</code> 接口。下一行的 <code>v.FindVowels()</code> 调用了 <code>MyString</code> 类型的 FindVowels 方法，并打印出字符串 <code>Sam Anderson</code> 中的所有元音字母。该程序输出：</p>
+<figure class="highlight inform7"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs inform7">Vowels <span class="hljs-keyword">are</span> <span class="hljs-comment">[a e o]</span><br></code></pre></td></tr></table></figure>
+
+<p>恭喜！你已经创建并实现了你的第一个接口。</p>
+<h3 id="接口的实际应用"><a href="#接口的实际应用" class="headerlink" title="接口的实际应用"></a>接口的实际应用</h3><p>上面的例子教会了我们如何创建和实现接口，但它并没有真正展示接口的实际用途。在上面的程序中，如果我们使用 <code>name.FindVowels()</code> 而不是 <code>v.FindVowels()</code>，程序也能工作，接口就没有什么用了。</p>
+<p>现在让我们看看接口的一个实际应用。</p>
+<p>我们将编写一个简单的程序，根据员工的个人薪资计算公司的总支出。为了简单起见，我们假设所有费用都以美元计算。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>    <span class="hljs-string">&quot;fmt&quot;</span><br>)<br><br><span class="hljs-keyword">type</span> SalaryCalculator <span class="hljs-keyword">interface</span> &#123;<br>    CalculateSalary() <span class="hljs-type">int</span><br>&#125;<br><br><span class="hljs-keyword">type</span> Permanent <span class="hljs-keyword">struct</span> &#123;<br>    empId    <span class="hljs-type">int</span><br>    basicpay <span class="hljs-type">int</span><br>    pf       <span class="hljs-type">int</span><br>&#125;<br><br><span class="hljs-keyword">type</span> Contract <span class="hljs-keyword">struct</span> &#123;<br>    empId    <span class="hljs-type">int</span><br>    basicpay <span class="hljs-type">int</span><br>&#125;<br><br><span class="hljs-comment">//salary of permanent employee is the sum of basic pay and pf</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(p Permanent)</span></span> CalculateSalary() <span class="hljs-type">int</span> &#123;<br>    <span class="hljs-keyword">return</span> p.basicpay + p.pf<br>&#125;<br><br><span class="hljs-comment">//salary of contract employee is the basic pay alone</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(c Contract)</span></span> CalculateSalary() <span class="hljs-type">int</span> &#123;<br>    <span class="hljs-keyword">return</span> c.basicpay<br>&#125;<br><br><span class="hljs-comment">/*</span><br><span class="hljs-comment">total expense is calculated by iterating through the SalaryCalculator slice and summing</span><br><span class="hljs-comment">the salaries of the individual employees</span><br><span class="hljs-comment">*/</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">totalExpense</span><span class="hljs-params">(s []SalaryCalculator)</span></span> &#123;<br>    expense := <span class="hljs-number">0</span><br>    <span class="hljs-keyword">for</span> _, v := <span class="hljs-keyword">range</span> s &#123;<br>        expense = expense + v.CalculateSalary()<br>    &#125;<br>    fmt.Printf(<span class="hljs-string">&quot;Total Expense Per Month $%d&quot;</span>, expense)<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>    pemp1 := Permanent&#123;<br>        empId:    <span class="hljs-number">1</span>,<br>        basicpay: <span class="hljs-number">5000</span>,<br>        pf:       <span class="hljs-number">20</span>,<br>    &#125;<br>    pemp2 := Permanent&#123;<br>        empId:    <span class="hljs-number">2</span>,<br>        basicpay: <span class="hljs-number">6000</span>,<br>        pf:       <span class="hljs-number">30</span>,<br>    &#125;<br>    cemp1 := Contract&#123;<br>        empId:    <span class="hljs-number">3</span>,<br>        basicpay: <span class="hljs-number">3000</span>,<br>    &#125;<br>    employees := []SalaryCalculator&#123;pemp1, pemp2, cemp1&#125;<br>    totalExpense(employees)<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/3DZQH_Xh_Pl">在 playground 中运行</a></p>
+<p>上述程序第 7 行声明了一个带有单个方法 <code>CalculateSalary() int</code> 的 <code>SalaryCalculator</code> 接口。</p>
+<p>公司有两种类型的员工，<code>Permanent</code> 和 <code>Contract</code>，分别由第 11 行和第 17 行的<a href="../%E3%80%90GolangBot%E3%80%9116-%E7%BB%93%E6%9E%84%E4%BD%93/">结构体</a>定义。永久员工的薪资是 <code>basicpay</code> 和 <code>pf</code> 的总和，而合同员工的薪资只有 <code>basicpay</code>。这在第 23 行和第 28 行的相应 <code>CalculateSalary</code> 方法中得到了体现。通过声明这个方法，<code>Permanent</code> 和 <code>Contract</code> 结构体现在都实现了 <code>SalaryCalculator</code> 接口。</p>
+<p>第 36 行声明的 <code>totalExpense</code> <a href="../%E3%80%90GolangBot%E3%80%916-%E5%87%BD%E6%95%B0/">函数</a>展现了接口的优雅之处。这个方法接受一个 SalaryCalculator 接口的<a href="../%E3%80%90GolangBot%E3%80%9111-%E6%95%B0%E7%BB%84%E5%92%8C%E5%88%87%E7%89%87/">切片</a> <code>[]SalaryCalculator</code> 作为参数。在第 59 行，我们向 <code>totalExpense</code> 函数传递了一个包含 <code>Permanent</code> 和 <code>Contract</code> 类型的切片。<code>totalExpense</code> 函数通过调用相应类型的 <code>CalculateSalary</code> 方法来计算支出。这在第 39 行完成。</p>
+<p>程序输出：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-attribute">Total</span> Expense Per Month <span class="hljs-variable">$14050</span><br></code></pre></td></tr></table></figure>
+
+<p>这样做的最大优势是 <code>totalExpense</code> 可以扩展到任何新的员工类型，而无需任何代码更改。假设公司添加了一个具有不同薪资结构的新员工类型 <code>Freelancer</code>。这个 <code>Freelancer</code> 可以直接传入到 <code>totalExpense</code> 的切片参数中，而不需要对 <code>totalExpense</code> 函数进行任何代码更改。这个方法将按预期工作，因为 <code>Freelancer</code> 也将实现 <code>SalaryCalculator</code> 接口 :)。</p>
+<p>让我们修改这个程序并添加新的 <code>Freelancer</code> 员工。自由职业者的薪资是每小时工资和工作总小时数的乘积。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>    <span class="hljs-string">&quot;fmt&quot;</span><br>)<br><br><span class="hljs-keyword">type</span> SalaryCalculator <span class="hljs-keyword">interface</span> &#123;<br>    CalculateSalary() <span class="hljs-type">int</span><br>&#125;<br><br><span class="hljs-keyword">type</span> Permanent <span class="hljs-keyword">struct</span> &#123;<br>    empId    <span class="hljs-type">int</span><br>    basicpay <span class="hljs-type">int</span><br>    pf       <span class="hljs-type">int</span><br>&#125;<br><br><span class="hljs-keyword">type</span> Contract <span class="hljs-keyword">struct</span> &#123;<br>    empId    <span class="hljs-type">int</span><br>    basicpay <span class="hljs-type">int</span><br>&#125;<br><br><span class="hljs-keyword">type</span> Freelancer <span class="hljs-keyword">struct</span> &#123;<br>    empId       <span class="hljs-type">int</span><br>    ratePerHour <span class="hljs-type">int</span><br>    totalHours  <span class="hljs-type">int</span><br>&#125;<br><br><span class="hljs-comment">//salary of permanent employee is sum of basic pay and pf</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(p Permanent)</span></span> CalculateSalary() <span class="hljs-type">int</span> &#123;<br>    <span class="hljs-keyword">return</span> p.basicpay + p.pf<br>&#125;<br><br><span class="hljs-comment">//salary of contract employee is the basic pay alone</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(c Contract)</span></span> CalculateSalary() <span class="hljs-type">int</span> &#123;<br>    <span class="hljs-keyword">return</span> c.basicpay<br>&#125;<br><br><span class="hljs-comment">//salary of freelancer</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(f Freelancer)</span></span> CalculateSalary() <span class="hljs-type">int</span> &#123;<br>    <span class="hljs-keyword">return</span> f.ratePerHour * f.totalHours<br>&#125;<br><br><span class="hljs-comment">/*</span><br><span class="hljs-comment">total expense is calculated by iterating through the SalaryCalculator slice and summing</span><br><span class="hljs-comment">the salaries of the individual employees</span><br><span class="hljs-comment">*/</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">totalExpense</span><span class="hljs-params">(s []SalaryCalculator)</span></span> &#123;<br>    expense := <span class="hljs-number">0</span><br>    <span class="hljs-keyword">for</span> _, v := <span class="hljs-keyword">range</span> s &#123;<br>        expense = expense + v.CalculateSalary()<br>    &#125;<br>    fmt.Printf(<span class="hljs-string">&quot;Total Expense Per Month $%d&quot;</span>, expense)<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>    pemp1 := Permanent&#123;<br>        empId:    <span class="hljs-number">1</span>,<br>        basicpay: <span class="hljs-number">5000</span>,<br>        pf:       <span class="hljs-number">20</span>,<br>    &#125;<br>    pemp2 := Permanent&#123;<br>        empId:    <span class="hljs-number">2</span>,<br>        basicpay: <span class="hljs-number">6000</span>,<br>        pf:       <span class="hljs-number">30</span>,<br>    &#125;<br>    cemp1 := Contract&#123;<br>        empId:    <span class="hljs-number">3</span>,<br>        basicpay: <span class="hljs-number">3000</span>,<br>    &#125;<br>    freelancer1 := Freelancer&#123;<br>        empId:       <span class="hljs-number">4</span>,<br>        ratePerHour: <span class="hljs-number">70</span>,<br>        totalHours:  <span class="hljs-number">120</span>,<br>    &#125;<br>    freelancer2 := Freelancer&#123;<br>        empId:       <span class="hljs-number">5</span>,<br>        ratePerHour: <span class="hljs-number">100</span>,<br>        totalHours:  <span class="hljs-number">100</span>,<br>    &#125;<br>    employees := []SalaryCalculator&#123;pemp1, pemp2, cemp1, freelancer1, freelancer2&#125;<br>    totalExpense(employees)<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/J48P5g8ArLn">在 playground 中运行</a></p>
+<p>我们在第 22 行添加了 <code>Freelancer</code> 结构体，并在第 39 行声明了 <code>CalculateSalary</code> 方法。由于 <code>Freelancer</code> 结构体也实现了 <code>SalaryCalculator</code> 接口，因此不需要在 <code>totalExpense</code> 方法中进行任何代码更改。我们在 <code>main</code> 方法中添加了几个 <code>Freelancer</code> 员工。这个程序打印：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs fallback">Total Expense Per Month $32450<br></code></pre></td></tr></table></figure>
+
+<h3 id="接口的内部表示"><a href="#接口的内部表示" class="headerlink" title="接口的内部表示"></a>接口的内部表示</h3><p>接口在内部可以被认为是由一个元组 <code>(type, value)</code> 表示的。<code>type</code> 是接口的底层具体类型，而 <code>value</code> 持有具体类型的值。</p>
+<p>让我们通过一个程序来更好地理解这一点。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>    <span class="hljs-string">&quot;fmt&quot;</span><br>)<br><br><span class="hljs-keyword">type</span> Worker <span class="hljs-keyword">interface</span> &#123;<br>    Work()<br>&#125;<br><br><span class="hljs-keyword">type</span> Person <span class="hljs-keyword">struct</span> &#123;<br>    name <span class="hljs-type">string</span><br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(p Person)</span></span> Work() &#123;<br>    fmt.Println(p.name, <span class="hljs-string">&quot;is working&quot;</span>)<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">describe</span><span class="hljs-params">(w Worker)</span></span> &#123;<br>    fmt.Printf(<span class="hljs-string">&quot;Interface type %T value %v\n&quot;</span>, w, w)<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>    p := Person&#123;<br>        name: <span class="hljs-string">&quot;Naveen&quot;</span>,<br>    &#125;<br>    <span class="hljs-keyword">var</span> w Worker = p<br>    describe(w)<br>    w.Work()<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/kweC7_oELzE">在 playground 中运行</a></p>
+<p><em>Worker</em> 接口有一个方法 <code>Work()</code>，而 <em>Person</em> 结构体类型实现了该接口。在第 27 行，我们将 <code>Person</code> 类型的<a href="../%E3%80%90GolangBot%E3%80%913-%E5%8F%98%E9%87%8F/">变量</a> <code>p</code> 赋值给 <code>Worker</code> 类型的 <code>w</code>。现在 <code>w</code> 的具体类型是 <code>Person</code>，它包含一个 <code>name</code> 字段为 <code>Naveen</code> 的 <code>Person</code>。第 17 行的 <code>describe</code> 函数打印了接口的值和具体类型。这个程序输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs fallback">Interface type main.Person value &#123;Naveen&#125;<br>Naveen is working<br></code></pre></td></tr></table></figure>
+
+<p>我们将在接下来的章节中讨论如何提取接口的底层值。</p>
+<h3 id="空接口"><a href="#空接口" class="headerlink" title="空接口"></a>空接口</h3><p><strong>没有任何方法的接口称为空接口。它表示为 <code>interface&#123;&#125;</code>。</strong> 由于空接口没有方法，所有类型都实现了空接口。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>    <span class="hljs-string">&quot;fmt&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">describe</span><span class="hljs-params">(i <span class="hljs-keyword">interface</span>&#123;&#125;)</span></span> &#123;<br>    fmt.Printf(<span class="hljs-string">&quot;Type = %T, value = %v\n&quot;</span>, i, i)<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>    s := <span class="hljs-string">&quot;Hello World&quot;</span><br>    describe(s)<br>    i := <span class="hljs-number">55</span><br>    describe(i)<br>    strt := <span class="hljs-keyword">struct</span> &#123;<br>        name <span class="hljs-type">string</span><br>    &#125;&#123;<br>        name: <span class="hljs-string">&quot;Naveen R&quot;</span>,<br>    &#125;<br>    describe(strt)<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/Fm5KescoJb">在 playground 中运行</a></p>
+<p>在上面的程序中，第 7 行的 <code>describe(i interface&#123;&#125;)</code> 函数接受一个空接口作为参数，因此可以传递任何类型。</p>
+<p>我们分别在第 13、15 和 21 行向 <code>describe</code> 函数传递了 <code>string</code>、<code>int</code> 和 <code>struct</code> 类型。这个程序打印：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs fallback">Type = string, value = Hello World<br>Type = int, value = 55<br>Type = struct &#123; name string &#125;, value = &#123;Naveen R&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="类型断言"><a href="#类型断言" class="headerlink" title="类型断言"></a>类型断言</h3><p>类型断言用于提取接口的底层值。</p>
+<p><strong>i.(T)</strong> 是用来获取接口 <code>i</code> 的底层值的语法，其中 <code>T</code> 是接口的具体类型。</p>
+<p>通过一个程序来演示类型断言。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;fmt&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">assert</span><span class="hljs-params">(i <span class="hljs-keyword">interface</span>&#123;&#125;)</span></span> &#123;<br>	s := i.(<span class="hljs-type">int</span>) <span class="hljs-comment">//get the underlying int value from i</span><br>	fmt.Println(s)<br>&#125;<br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	<span class="hljs-keyword">var</span> s <span class="hljs-keyword">interface</span>&#123;&#125; = <span class="hljs-number">56</span><br>	assert(s)<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/YstKXEeSBL">Run in playground</a></p>
+<p>如果在上面的程序中，<code>i</code> 的具体类型不是 <code>int</code>，程序会发生什么呢？让我们来看看。</p>
+<p>如果我们尝试断言 <code>i</code> 为一个不同的类型（例如 <code>float64</code> 或 <code>string</code>），而 <code>i</code> 实际上并不是该类型，Go 会抛出一个运行时错误，称为 <strong>panic</strong>。这种情况称为类型断言失败。</p>
+<p>我们可以修改程序，让它在类型不匹配时发生错误。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;fmt&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">assert</span><span class="hljs-params">(i <span class="hljs-keyword">interface</span>&#123;&#125;)</span></span> &#123;<br>	s := i.(<span class="hljs-type">int</span>) <br>	fmt.Println(s)<br>&#125;<br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	<span class="hljs-keyword">var</span> s <span class="hljs-keyword">interface</span>&#123;&#125; = <span class="hljs-string">&quot;Steven Paul&quot;</span><br>	assert(s)<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/88KflSceHK">Run in playground</a></p>
+<p>在上述程序中，我们将具体类型为 <code>string</code> 的 <code>s</code> 传递给 <code>assert</code> 函数，该函数尝试从中提取 <code>int</code> 值。此程序会因 <code>panic: interface conversion: interface &#123;&#125; is string, not int</code> 错误而崩溃。</p>
+<p>为了解决这个问题，我们可以使用以下语法：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs fallback">v, ok := i.(T)<br></code></pre></td></tr></table></figure>
+
+<p>如果 <code>i</code> 的具体类型是 <code>T</code>，那么 <code>v</code> 将具有 <code>i</code> 的底层值，<code>ok</code> 将为 <code>true</code>。</p>
+<p>如果 <code>i</code> 的具体类型不是 <code>T</code>，那么 <code>ok</code> 将为 <code>false</code>，<code>v</code> 将具有类型 <code>T</code> 的零值，并且 <strong>程序不会崩溃</strong>。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;fmt&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">assert</span><span class="hljs-params">(i <span class="hljs-keyword">interface</span>&#123;&#125;)</span></span> &#123;<br>	v, ok := i.(<span class="hljs-type">int</span>)<br>	fmt.Println(v, ok)<br>&#125;<br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	<span class="hljs-keyword">var</span> s <span class="hljs-keyword">interface</span>&#123;&#125; = <span class="hljs-number">56</span><br>	assert(s)<br>	<span class="hljs-keyword">var</span> i <span class="hljs-keyword">interface</span>&#123;&#125; = <span class="hljs-string">&quot;Steven Paul&quot;</span><br>	assert(i)<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/0sB-KlVw8A">Run in playground</a></p>
+<p>当 <code>Steven Paul</code> 被传递给 <code>assert</code> 函数时，由于 <code>i</code> 的具体类型不是 <code>int</code>，所以 <code>ok</code> 将为 <code>false</code>，<code>v</code> 将具有 <code>int</code> 类型的零值 0。该程序将打印：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs fallback">56 true<br>0 false<br></code></pre></td></tr></table></figure>
+
+<h3 id="类型switch"><a href="#类型switch" class="headerlink" title="类型switch"></a>类型switch</h3><p><strong>类型switch用于将接口的具体类型与多个类型进行比较，这些类型通过不同的 case 语句指定。它类似于 <a href="../%E3%80%90GolangBot%E3%80%9110-switch%E8%AF%AD%E5%8F%A5/">switch case</a>，唯一的区别是 case 中指定的是类型而不是值。</strong></p>
+<p>类型开关的语法与类型断言类似。在类型断言中，语法是 <code>i.(T)</code>，而在类型开关中，类型 <code>T</code> 应该用关键字 <code>type</code> 替换。让我们看看下面的程序如何工作。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;fmt&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">findType</span><span class="hljs-params">(i <span class="hljs-keyword">interface</span>&#123;&#125;)</span></span> &#123;<br>	<span class="hljs-keyword">switch</span> i.(<span class="hljs-keyword">type</span>) &#123;<br>	<span class="hljs-keyword">case</span> <span class="hljs-type">string</span>:<br>		fmt.Printf(<span class="hljs-string">&quot;I am a string and my value is %s\n&quot;</span>, i.(<span class="hljs-type">string</span>))<br>	<span class="hljs-keyword">case</span> <span class="hljs-type">int</span>:<br>		fmt.Printf(<span class="hljs-string">&quot;I am an int and my value is %d\n&quot;</span>, i.(<span class="hljs-type">int</span>))<br>	<span class="hljs-keyword">default</span>:<br>		fmt.Printf(<span class="hljs-string">&quot;Unknown type\n&quot;</span>)<br>	&#125;<br>&#125;<br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	findType(<span class="hljs-string">&quot;Naveen&quot;</span>)<br>	findType(<span class="hljs-number">77</span>)<br>	findType(<span class="hljs-number">89.98</span>)<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/XYPDwOvoCh">Run in playground</a></p>
+<p>在上面的程序中，<strong>第8行</strong>中的 <code>switch i.(type)</code> 指定了一个类型开关。每个 <code>case</code> 语句将接口 <code>i</code> 的具体类型与特定类型进行比较。如果某个 <code>case</code> 匹配，则打印相应的语句。该程序输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs fallback">I am a string and my value is Naveen<br>I am an int and my value is 77<br>Unknown type<br></code></pre></td></tr></table></figure>
+
+<p><strong>第20行的*89.98*是<code>float64</code>类型，不匹配任何<code>case</code>，因此最后一行打印<code>Unknown type</code>。</strong></p>
+<p><strong>也可以将类型与接口进行比较。如果我们有一个类型，并且这个类型实现了某个接口，那么可以将该类型与它实现的接口进行比较。</strong></p>
+<p>让我们编写一个程序来进一步说明。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> <span class="hljs-string">&quot;fmt&quot;</span><br><br><span class="hljs-keyword">type</span> Describer <span class="hljs-keyword">interface</span> &#123;<br>	Describe()<br>&#125;<br><span class="hljs-keyword">type</span> Person <span class="hljs-keyword">struct</span> &#123;<br>	name <span class="hljs-type">string</span><br>	age  <span class="hljs-type">int</span><br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(p Person)</span></span> Describe() &#123;<br>	fmt.Printf(<span class="hljs-string">&quot;%s is %d years old&quot;</span>, p.name, p.age)<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">findType</span><span class="hljs-params">(i <span class="hljs-keyword">interface</span>&#123;&#125;)</span></span> &#123;<br>	<span class="hljs-keyword">switch</span> v := i.(<span class="hljs-keyword">type</span>) &#123;<br>	<span class="hljs-keyword">case</span> Describer:<br>		v.Describe()<br>	<span class="hljs-keyword">default</span>:<br>		fmt.Printf(<span class="hljs-string">&quot;unknown type\n&quot;</span>)<br>	&#125;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	findType(<span class="hljs-string">&quot;Naveen&quot;</span>)<br>	p := Person&#123;<br>		name: <span class="hljs-string">&quot;Naveen R&quot;</span>,<br>		age:  <span class="hljs-number">25</span>,<br>	&#125;<br>	findType(p)<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/o6aHzIz4wC">Run in playground</a></p>
+<p>在上述程序中，<code>Person</code> 结构体实现了 <code>Describer</code> 接口。在第19行的 <code>case</code> 语句中，<code>v</code> 被与 <code>Describer</code> 接口类型进行比较。由于 <code>p</code> 实现了 <code>Describer</code> 接口，因此此 <code>case</code> 被满足并调用了 <code>Describe()</code> 方法。</p>
+<p>该程序输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs fallback">unknown type<br>Naveen R is 25 years old<br></code></pre></td></tr></table></figure>
+
+<p><strong>Next tutorial - <a target="_blank" rel="noopener" href="https://golangbot.com/interfaces-part-2/">Interfaces - II</a></strong></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E5%BF%83%E5%BE%97/" class="category-chain-item">学习心得</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E5%BF%83%E5%BE%97/GolangBot/" class="category-chain-item">GolangBot</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Golang/" class="print-no-link">#Golang</a>
+      
+        <a href="/tags/%E6%95%99%E7%A8%8B/" class="print-no-link">#教程</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>【GolangBot】18-接口 I</div>
+      <div>https://zoekyhein.github.io/【GolangBot】18-接口-I/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>ZoeKyHein</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年12月24日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/%E3%80%90GolangBot%E3%80%9119-%E6%8E%A5%E5%8F%A3-II/" title="【GolangBot】19-接口 II">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">【GolangBot】19-接口 II</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/%E3%80%90GolangBot%E3%80%9117-%E6%96%B9%E6%B3%95/" title="【GolangBot】17-方法">
+                        <span class="hidden-mobile">【GolangBot】17-方法</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <link rel="stylesheet" type="text/css" href="https://cdn.jsdmirror.com/gh/muzihuaner/deng@main/deng.css"> <!-- 灯笼1 --> <div class="deng-box"> <div class="deng"> <div class="xian"></div> <div class="deng-a"> <div class="deng-b"><div class="deng-t">年</div></div> </div> <div class="shui shui-a"><div class="shui-c"></div><div class="shui-b"></div></div> </div> </div>
+<!-- 灯笼2 --> <div class="deng-box1"> <div class="deng"> <div class="xian"></div> <div class="deng-a"> <div class="deng-b"><div class="deng-t">新</div></div> </div> <div class="shui shui-a"><div class="shui-c"></div><div class="shui-b"></div></div> </div> </div>
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

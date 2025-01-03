@@ -1,0 +1,781 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/icon.png">
+  <link rel="icon" href="/img/icon.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#ac9343">
+  <meta name="author" content="ZoeKyHein">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="欢迎来到 Golang 教程系列 的第 33 个教程。 什么是 Panic？在 Go 程序中处理异常情况的惯用方法是使用错误。对于大多数程序中的异常情况，错误处理已经足够。 但在某些情况下，程序在异常情况发生后无法继续执行。在这种情况下，我们使用 panic 来提前终止程序。当一个函数遇到 panic 时，它的执行会停止，任何defer的函数会被执行，然后控制权返回给它的调用者。这个过程会一直持续">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【GolangBot】33-Panic和Recover">
+<meta property="og:url" content="https://zoekyhein.github.io/%E3%80%90GolangBot%E3%80%9133-Panic%E5%92%8CRecover/index.html">
+<meta property="og:site_name" content="传火祭祀场">
+<meta property="og:description" content="欢迎来到 Golang 教程系列 的第 33 个教程。 什么是 Panic？在 Go 程序中处理异常情况的惯用方法是使用错误。对于大多数程序中的异常情况，错误处理已经足够。 但在某些情况下，程序在异常情况发生后无法继续执行。在这种情况下，我们使用 panic 来提前终止程序。当一个函数遇到 panic 时，它的执行会停止，任何defer的函数会被执行，然后控制权返回给它的调用者。这个过程会一直持续">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-12-26T11:30:19.000Z">
+<meta property="article:modified_time" content="2025-01-03T01:30:04.016Z">
+<meta property="article:author" content="ZoeKyHein">
+<meta property="article:tag" content="Golang">
+<meta property="article:tag" content="教程">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>【GolangBot】33-Panic和Recover - 传火祭祀场</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"zoekyhein.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"💥","loop":false,"scope":["home"]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>传火祭祀场</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/golangbot" target="_self">
+                <i class="iconfont icon-book"></i>
+                <span>Go教程</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/sunKnight.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">【GolangBot】33-Panic和Recover</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-12-26 11:30" pubdate>
+          2024年12月26日 中午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.9k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          25 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">【GolangBot】33-Panic和Recover</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>欢迎来到 <a href="../golangbot/">Golang 教程系列</a> 的第 33 个教程。</p>
+<h3 id="什么是-Panic？"><a href="#什么是-Panic？" class="headerlink" title="什么是 Panic？"></a>什么是 Panic？</h3><p>在 Go 程序中处理异常情况的惯用方法是使用<a href="../%E3%80%90GolangBot%E3%80%9130-%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86">错误</a>。对于大多数程序中的异常情况，错误处理已经足够。</p>
+<p><strong>但在某些情况下，程序在异常情况发生后无法继续执行。在这种情况下，我们使用 <code>panic</code> 来提前终止程序。当一个<a href="../%E3%80%90GolangBot%E3%80%916-%E5%87%BD%E6%95%B0">函数</a>遇到 panic 时，它的执行会停止，任何<a href="../%E3%80%90GolangBot%E3%80%9129-Defer">defer</a>的函数会被执行，然后控制权返回给它的调用者。这个过程会一直持续，直到当前 <a href="../%E3%80%90GolangBot%E3%80%9121-Goroutines">goroutine</a> 的所有函数都返回，此时程序会打印 panic 消息，接着是堆栈跟踪，然后终止。</strong> 当我们编写一个示例程序时，这个概念会更加清晰。</p>
+<p><strong>可以使用 <code>recover</code> 来恢复对 panic 程序的控制</strong>，我们将在本教程的后面部分讨论这一点。</p>
+<p>panic 和 recover 可以看作是其他语言（如 Java）中的 try-catch-finally 习惯用法，只不过它们在 Go 中很少使用。</p>
+<h3 id="什么时候应该使用-Panic？"><a href="#什么时候应该使用-Panic？" class="headerlink" title="什么时候应该使用 Panic？"></a>什么时候应该使用 Panic？</h3><p>一个重要的因素是，你应该尽量避免使用 panic 和 recover，尽可能使用<a href="../%E3%80%90GolangBot%E3%80%9130-%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86">错误处理</a>。只有在程序无法继续执行的情况下，才应该使用 panic 和 recover 机制。</p>
+<p>panic 有两个有效的使用场景：</p>
+<ol>
+<li><strong>不可恢复的错误，程序无法继续执行。</strong> 一个例子是 Web 服务器无法绑定到所需的端口。在这种情况下，panic 是合理的，因为如果端口绑定本身失败，就没有其他事情可做了。</li>
+<li><strong>程序员错误。</strong> 假设我们有一个<a href="../%E3%80%90GolangBot%E3%80%9117-%E6%96%B9%E6%B3%95">方法</a>接受一个指针作为参数，而有人使用 <code>nil</code> 参数调用此方法。在这种情况下，我们可以 panic，因为使用 <code>nil</code> 参数调用期望有效指针的方法是程序员的错误。</li>
+</ol>
+<h3 id="Panic-示例"><a href="#Panic-示例" class="headerlink" title="Panic 示例"></a>Panic 示例</h3><p>内置 <code>panic</code> 函数的签名如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">panic</span><span class="hljs-params">(<span class="hljs-keyword">interface</span>&#123;&#125;)</span></span><br></code></pre></td></tr></table></figure>
+
+<p>传递给 panic 函数的参数将在程序终止时打印出来。当我们编写示例程序时，这一点会更加清楚。让我们马上编写一个示例程序。</p>
+<p>我们将从一个展示 panic 如何工作的简单示例开始。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;fmt&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">fullName</span><span class="hljs-params">(firstName *<span class="hljs-type">string</span>, lastName *<span class="hljs-type">string</span>)</span></span> &#123;<br>	<span class="hljs-keyword">if</span> firstName == <span class="hljs-literal">nil</span> &#123;<br>		<span class="hljs-built_in">panic</span>(<span class="hljs-string">&quot;runtime error: first name cannot be nil&quot;</span>)<br>	&#125;<br>	<span class="hljs-keyword">if</span> lastName == <span class="hljs-literal">nil</span> &#123;<br>		<span class="hljs-built_in">panic</span>(<span class="hljs-string">&quot;runtime error: last name cannot be nil&quot;</span>)<br>	&#125;<br>	fmt.Printf(<span class="hljs-string">&quot;%s %s\n&quot;</span>, *firstName, *lastName)<br>	fmt.Println(<span class="hljs-string">&quot;returned normally from fullName&quot;</span>)<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	firstName := <span class="hljs-string">&quot;Elon&quot;</span><br>	fullName(&amp;firstName, <span class="hljs-literal">nil</span>)<br>	fmt.Println(<span class="hljs-string">&quot;returned normally from main&quot;</span>)<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/xQJYRSCu8S">在 Playground 中运行</a></p>
+<p>上面的程序是一个打印人名的全名的简单程序。第 7 行的 <code>fullName</code> 函数打印一个人的全名。该函数分别在第 8 行和第 11 行检查 <code>firstName</code> 和 <code>lastName</code> 指针是否为 <code>nil</code>。如果是 <code>nil</code>，函数会调用 <code>panic</code> 并传递相应的消息。此消息将在程序终止时打印。</p>
+<p>运行此程序将打印以下输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs fallback">panic: runtime error: last name cannot be nil<br><br>goroutine 1 [running]:<br>main.fullName(0xc00006af58, 0x0)<br>	/tmp/sandbox210590465/prog.go:12 +0x193<br>main.main()<br>	/tmp/sandbox210590465/prog.go:20 +0x4d<br></code></pre></td></tr></table></figure>
+
+<p>让我们分析这个输出，以了解 panic 的工作原理以及程序 panic 时如何打印堆栈跟踪。</p>
+<p>在第 19 行，我们将 <code>Elon</code> 赋值给 <code>firstName</code>。我们在第 20 行调用 <code>fullName</code> 函数，并将 <code>lastName</code> 设置为 <code>nil</code>。因此，第 11 行的条件将满足，程序将 panic。当遇到 panic 时，程序执行终止，传递给 panic 函数的参数会被打印，然后是堆栈跟踪。由于程序在第 12 行的 panic 函数调用后终止，第 13、14 和 15 行的代码将不会执行。</p>
+<p>该程序首先打印传递给 <code>panic</code> 函数的消息：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs fallback">panic: runtime error: last name cannot be nil<br></code></pre></td></tr></table></figure>
+
+<p>然后打印堆栈跟踪。</p>
+<p>程序在第 12 行的 <code>fullName</code> 函数中 panic，因此：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs fallback">goroutine 1 [running]:<br>main.fullName(0xc00006af58, 0x0)<br>	/tmp/sandbox210590465/prog.go:12 +0x193<br></code></pre></td></tr></table></figure>
+
+<p>将首先打印。然后打印堆栈中的下一个项目。在我们的例子中，第 20 行调用 <code>fullName</code> 的地方是堆栈跟踪中的下一个项目。因此，接下来会打印它。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs fallback">main.main()<br>	/tmp/sandbox210590465/prog.go:20 +0x4d<br></code></pre></td></tr></table></figure>
+
+<p>现在我们已经到达了导致 panic 的顶层函数，并且没有更多的层级，因此没有更多内容可打印。</p>
+<h3 id="另一个示例"><a href="#另一个示例" class="headerlink" title="另一个示例"></a>另一个示例</h3><p>panic 也可能由运行时发生的错误引起，例如尝试访问切片中不存在的索引。</p>
+<p>让我们编写一个由于切片越界访问而导致 panic 的示例。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;fmt&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">slicePanic</span><span class="hljs-params">()</span></span> &#123;<br>	n := []<span class="hljs-type">int</span>&#123;<span class="hljs-number">5</span>, <span class="hljs-number">7</span>, <span class="hljs-number">4</span>&#125;<br>	fmt.Println(n[<span class="hljs-number">4</span>])<br>	fmt.Println(<span class="hljs-string">&quot;normally returned from a&quot;</span>)<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	slicePanic()<br>	fmt.Println(<span class="hljs-string">&quot;normally returned from main&quot;</span>)<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/__PAabvchxt">在 Playground 中运行</a></p>
+<p>在上面的程序中，第 9 行我们尝试访问 <code>n[4]</code>，这是<a href="../%E3%80%90GolangBot%E3%80%9111-%E6%95%B0%E7%BB%84%E5%92%8C%E5%88%87%E7%89%87">切片</a>中的无效索引。该程序将 panic，并输出以下内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs fallback">panic: runtime error: index out of range [4] with length 3<br><br>goroutine 1 [running]:<br>main.slicePanic()<br>	/tmp/sandbox942516049/prog.go:9 +0x1d<br>main.main()<br>	/tmp/sandbox942516049/prog.go:13 +0x22<br></code></pre></td></tr></table></figure>
+
+<h3 id="Panic-期间的-Defer-调用"><a href="#Panic-期间的-Defer-调用" class="headerlink" title="Panic 期间的 Defer 调用"></a>Panic 期间的 Defer 调用</h3><p>让我们回顾一下 panic 的作用。<strong>当一个函数遇到 panic 时，它的执行会停止，任何延迟的函数会被执行，然后控制权返回给它的调用者。这个过程会一直持续，直到当前 goroutine 的所有函数都返回，此时程序会打印 panic 消息，接着是堆栈跟踪，然后终止。</strong></p>
+<p>在上面的示例中，我们没有延迟任何函数调用。如果存在延迟的函数调用，它会被执行，然后控制权返回给它的调用者。</p>
+<p>让我们稍微修改上面的示例并使用 defer 语句。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;fmt&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">fullName</span><span class="hljs-params">(firstName *<span class="hljs-type">string</span>, lastName *<span class="hljs-type">string</span>)</span></span> &#123;<br>	<span class="hljs-keyword">defer</span> fmt.Println(<span class="hljs-string">&quot;deferred call in fullName&quot;</span>)<br>	<span class="hljs-keyword">if</span> firstName == <span class="hljs-literal">nil</span> &#123;<br>		<span class="hljs-built_in">panic</span>(<span class="hljs-string">&quot;runtime error: first name cannot be nil&quot;</span>)<br>	&#125;<br>	<span class="hljs-keyword">if</span> lastName == <span class="hljs-literal">nil</span> &#123;<br>		<span class="hljs-built_in">panic</span>(<span class="hljs-string">&quot;runtime error: last name cannot be nil&quot;</span>)<br>	&#125;<br>	fmt.Printf(<span class="hljs-string">&quot;%s %s\n&quot;</span>, *firstName, *lastName)<br>	fmt.Println(<span class="hljs-string">&quot;returned normally from fullName&quot;</span>)<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	<span class="hljs-keyword">defer</span> fmt.Println(<span class="hljs-string">&quot;deferred call in main&quot;</span>)<br>	firstName := <span class="hljs-string">&quot;Elon&quot;</span><br>	fullName(&amp;firstName, <span class="hljs-literal">nil</span>)<br>	fmt.Println(<span class="hljs-string">&quot;returned normally from main&quot;</span>)<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/oUFnu-uTmC">在 Playground 中运行</a></p>
+<p>唯一的更改是在第 8 行和第 20 行添加了延迟函数调用。</p>
+<p>该程序打印：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs fallback">deferred call in fullName<br>deferred call in main<br>panic: runtime error: last name cannot be nil<br><br>goroutine 1 [running]:<br>main.fullName(0xc00006af28, 0x0)<br>	/tmp/sandbox451943841/prog.go:13 +0x23f<br>main.main()<br>	/tmp/sandbox451943841/prog.go:22 +0xc6<br></code></pre></td></tr></table></figure>
+
+<p>当程序在第 13 行 panic 时，首先执行任何延迟的函数调用，然后控制权返回给调用者，调用者的延迟调用被执行，依此类推，直到到达顶层调用者。</p>
+<p>在我们的例子中，<code>fullName</code> 函数第 8 行的 <code>defer</code> 语句首先执行。这会打印以下消息：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs fallback">deferred call in fullName<br></code></pre></td></tr></table></figure>
+
+<p>然后控制权返回到 <code>main</code> 函数，其延迟调用被执行，因此打印：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs fallback">deferred call in main<br></code></pre></td></tr></table></figure>
+
+<p>现在控制权已经到达顶层函数，因此程序会打印 panic 消息，接着是堆栈跟踪，然后终止。</p>
+<h3 id="从-Panic-中恢复"><a href="#从-Panic-中恢复" class="headerlink" title="从 Panic 中恢复"></a>从 Panic 中恢复</h3><p><em>recover</em> 是一个内置函数，用于恢复对 panic 程序的控制。</p>
+<p>recover 函数的签名如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">recover</span><span class="hljs-params">()</span></span> <span class="hljs-keyword">interface</span>&#123;&#125;<br></code></pre></td></tr></table></figure>
+
+<p>recover 只有在延迟函数内部调用时才有用。在延迟函数内部执行 recover 调用会通过恢复正常执行来停止 panic 序列，并检索传递给 panic 函数调用的错误消息。如果在延迟函数外部调用 recover，它将不会停止 panic 序列。</p>
+<p>让我们修改我们的程序并使用 recover 在 panic 后恢复正常执行。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;fmt&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">recoverFullName</span><span class="hljs-params">()</span></span> &#123;<br>	<span class="hljs-keyword">if</span> r := <span class="hljs-built_in">recover</span>(); r != <span class="hljs-literal">nil</span> &#123;<br>		fmt.Println(<span class="hljs-string">&quot;recovered from &quot;</span>, r)<br>	&#125;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">fullName</span><span class="hljs-params">(firstName *<span class="hljs-type">string</span>, lastName *<span class="hljs-type">string</span>)</span></span> &#123;<br>	<span class="hljs-keyword">defer</span> recoverFullName()<br>	<span class="hljs-keyword">if</span> firstName == <span class="hljs-literal">nil</span> &#123;<br>		<span class="hljs-built_in">panic</span>(<span class="hljs-string">&quot;runtime error: first name cannot be nil&quot;</span>)<br>	&#125;<br>	<span class="hljs-keyword">if</span> lastName == <span class="hljs-literal">nil</span> &#123;<br>		<span class="hljs-built_in">panic</span>(<span class="hljs-string">&quot;runtime error: last name cannot be nil&quot;</span>)<br>	&#125;<br>	fmt.Printf(<span class="hljs-string">&quot;%s %s\n&quot;</span>, *firstName, *lastName)<br>	fmt.Println(<span class="hljs-string">&quot;returned normally from fullName&quot;</span>)<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	<span class="hljs-keyword">defer</span> fmt.Println(<span class="hljs-string">&quot;deferred call in main&quot;</span>)<br>	firstName := <span class="hljs-string">&quot;Elon&quot;</span><br>	fullName(&amp;firstName, <span class="hljs-literal">nil</span>)<br>	fmt.Println(<span class="hljs-string">&quot;returned normally from main&quot;</span>)<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/enCM-dd5DUr">在 Playground 中运行</a></p>
+<p>第 7 行的 <code>recoverFullName()</code> 函数调用 <code>recover()</code>，它返回传递给 <code>panic</code> 函数调用的值。在这里，我们只是打印 recover 返回的值。<code>recoverFullName()</code> 在第 14 行的 <code>fullName</code> 函数中被延迟。</p>
+<p>当 <code>fullName</code> panic 时，延迟函数 <code>recoverName()</code> 将被调用，它使用 <code>recover()</code> 来停止 panic 序列。</p>
+<p>该程序将打印：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs fallback">recovered from  runtime error: last name cannot be nil<br>returned normally from main<br>deferred call in main<br></code></pre></td></tr></table></figure>
+
+<p>当程序在第 19 行 panic 时，延迟的 <code>recoverFullName</code> 函数被调用，它反过来调用 <code>recover()</code> 来恢复对 panic 序列的控制。第 8 行的 <code>recover()</code> 调用返回传递给 <code>panic()</code> 的参数，因此打印：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs fallback">recovered from  runtime error: last name cannot be nil<br></code></pre></td></tr></table></figure>
+
+<p>在执行 <code>recover()</code> 后，panic 停止，控制权返回给调用者，在本例中是 <code>main</code> 函数。由于 panic 已恢复，程序从 <code>main</code> 的第 29 行继续正常执行 😃。它打印 <code>returned normally from main</code>，然后是 <code>deferred call in main</code>。</p>
+<p>让我们再看一个示例，我们从由于访问切片的无效索引引起的 panic 中恢复。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;fmt&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">recoverInvalidAccess</span><span class="hljs-params">()</span></span> &#123;<br>	<span class="hljs-keyword">if</span> r := <span class="hljs-built_in">recover</span>(); r != <span class="hljs-literal">nil</span> &#123;<br>		fmt.Println(<span class="hljs-string">&quot;Recovered&quot;</span>, r)<br>	&#125;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">invalidSliceAccess</span><span class="hljs-params">()</span></span> &#123;<br>	<span class="hljs-keyword">defer</span> recoverInvalidAccess()<br>	n := []<span class="hljs-type">int</span>&#123;<span class="hljs-number">5</span>, <span class="hljs-number">7</span>, <span class="hljs-number">4</span>&#125;<br>	fmt.Println(n[<span class="hljs-number">4</span>])<br>	fmt.Println(<span class="hljs-string">&quot;normally returned from a&quot;</span>)<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	invalidSliceAccess()<br>	fmt.Println(<span class="hljs-string">&quot;normally returned from main&quot;</span>)<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/Bth98An9Ah0">在 Playground 中运行</a></p>
+<p>运行上面的程序将输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs fallback">Recovered runtime error: index out of range [4] with length 3<br>normally returned from main<br></code></pre></td></tr></table></figure>
+
+<p>从输出中可以看出，我们已经从 panic 中恢复。</p>
+<h3 id="恢复后获取堆栈跟踪"><a href="#恢复后获取堆栈跟踪" class="headerlink" title="恢复后获取堆栈跟踪"></a>恢复后获取堆栈跟踪</h3><p>如果我们从 panic 中恢复，我们会丢失有关 panic 的堆栈跟踪。即使在上面的程序恢复后，我们也丢失了堆栈跟踪。</p>
+<p>有一种方法可以使用 Debug <a href="../%E3%80%90GolangBot%E3%80%917-%E5%8C%85">包</a>的 <a target="_blank" rel="noopener" href="https://golang.org/pkg/runtime/debug/#PrintStack">PrintStack</a> 函数打印堆栈跟踪。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;fmt&quot;</span><br>	<span class="hljs-string">&quot;runtime/debug&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">recoverFullName</span><span class="hljs-params">()</span></span> &#123;<br>	<span class="hljs-keyword">if</span> r := <span class="hljs-built_in">recover</span>(); r != <span class="hljs-literal">nil</span> &#123;<br>		fmt.Println(<span class="hljs-string">&quot;recovered from &quot;</span>, r)<br>		debug.PrintStack()<br>	&#125;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">fullName</span><span class="hljs-params">(firstName *<span class="hljs-type">string</span>, lastName *<span class="hljs-type">string</span>)</span></span> &#123;<br>	<span class="hljs-keyword">defer</span> recoverFullName()<br>	<span class="hljs-keyword">if</span> firstName == <span class="hljs-literal">nil</span> &#123;<br>		<span class="hljs-built_in">panic</span>(<span class="hljs-string">&quot;runtime error: first name cannot be nil&quot;</span>)<br>	&#125;<br>	<span class="hljs-keyword">if</span> lastName == <span class="hljs-literal">nil</span> &#123;<br>		<span class="hljs-built_in">panic</span>(<span class="hljs-string">&quot;runtime error: last name cannot be nil&quot;</span>)<br>	&#125;<br>	fmt.Printf(<span class="hljs-string">&quot;%s %s\n&quot;</span>, *firstName, *lastName)<br>	fmt.Println(<span class="hljs-string">&quot;returned normally from fullName&quot;</span>)<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	<span class="hljs-keyword">defer</span> fmt.Println(<span class="hljs-string">&quot;deferred call in main&quot;</span>)<br>	firstName := <span class="hljs-string">&quot;Elon&quot;</span><br>	fullName(&amp;firstName, <span class="hljs-literal">nil</span>)<br>	fmt.Println(<span class="hljs-string">&quot;returned normally from main&quot;</span>)<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/9VxcG4Gt-MU">在 Playground 中运行</a></p>
+<p>在上面的程序中，我们在第 11 行使用 <code>debug.PrintStack()</code> 来打印堆栈跟踪。</p>
+<p>该程序将打印：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs fallback">recovered from  runtime error: last name cannot be nil<br>goroutine 1 [running]:<br>runtime/debug.Stack(0x37, 0x0, 0x0)<br>	/usr/local/go-faketime/src/runtime/debug/stack.go:24 +0x9d<br>runtime/debug.PrintStack()<br>	/usr/local/go-faketime/src/runtime/debug/stack.go:16 +0x22<br>main.recoverFullName()<br>	/tmp/sandbox771195810/prog.go:11 +0xb4<br>panic(0x4a1b60, 0x4dc300)<br>	/usr/local/go-faketime/src/runtime/panic.go:969 +0x166<br>main.fullName(0xc0000a2f28, 0x0)<br>	/tmp/sandbox771195810/prog.go:21 +0x1cb<br>main.main()<br>	/tmp/sandbox771195810/prog.go:30 +0xc6<br>returned normally from main<br>deferred call in main<br></code></pre></td></tr></table></figure>
+
+<p>从输出中可以看出，panic 已恢复，并打印了 <code>recovered from runtime error: last name cannot be nil</code>。接着打印堆栈跟踪。然后：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs fallback">returned normally from main<br>deferred call in main<br></code></pre></td></tr></table></figure>
+
+<p>在 panic 恢复后打印。</p>
+<h3 id="Panic、Recover-和-Goroutines"><a href="#Panic、Recover-和-Goroutines" class="headerlink" title="Panic、Recover 和 Goroutines"></a>Panic、Recover 和 Goroutines</h3><p>recover 只有在从发生 panic 的同一个 <a href="../%E3%80%90GolangBot%E3%80%9121-Goroutines">goroutine</a> 中调用时才有效。<strong>无法从不同 goroutine 中发生的 panic 中恢复。</strong> 让我们通过一个示例来理解这一点。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;fmt&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">recovery</span><span class="hljs-params">()</span></span> &#123;<br>	<span class="hljs-keyword">if</span> r := <span class="hljs-built_in">recover</span>(); r != <span class="hljs-literal">nil</span> &#123;<br>		fmt.Println(<span class="hljs-string">&quot;recovered:&quot;</span>, r)<br>	&#125;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">sum</span><span class="hljs-params">(a <span class="hljs-type">int</span>, b <span class="hljs-type">int</span>)</span></span> &#123;<br>	<span class="hljs-keyword">defer</span> recovery()<br>	fmt.Printf(<span class="hljs-string">&quot;%d + %d = %d\n&quot;</span>, a, b, a+b)<br>	done := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> <span class="hljs-type">bool</span>)<br>	<span class="hljs-keyword">go</span> divide(a, b, done)<br>	&lt;-done<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">divide</span><span class="hljs-params">(a <span class="hljs-type">int</span>, b <span class="hljs-type">int</span>, done <span class="hljs-keyword">chan</span> <span class="hljs-type">bool</span>)</span></span> &#123;<br>	fmt.Printf(<span class="hljs-string">&quot;%d / %d = %d&quot;</span>, a, b, a/b)<br>	done &lt;- <span class="hljs-literal">true</span><br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	sum(<span class="hljs-number">5</span>, <span class="hljs-number">0</span>)<br>	fmt.Println(<span class="hljs-string">&quot;normally returned from main&quot;</span>)<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/yCPL_4lqbzk">在 Playground 中运行</a></p>
+<p>在上面的程序中，<code>divide()</code> 函数将在第 22 行 panic，因为 <code>b</code> 为零，无法将数字除以零。<code>sum()</code> 函数调用了一个延迟函数 <code>recovery()</code>，用于从 panic 中恢复。<code>divide()</code> 函数在第 17 行作为一个单独的 goroutine 被调用。我们在第 18 行等待 <code>done</code> <a href="../GolangBot%E3%80%9122-Channels">通道</a>以确保 <code>divide()</code> 完成执行。</p>
+<p>你认为程序的输出会是什么？panic 会被恢复吗？答案是否定的。panic 不会被恢复。这是因为 <code>recovery</code> 函数存在于不同的 goroutine 中，而 panic 发生在 <code>divide()</code> 函数中的不同 goroutine 中。因此，无法恢复。</p>
+<p>运行此程序将打印：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs fallback">5 + 0 = 5<br>panic: runtime error: integer divide by zero<br><br>goroutine 18 [running]:<br>main.divide(0x5, 0x0, 0xc0000a2000)<br>	/tmp/sandbox877118715/prog.go:22 +0x167<br>created by main.sum<br>	/tmp/sandbox877118715/prog.go:17 +0x1a9<br></code></pre></td></tr></table></figure>
+
+<p>从输出中可以看出，恢复没有发生。</p>
+<p>如果 <code>divide()</code> 函数在同一个 goroutine 中被调用，我们将能够从 panic 中恢复。</p>
+<p>如果将程序的第 17 行从：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">go</span> divide(a, b, done)<br></code></pre></td></tr></table></figure>
+
+<p>更改为：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs go">divide(a, b, done)<br></code></pre></td></tr></table></figure>
+
+<p>恢复将会发生，因为 panic 发生在同一个 goroutine 中。如果程序使用上述更改运行，它将打印：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs fallback">5 + 0 = 5<br>recovered: runtime error: integer divide by zero<br>normally returned from main<br></code></pre></td></tr></table></figure>
+
+<p>本教程到此结束。</p>
+<p>以下是我们在本教程中学到的内容的快速回顾：</p>
+<ul>
+<li>什么是 Panic？</li>
+<li>什么时候应该使用 Panic？</li>
+<li>Panic 使用示例</li>
+<li>Panic 期间的 Defer 调用</li>
+<li>从 Panic 中恢复</li>
+<li>恢复后获取堆栈跟踪</li>
+<li>Panic、Recover 和 Goroutines</li>
+</ul>
+<p><strong>下一个教程 - <a href="../%E3%80%90GolangBot%E3%80%9134-%E4%B8%80%E7%AD%89%E5%85%AC%E6%B0%91%EF%BC%9A%E5%87%BD%E6%95%B0">一等公民：函数</a></strong></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E5%BF%83%E5%BE%97/" class="category-chain-item">学习心得</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E5%BF%83%E5%BE%97/GolangBot/" class="category-chain-item">GolangBot</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Golang/" class="print-no-link">#Golang</a>
+      
+        <a href="/tags/%E6%95%99%E7%A8%8B/" class="print-no-link">#教程</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>【GolangBot】33-Panic和Recover</div>
+      <div>https://zoekyhein.github.io/【GolangBot】33-Panic和Recover/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>ZoeKyHein</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年12月26日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/%E3%80%90GolangBot%E3%80%9134-%E4%B8%80%E7%AD%89%E5%85%AC%E6%B0%91%EF%BC%9A%E5%87%BD%E6%95%B0/" title="【GolangBot】34-一等公民：函数">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">【GolangBot】34-一等公民：函数</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/%E3%80%90GolangBot%E3%80%9132-%E9%94%99%E8%AF%AF%E5%8C%85%E8%A3%85/" title="【GolangBot】32-错误包装">
+                        <span class="hidden-mobile">【GolangBot】32-错误包装</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <link rel="stylesheet" type="text/css" href="https://cdn.jsdmirror.com/gh/muzihuaner/deng@main/deng.css"> <!-- 灯笼1 --> <div class="deng-box"> <div class="deng"> <div class="xian"></div> <div class="deng-a"> <div class="deng-b"><div class="deng-t">年</div></div> </div> <div class="shui shui-a"><div class="shui-c"></div><div class="shui-b"></div></div> </div> </div>
+<!-- 灯笼2 --> <div class="deng-box1"> <div class="deng"> <div class="xian"></div> <div class="deng-a"> <div class="deng-b"><div class="deng-t">新</div></div> </div> <div class="shui shui-a"><div class="shui-c"></div><div class="shui-b"></div></div> </div> </div>
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

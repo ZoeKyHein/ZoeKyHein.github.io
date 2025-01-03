@@ -1,0 +1,772 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/icon.png">
+  <link rel="icon" href="/img/icon.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#ac9343">
+  <meta name="author" content="ZoeKyHein">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="欢迎来到 Golang系列教程 的第22篇教程。 在上一篇教程中，我们讨论了如何使用 Goroutines 在 Go 中实现并发。在本教程中，我们将讨论 channels 以及 Goroutines 如何通过 channels 进行通信。 什么是 channelsChannels 可以被视为 Goroutines 通过它进行通信的管道。就像水在管道中从一端流向另一端一样，数据可以通过 channe">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【GolangBot】22-Channels">
+<meta property="og:url" content="https://zoekyhein.github.io/%E3%80%90GolangBot%E3%80%9122-Channels/index.html">
+<meta property="og:site_name" content="传火祭祀场">
+<meta property="og:description" content="欢迎来到 Golang系列教程 的第22篇教程。 在上一篇教程中，我们讨论了如何使用 Goroutines 在 Go 中实现并发。在本教程中，我们将讨论 channels 以及 Goroutines 如何通过 channels 进行通信。 什么是 channelsChannels 可以被视为 Goroutines 通过它进行通信的管道。就像水在管道中从一端流向另一端一样，数据可以通过 channe">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-12-25T10:53:39.000Z">
+<meta property="article:modified_time" content="2025-01-03T01:30:04.016Z">
+<meta property="article:author" content="ZoeKyHein">
+<meta property="article:tag" content="Golang">
+<meta property="article:tag" content="教程">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>【GolangBot】22-Channels - 传火祭祀场</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"zoekyhein.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"💥","loop":false,"scope":["home"]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>传火祭祀场</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/golangbot" target="_self">
+                <i class="iconfont icon-book"></i>
+                <span>Go教程</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/sunKnight.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">【GolangBot】22-Channels</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-12-25 10:53" pubdate>
+          2024年12月25日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.3k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          28 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">【GolangBot】22-Channels</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>欢迎来到 <a href="../golangbot">Golang系列教程</a> 的第22篇教程。</p>
+<p>在<a href="../%E3%80%90GolangBot%E3%80%9121-Goroutines">上一篇教程</a>中，我们讨论了如何使用 Goroutines 在 Go 中实现并发。在本教程中，我们将讨论 channels 以及 Goroutines 如何通过 channels 进行通信。</p>
+<h3 id="什么是-channels"><a href="#什么是-channels" class="headerlink" title="什么是 channels"></a>什么是 channels</h3><p>Channels 可以被视为 Goroutines 通过它进行通信的管道。就像水在管道中从一端流向另一端一样，数据可以通过 channels 从一端发送并从另一端接收。</p>
+<h3 id="声明-channels"><a href="#声明-channels" class="headerlink" title="声明 channels"></a>声明 channels</h3><p>每个 channel 都有一个与之关联的类型。这个类型就是该 channel 允许传输的数据类型。不允许使用该 channel 传输其他类型的数据。</p>
+<p><em>chan T</em> 是一个类型为 <code>T</code> 的 channel</p>
+<p>Channel 的零值是 <code>nil</code>。<code>nil</code> channels 没有任何用处，因此必须使用 <code>make</code> 来定义 channel，这与 <a href="../%E3%80%90GolangBot%E3%80%9113-Maps">maps</a> 和 <a href="../%E3%80%90GolangBot%E3%80%9111-%E6%95%B0%E7%BB%84%E5%92%8C%E5%88%87%E7%89%87">slices</a> 类似。</p>
+<p>让我们编写一些声明 channel 的代码。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> <span class="hljs-string">&quot;fmt&quot;</span><br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>    <span class="hljs-keyword">var</span> a <span class="hljs-keyword">chan</span> <span class="hljs-type">int</span><br>    <span class="hljs-keyword">if</span> a == <span class="hljs-literal">nil</span> &#123;<br>        fmt.Println(<span class="hljs-string">&quot;channel a is nil, going to define it&quot;</span>)<br>        a = <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> <span class="hljs-type">int</span>)<br>        fmt.Printf(<span class="hljs-string">&quot;Type of a is %T&quot;</span>, a)<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/QDtf6mvymD">在 playground 中运行程序</a></p>
+<p>第 6 行声明的 channel <code>a</code> 是 <code>nil</code>，因为 channel 的零值是 <code>nil</code>。因此 if 条件内的语句被执行，并定义了该 channel。在上面的程序中，<code>a</code> 是一个 int 类型的 channel。该程序将输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs fallback">channel a is nil, going to define it<br>Type of a is chan int<br></code></pre></td></tr></table></figure>
+
+<p>像往常一样，使用简短声明也是定义 channel 的一种有效且简洁的方式。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs fallback">a := make(chan int)<br></code></pre></td></tr></table></figure>
+
+<p>上面的代码行同样定义了一个 int 类型的 channel <code>a</code>。</p>
+<h3 id="通过-channel-发送和接收数据"><a href="#通过-channel-发送和接收数据" class="headerlink" title="通过 channel 发送和接收数据"></a>通过 channel 发送和接收数据</h3><p>从 channel 发送和接收数据的语法如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs fallback">data := &lt;- a // 从 channel a 中读取数据<br>a &lt;- data // 向 channel a 写入数据<br></code></pre></td></tr></table></figure>
+
+<p>箭头相对于 channel 的方向指定了数据是被发送还是被接收。</p>
+<p>在第一行中，箭头指向远离 <code>a</code> 的方向，因此我们是从 channel <code>a</code> 读取数据并将值存储到变量 data 中。</p>
+<p>在第二行中，箭头指向 <code>a</code>，因此我们是向 channel <code>a</code> 写入数据。</p>
+<h3 id="发送和接收默认是阻塞的"><a href="#发送和接收默认是阻塞的" class="headerlink" title="发送和接收默认是阻塞的"></a>发送和接收默认是阻塞的</h3><p>向 channel 发送和接收数据默认是阻塞的。这是什么意思？当数据被发送到一个 channel 时，发送语句会被阻塞，直到其他 Goroutine 从该 channel 中读取数据。同样，当从一个 channel 中读取数据时，读取操作会被阻塞，直到某个 Goroutine 向该 channel 写入数据。</p>
+<p>channels 的这个特性使得 Goroutines 能够有效地通信，而无需使用在其他编程语言中常见的显式锁或条件变量。</p>
+<p>如果现在这些还不太理解也没关系。接下来的章节将更清楚地说明 channels 是如何默认阻塞的。</p>
+<h3 id="Channel-示例程序"><a href="#Channel-示例程序" class="headerlink" title="Channel 示例程序"></a>Channel 示例程序</h3><p>理论说够了 :)。让我们编写一个程序来理解 Goroutines 是如何使用 channels 进行通信的。</p>
+<p>我们实际上将重写我们在学习 <a href="../GolangBot%E3%80%9121-Goroutines">Goroutines</a> 时编写的程序。</p>
+<p>让我从上一个教程中引用这个程序。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (  <br>    <span class="hljs-string">&quot;fmt&quot;</span><br>    <span class="hljs-string">&quot;time&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">hello</span><span class="hljs-params">()</span></span> &#123;  <br>    fmt.Println(<span class="hljs-string">&quot;Hello world goroutine&quot;</span>)<br>&#125;<br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;  <br>    <span class="hljs-keyword">go</span> hello()<br>    time.Sleep(<span class="hljs-number">1</span> * time.Second)<br>    fmt.Println(<span class="hljs-string">&quot;main function&quot;</span>)<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/U9ZZuSql8-">在 playground 中运行程序</a></p>
+<p>这是上一个教程中的程序。我们在这里使用 sleep 来让 main Goroutine 等待 hello Goroutine 完成。如果这对你来说没有意义，我建议阅读关于 <a href="../GolangBot%E3%80%9121-Goroutines">Goroutines</a> 的教程。</p>
+<p>我们将使用 channels 重写上面的程序。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>    <span class="hljs-string">&quot;fmt&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">hello</span><span class="hljs-params">(done <span class="hljs-keyword">chan</span> <span class="hljs-type">bool</span>)</span></span> &#123;<br>    fmt.Println(<span class="hljs-string">&quot;Hello world goroutine&quot;</span>)<br>    done &lt;- <span class="hljs-literal">true</span><br>&#125;<br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>    done := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> <span class="hljs-type">bool</span>)<br>    <span class="hljs-keyword">go</span> hello(done)<br>    &lt;-done<br>    fmt.Println(<span class="hljs-string">&quot;main function&quot;</span>)<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/I8goKv6ZMF">在 playground 中运行程序</a></p>
+<p>在上面的程序中，我们在第 12 行创建了一个 <code>done</code> bool channel，并将其作为参数传递给 <code>hello</code> Goroutine。在第 14 行，我们正在从 <code>done</code> channel 接收数据。这行代码是阻塞的，这意味着在某个 Goroutine 向 <code>done</code> channel 写入数据之前，控制不会移动到下一行代码。因此，这就消除了在原始程序中使用 <code>time.Sleep</code> 来防止 main Goroutine 退出的需求。</p>
+<p>代码行 <code>&lt;-done</code> 从 done channel 接收数据，但不使用或存储该数据到任何变量中。这是完全合法的。</p>
+<p>现在我们的 <code>main</code> Goroutine 被阻塞，等待 done channel 上的数据。<code>hello</code> Goroutine 将这个 channel 作为参数接收，打印 <code>Hello world goroutine</code>，然后向 <code>done</code> channel 写入数据。当这个写入完成时，main Goroutine 从 done channel 接收数据，它被解除阻塞，然后打印文本 <em>main function</em>。</p>
+<p>这个程序输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs fallback">Hello world goroutine<br>main function<br></code></pre></td></tr></table></figure>
+
+<p>让我们通过在 <code>hello</code> Goroutine 中引入一个 sleep 来修改这个程序，以更好地理解这个阻塞概念。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>    <span class="hljs-string">&quot;fmt&quot;</span><br>    <span class="hljs-string">&quot;time&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">hello</span><span class="hljs-params">(done <span class="hljs-keyword">chan</span> <span class="hljs-type">bool</span>)</span></span> &#123;<br>    fmt.Println(<span class="hljs-string">&quot;hello go routine is going to sleep&quot;</span>)<br>    time.Sleep(<span class="hljs-number">4</span> * time.Second)<br>    fmt.Println(<span class="hljs-string">&quot;hello go routine awake and going to write to done&quot;</span>)<br>    done &lt;- <span class="hljs-literal">true</span><br>&#125;<br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>    done := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> <span class="hljs-type">bool</span>)<br>    fmt.Println(<span class="hljs-string">&quot;Main going to call hello go goroutine&quot;</span>)<br>    <span class="hljs-keyword">go</span> hello(done)<br>    &lt;-done<br>    fmt.Println(<span class="hljs-string">&quot;Main received data&quot;</span>)<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/EejiO-yjUQ">在 playground 中运行</a></p>
+<p>在上面的程序中，我们在第 10 行为 <code>hello</code> 函数添加了 4 秒钟的睡眠时间。</p>
+<p>这个程序首先会打印 <code>Main going to call hello go goroutine</code>。然后 hello Goroutine 将启动并打印 <code>hello go routine is going to sleep</code>。打印完这个后，<code>hello</code> Goroutine 将睡眠 4 秒钟，在此期间 <code>main</code> Goroutine 将被阻塞，因为它在第 18 行 <code>&lt;-done</code> 等待来自 done channel 的数据。4 秒后，将打印 <code>hello go routine awake and going to write to done</code>，然后是 <code>Main received data</code>。</p>
+<h3 id="Channel-的另一个示例"><a href="#Channel-的另一个示例" class="headerlink" title="Channel 的另一个示例"></a>Channel 的另一个示例</h3><p>让我们再写一个程序来更好地理解 channels。这个程序将打印一个数字的各个数字的平方和与立方和。</p>
+<p>例如，如果输入是 123，那么这个程序将计算输出为：</p>
+<p>平方和 &#x3D; (1 * 1) + (2 * 2) + (3 * 3)<br>立方和 &#x3D; (1 * 1 * 1) + (2 * 2 * 2) + (3 * 3 * 3)<br>输出 &#x3D; 平方和 + 立方和 &#x3D; 50</p>
+<p>我们将这样组织程序：在一个单独的 Goroutine 中计算平方和，在另一个 Goroutine 中计算立方和，最后的求和在 main Goroutine 中进行。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (  <br>    <span class="hljs-string">&quot;fmt&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">calcSquares</span><span class="hljs-params">(number <span class="hljs-type">int</span>, squareop <span class="hljs-keyword">chan</span> <span class="hljs-type">int</span>)</span></span> &#123;  <br>    sum := <span class="hljs-number">0</span><br>    <span class="hljs-keyword">for</span> number != <span class="hljs-number">0</span> &#123;<br>        digit := number % <span class="hljs-number">10</span><br>        sum += digit * digit<br>        number /= <span class="hljs-number">10</span><br>    &#125;<br>    squareop &lt;- sum<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">calcCubes</span><span class="hljs-params">(number <span class="hljs-type">int</span>, cubeop <span class="hljs-keyword">chan</span> <span class="hljs-type">int</span>)</span></span> &#123;  <br>    sum := <span class="hljs-number">0</span> <br>    <span class="hljs-keyword">for</span> number != <span class="hljs-number">0</span> &#123;<br>        digit := number % <span class="hljs-number">10</span><br>        sum += digit * digit * digit<br>        number /= <span class="hljs-number">10</span><br>    &#125;<br>    cubeop &lt;- sum<br>&#125; <br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;  <br>    number := <span class="hljs-number">589</span><br>    sqrch := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> <span class="hljs-type">int</span>)<br>    cubech := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> <span class="hljs-type">int</span>)<br>    <span class="hljs-keyword">go</span> calcSquares(number, sqrch)<br>    <span class="hljs-keyword">go</span> calcCubes(number, cubech)<br>    squares, cubes := &lt;-sqrch, &lt;-cubech<br>    fmt.Println(<span class="hljs-string">&quot;Final output&quot;</span>, squares + cubes)<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/4RKr7_YO_B">在 playground 中运行程序</a></p>
+<p>第 7 行的 <code>calcSquares</code> 函数计算数字各个位的平方和，并将结果发送到 <code>squareop</code> channel。类似地，第 17 行的 <code>calcCubes</code> 函数计算数字各个位的立方和，并将结果发送到 <code>cubeop</code> channel。</p>
+<p>这两个函数在第 31 和 32 行作为单独的 Goroutines 运行，每个都传递了一个用于写入的 channel 作为参数。main Goroutine 在第 33 行等待这两个 channels 的数据。一旦从两个 channels 接收到数据，它们就被存储在 <code>squares</code> 和 <code>cubes</code> 变量中，最终输出被计算并打印。这个程序将打印：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs fallback">Final output 1536<br></code></pre></td></tr></table></figure>
+
+<h3 id="死锁"><a href="#死锁" class="headerlink" title="死锁"></a>死锁</h3><p>使用 channels 时要考虑的一个重要因素是死锁。如果一个 Goroutine 正在向一个 channel 发送数据，就期望其他一些 Goroutine 应该接收数据。如果这种情况没有发生，程序将在运行时出现 <code>Deadlock</code> panic。</p>
+<p>同样，如果一个 Goroutine 正在等待从一个 channel 接收数据，那么就期望其他一些 Goroutine 会向该 channel 写入数据，否则程序将出现panic。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>    ch := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> <span class="hljs-type">int</span>)<br>    ch &lt;- <span class="hljs-number">5</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/q1O5sNx4aW">在 playground 中运行程序</a></p>
+<p>在上面的程序中，创建了一个 channel <code>ch</code>，我们在第 6 行 <code>ch &lt;- 5</code> 向该 channel 发送 5。在这个程序中，没有其他 Goroutine 从 channel <code>ch</code> 接收数据。因此这个程序会出现以下运行时错误的panic：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs fallback">fatal error: all goroutines are asleep - deadlock!<br><br>goroutine 1 [chan send]:<br>main.main()<br>    /tmp/sandbox046150166/prog.go:6 +0x50<br></code></pre></td></tr></table></figure>
+
+<hr>
+<p>下面是我自己补充的内容，非原作者内容：</p>
+<p>关于死锁，我自己补充一点，考虑清楚以下几个问题就基本能捋顺了。首先搞清楚一个概念，在触发死锁panic时，提示为<code>fatal error: all goroutines are asleep - deadlock!</code>。也就是说，当包括main Goroutine在内的所有Goroutine都阻塞的时候，程序才会触发死锁。那么来看下面的程序，</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;fmt&quot;</span><br>	<span class="hljs-string">&quot;time&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">hello</span><span class="hljs-params">(done <span class="hljs-keyword">chan</span> <span class="hljs-type">bool</span>)</span></span> &#123;<br>	fmt.Println(<span class="hljs-string">&quot;Hello world goroutine&quot;</span>)<br>	done &lt;- <span class="hljs-literal">true</span><br>&#125;<br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	done := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> <span class="hljs-type">bool</span>, <span class="hljs-number">0</span>)<br>	<span class="hljs-keyword">go</span> hello(done)<br>	time.Sleep(<span class="hljs-number">10</span> * time.Second)<br>	fmt.Println(<span class="hljs-string">&quot;main function&quot;</span>)<br>&#125; <br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>使用 channels 时要考虑的一个重要因素是死锁。如果一个 Goroutine 正在向一个 channel 发送数据，就期望其他一些 Goroutine 应该接收数据。如果这种情况没有发生，程序将在运行时出现 <code>Deadlock</code> panic。</p>
+</blockquote>
+<p>基于作者的观点，我抛出一个疑问：为什么<code>done</code>这个channel只在<code>hello</code>中发送，没有被读取，程序却不会死锁呢？原因在于，<code>done &lt;- true</code>，done只发送数据，却没有接收，因此<code>hello</code>函数进入阻塞，而这个时候，main这个Goroutine还在正常进行，而当<code>main function</code>被打印后，main Goroutine结束，<code>hello</code>也就跟着一起结束了。这时阻塞是1&#x2F;2。</p>
+<p>而将程序作如下修改：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;fmt&quot;</span><br>	<span class="hljs-string">&quot;time&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">hello</span><span class="hljs-params">(done <span class="hljs-keyword">chan</span> <span class="hljs-type">bool</span>)</span></span> &#123;<br>	fmt.Println(<span class="hljs-string">&quot;Hello world goroutine&quot;</span>)<br>	done &lt;- <span class="hljs-literal">true</span><br>&#125;<br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	done := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> <span class="hljs-type">bool</span>, <span class="hljs-number">0</span>)<br>	<span class="hljs-keyword">go</span> hello(done)<br>	time.Sleep(<span class="hljs-number">10</span> * time.Second)<br>	fmt.Println(<span class="hljs-string">&quot;main function&quot;</span>)<br>	<span class="hljs-keyword">select</span> &#123;&#125;<br>&#125; <br></code></pre></td></tr></table></figure>
+
+<p>17行，我们添加了一个<code>select&#123;&#125;</code>，这会使得main Goroutine进入无尽的阻塞，这个时候的阻塞率是2&#x2F;2。因此会触发死锁。</p>
+<p>观点结束，继续原文</p>
+<hr>
+<h3 id="单向-channels"><a href="#单向-channels" class="headerlink" title="单向 channels"></a>单向 channels</h3><p>到目前为止，我们讨论的所有 channels 都是双向的，也就是说数据可以在它们上面发送和接收。也可以创建单向 channels，即只能发送或接收数据的 channels。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> <span class="hljs-string">&quot;fmt&quot;</span><br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">sendData</span><span class="hljs-params">(sendch <span class="hljs-keyword">chan</span>&lt;- <span class="hljs-type">int</span>)</span></span> &#123;<br>    sendch &lt;- <span class="hljs-number">10</span><br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>    sendch := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span>&lt;- <span class="hljs-type">int</span>)<br>    <span class="hljs-keyword">go</span> sendData(sendch)<br>    fmt.Println(&lt;-sendch)<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/PRKHxM-iRK">在 playground 中运行程序</a></p>
+<p>在上面的程序中，我们在第 10 行创建了一个只发送的 channel <code>sendch</code>。<code>chan&lt;- int</code> 表示一个只发送的 channel，因为箭头指向 <code>chan</code>。我们试图在第 12 行从一个只发送的 channel 接收数据。这是不允许的，当程序运行时，编译器会抱怨说：</p>
+<p><em>.&#x2F;prog.go:12:14: invalid operation: &lt;-sendch (receive from send-only type chan&lt;- int)</em></p>
+<p><strong>一切都很好，但是如果不能从只发送的 channel 读取，那写入它有什么意义呢！</strong></p>
+<p><strong>这就是 channel 转换发挥作用的地方。可以将双向 channel 转换为只发送或只接收 channel，但反过来是不可能的。</strong></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> <span class="hljs-string">&quot;fmt&quot;</span><br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">sendData</span><span class="hljs-params">(sendch <span class="hljs-keyword">chan</span>&lt;- <span class="hljs-type">int</span>)</span></span> &#123;<br>    sendch &lt;- <span class="hljs-number">10</span><br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>    chnl := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> <span class="hljs-type">int</span>)<br>    <span class="hljs-keyword">go</span> sendData(chnl)<br>    fmt.Println(&lt;-chnl)<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/aqi_rJ1U8j">在 playground 中运行程序</a></p>
+<p>在上面程序的第 10 行，创建了一个双向 channel <code>chnl</code>。在第 11 行将其作为参数传递给 <code>sendData</code> Goroutine。<code>sendData</code> 函数在第 5 行的参数 <code>sendch chan&lt;- int</code> 中将此 channel 转换为只发送的 channel。所以现在该 channel 在 <code>sendData</code> Goroutine 中是只发送的，但在 main Goroutine 中是双向的。这个程序将输出 <code>10</code>。</p>
+<h3 id="关闭-channels-和在-channels-上使用-for-range-循环"><a href="#关闭-channels-和在-channels-上使用-for-range-循环" class="headerlink" title="关闭 channels 和在 channels 上使用 for range 循环"></a>关闭 channels 和在 channels 上使用 for range 循环</h3><p>发送者可以关闭 channel 以通知接收者不会再向该 channel 发送任何数据。</p>
+<p>接收者可以在从 channel 接收数据时使用额外的变量来检查 channel 是否已关闭。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs fallback">v, ok := &lt;- ch<br></code></pre></td></tr></table></figure>
+
+<p>在上面的语句中，如果值是通过向 channel 成功发送操作而接收的，则 <code>ok</code> 为 true。如果 <code>ok</code> 为 false，则意味着我们正在从一个已关闭的 channel 读取。从已关闭的 channel 读取的值将是该 channel 类型的零值。例如，如果 channel 是一个 <code>int</code> channel，那么从已关闭的 channel 接收到的值将是 <code>0</code>。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>    <span class="hljs-string">&quot;fmt&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">producer</span><span class="hljs-params">(chnl <span class="hljs-keyword">chan</span> <span class="hljs-type">int</span>)</span></span> &#123;<br>    <span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">10</span>; i++ &#123;<br>        chnl &lt;- i<br>    &#125;<br>    <span class="hljs-built_in">close</span>(chnl)<br>&#125;<br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>    ch := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> <span class="hljs-type">int</span>)<br>    <span class="hljs-keyword">go</span> producer(ch)<br>    <span class="hljs-keyword">for</span> &#123;<br>        v, ok := &lt;-ch<br>        <span class="hljs-keyword">if</span> ok == <span class="hljs-literal">false</span> &#123;<br>            <span class="hljs-keyword">break</span><br>        &#125;<br>        fmt.Println(<span class="hljs-string">&quot;Received &quot;</span>, v, ok)<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/XWmUKDA2Ri">在 playground 中运行程序</a></p>
+<p>在上面的程序中，<code>producer</code> Goroutine 向 <code>chnl</code> channel 写入 0 到 9，然后关闭该 channel。main 函数在第 16 行有一个无限 <code>for</code> 循环，该循环使用变量 <code>ok</code> 在第 18 行检查 channel 是否已关闭。如果 <code>ok</code> 为 false，则表示 channel 已关闭，因此循环被打破。否则，打印接收到的值和 <code>ok</code> 的值。此程序打印：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs fallback">Received  0 true<br>Received  1 true<br>Received  2 true<br>Received  3 true<br>Received  4 true<br>Received  5 true<br>Received  6 true<br>Received  7 true<br>Received  8 true<br>Received  9 true<br></code></pre></td></tr></table></figure>
+
+<p>for 循环的 <strong>for range</strong> 形式可以用于从 channel 接收值，直到它关闭为止。</p>
+<p>让我们使用 for range 循环重写上面的程序。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>    <span class="hljs-string">&quot;fmt&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">producer</span><span class="hljs-params">(chnl <span class="hljs-keyword">chan</span> <span class="hljs-type">int</span>)</span></span> &#123;<br>    <span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">10</span>; i++ &#123;<br>        chnl &lt;- i<br>    &#125;<br>    <span class="hljs-built_in">close</span>(chnl)<br>&#125;<br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>    ch := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> <span class="hljs-type">int</span>)<br>    <span class="hljs-keyword">go</span> producer(ch)<br>    <span class="hljs-keyword">for</span> v := <span class="hljs-keyword">range</span> ch &#123;<br>        fmt.Println(<span class="hljs-string">&quot;Received &quot;</span>,v)<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/JJ3Ida1r_6">在 playground 中运行程序</a></p>
+<p>第 16 行的 <code>for range</code> 循环从 <code>ch</code> channel 接收数据，直到它关闭为止。一旦 <code>ch</code> 关闭，循环会自动退出。该程序输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs fallback">Received  0<br>Received  1<br>Received  2<br>Received  3<br>Received  4<br>Received  5<br>Received  6<br>Received  7<br>Received  8<br>Received  9<br></code></pre></td></tr></table></figure>
+
+<p><a href="../%E3%80%90GolangBot%E3%80%9122-Channels/#channel-%E7%9A%84%E5%8F%A6%E4%B8%80%E4%B8%AA%E7%A4%BA%E4%BE%8B">另一个 channel 示例</a>部分的程序可以使用 for range 循环重写，以获得更好的代码重用性。</p>
+<p>如果仔细查看程序，你会注意到在 <code>calcSquares</code> 函数和 <code>calcCubes</code> 函数中都重复了寻找数字各个位的代码。我们将把该代码移到它自己的函数中，并并发调用它。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>    <span class="hljs-string">&quot;fmt&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">digits</span><span class="hljs-params">(number <span class="hljs-type">int</span>, dchnl <span class="hljs-keyword">chan</span> <span class="hljs-type">int</span>)</span></span> &#123;<br>    <span class="hljs-keyword">for</span> number != <span class="hljs-number">0</span> &#123;<br>        digit := number % <span class="hljs-number">10</span><br>        dchnl &lt;- digit<br>        number /= <span class="hljs-number">10</span><br>    &#125;<br>    <span class="hljs-built_in">close</span>(dchnl)<br>&#125;<br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">calcSquares</span><span class="hljs-params">(number <span class="hljs-type">int</span>, squareop <span class="hljs-keyword">chan</span> <span class="hljs-type">int</span>)</span></span> &#123;<br>    sum := <span class="hljs-number">0</span><br>    dch := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> <span class="hljs-type">int</span>)<br>    <span class="hljs-keyword">go</span> digits(number, dch)<br>    <span class="hljs-keyword">for</span> digit := <span class="hljs-keyword">range</span> dch &#123;<br>        sum += digit * digit<br>    &#125;<br>    squareop &lt;- sum<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">calcCubes</span><span class="hljs-params">(number <span class="hljs-type">int</span>, cubeop <span class="hljs-keyword">chan</span> <span class="hljs-type">int</span>)</span></span> &#123;<br>    sum := <span class="hljs-number">0</span><br>    dch := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> <span class="hljs-type">int</span>)<br>    <span class="hljs-keyword">go</span> digits(number, dch)<br>    <span class="hljs-keyword">for</span> digit := <span class="hljs-keyword">range</span> dch &#123;<br>        sum += digit * digit * digit<br>    &#125;<br>    cubeop &lt;- sum<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>    number := <span class="hljs-number">589</span><br>    sqrch := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> <span class="hljs-type">int</span>)<br>    cubech := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> <span class="hljs-type">int</span>)<br>    <span class="hljs-keyword">go</span> calcSquares(number, sqrch)<br>    <span class="hljs-keyword">go</span> calcCubes(number, cubech)<br>    squares, cubes := &lt;-sqrch, &lt;-cubech<br>    fmt.Println(<span class="hljs-string">&quot;Final output&quot;</span>, squares+cubes)<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/oL86W9Ui03">在 playground 中运行程序</a></p>
+<p>上面程序中的 <code>digits</code> 函数现在包含了从数字中获取各个位的逻辑，并被 <code>calcSquares</code> 和 <code>calcCubes</code> 函数并发调用。一旦数字中没有更多的位，channel 在第 13 行被关闭。<code>calcSquares</code> 和 <code>calcCubes</code> Goroutines 使用 <code>for range</code> 循环监听它们各自的 channels，直到它关闭。程序的其余部分相同。这个程序也将打印：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs fallback">Final output 1536<br></code></pre></td></tr></table></figure>
+
+<p>这就是本教程的结尾了。channels 中还有一些概念，如<a href="../%E3%80%90GolangBot%E3%80%9123-%E7%BC%93%E5%86%B2%E9%80%9A%E9%81%93%E4%B8%8E%E5%B7%A5%E4%BD%9C%E6%B1%A0">缓冲 channels</a>、<a href="../%E3%80%90GolangBot%E3%80%9123-%E7%BC%93%E5%86%B2%E9%80%9A%E9%81%93%E4%B8%8E%E5%B7%A5%E4%BD%9C%E6%B1%A0">工作池</a>和<a href="../%E3%80%90GolangBot%E3%80%9124-Select">select</a>。我们将在单独的教程中讨论它们。感谢阅读。</p>
+<p><strong>下一篇教程 - <a href="../%E3%80%90GolangBot%E3%80%9123-%E7%BC%93%E5%86%B2%E9%80%9A%E9%81%93%E4%B8%8E%E5%B7%A5%E4%BD%9C%E6%B1%A0">缓冲 Channels 和工作池</a></strong></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E5%BF%83%E5%BE%97/" class="category-chain-item">学习心得</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E5%BF%83%E5%BE%97/GolangBot/" class="category-chain-item">GolangBot</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Golang/" class="print-no-link">#Golang</a>
+      
+        <a href="/tags/%E6%95%99%E7%A8%8B/" class="print-no-link">#教程</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>【GolangBot】22-Channels</div>
+      <div>https://zoekyhein.github.io/【GolangBot】22-Channels/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>ZoeKyHein</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年12月25日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/%E3%80%90GolangBot%E3%80%9123-%E7%BC%93%E5%86%B2%E9%80%9A%E9%81%93%E4%B8%8E%E5%B7%A5%E4%BD%9C%E6%B1%A0/" title="【GolangBot】23-缓冲通道与工作池">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">【GolangBot】23-缓冲通道与工作池</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/%E3%80%90GolangBot%E3%80%9121-Goroutines/" title="【GolangBot】21-Goroutines">
+                        <span class="hidden-mobile">【GolangBot】21-Goroutines</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <link rel="stylesheet" type="text/css" href="https://cdn.jsdmirror.com/gh/muzihuaner/deng@main/deng.css"> <!-- 灯笼1 --> <div class="deng-box"> <div class="deng"> <div class="xian"></div> <div class="deng-a"> <div class="deng-b"><div class="deng-t">年</div></div> </div> <div class="shui shui-a"><div class="shui-c"></div><div class="shui-b"></div></div> </div> </div>
+<!-- 灯笼2 --> <div class="deng-box1"> <div class="deng"> <div class="xian"></div> <div class="deng-a"> <div class="deng-b"><div class="deng-t">新</div></div> </div> <div class="shui shui-a"><div class="shui-c"></div><div class="shui-b"></div></div> </div> </div>
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
