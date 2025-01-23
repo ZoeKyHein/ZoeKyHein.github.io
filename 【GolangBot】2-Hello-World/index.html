@@ -1,0 +1,751 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/icon.png">
+  <link rel="icon" href="/img/icon.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#ac9343">
+  <meta name="author" content="ZoeKyHein">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="这是我们Golang系列教程的第二篇。请阅读我们前一篇教程Golang安装和介绍来了解什么是Golang，以及如何安装Golang。 安装开发环境让我们在想要写Hello World程序的位置创建一个目录。打开终端运行如下命令。 mkdir ~&#x2F;Documents&#x2F;learngo&#x2F;  上面的命令将会在当前用户的文档目录下创建一个名为learngo的目录。你可以随意在希望存放代码的位置创建目录。 创">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【GolangBot】2-Hello World">
+<meta property="og:url" content="https://zoekyhein.github.io/%E3%80%90GolangBot%E3%80%912-Hello-World/index.html">
+<meta property="og:site_name" content="传火祭祀场">
+<meta property="og:description" content="这是我们Golang系列教程的第二篇。请阅读我们前一篇教程Golang安装和介绍来了解什么是Golang，以及如何安装Golang。 安装开发环境让我们在想要写Hello World程序的位置创建一个目录。打开终端运行如下命令。 mkdir ~&#x2F;Documents&#x2F;learngo&#x2F;  上面的命令将会在当前用户的文档目录下创建一个名为learngo的目录。你可以随意在希望存放代码的位置创建目录。 创">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-12-17T08:47:41.000Z">
+<meta property="article:modified_time" content="2025-01-23T07:44:45.568Z">
+<meta property="article:author" content="ZoeKyHein">
+<meta property="article:tag" content="Golang">
+<meta property="article:tag" content="教程">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>【GolangBot】2-Hello World - 传火祭祀场</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"zoekyhein.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"💥","loop":false,"scope":["home"]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>传火祭祀场</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/golangbot" target="_self">
+                <i class="iconfont icon-book"></i>
+                <span>Go教程</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/sunKnight.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">【GolangBot】2-Hello World</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-12-17 08:47" pubdate>
+          2024年12月17日 早上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.8k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          15 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">【GolangBot】2-Hello World</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>这是我们<a href="../golangbot/">Golang系列教程</a>的第二篇。请阅读我们前一篇教程<a href="../%E3%80%90GolangBot%E3%80%911-%E4%BB%8B%E7%BB%8D%E5%92%8C%E5%AE%89%E8%A3%85/">Golang安装和介绍</a>来了解什么是Golang，以及如何安装Golang。</p>
+<h3 id="安装开发环境"><a href="#安装开发环境" class="headerlink" title="安装开发环境"></a>安装开发环境</h3><p>让我们在想要写Hello World程序的位置创建一个目录。打开终端运行如下命令。</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">mkdir ~/Documents/learngo/</code></pre></div>
+
+<p>上面的命令将会在当前用户的文档目录下创建一个名为<code>learngo</code>的目录。你可以随意在希望存放代码的位置创建目录。</p>
+<h3 id="创建一个Go-Module"><a href="#创建一个Go-Module" class="headerlink" title="创建一个Go Module"></a>创建一个Go Module</h3><p>下一步是在<code>~/Documents/learngo/</code>文件夹中创建一个名为<code>learngo</code>的go module。Go modules 用来追踪应用的依赖和版本。我们将会在我们学习<a href="../%E3%80%90GolangBot%E3%80%917-%E5%8C%85/">包</a>的时候详细讨论Go modules。</p>
+<p>在<code>~/Documents/learngo/</code>目录中运行<code>go mod init learngo</code>。这将会创建一个名为<code>go.mod</code>的文件。运行<code>go mod init learngo</code>命令后，下面的内容将会被打印出来</p>
+<p>Run <code>go mod init learngo</code> inside the <code>~/Documents/learngo/</code> directory. This will create a file named <code>go.mod</code>. The following will be printed after running the <code>go mod init learngo</code> command</p>
+<div class="code-wrapper"><pre><code class="hljs v">go: creating <span class="hljs-keyword">new</span> go<span class="hljs-variable">.mod</span>: <span class="hljs-keyword">module</span> learngo</code></pre></div>
+
+<p><code>go.mod</code>文件的内容如下。</p>
+<div class="code-wrapper"><pre><code class="hljs v"><span class="hljs-keyword">module</span> learngo
+
+go <span class="hljs-number">1</span><span class="hljs-variable">.21</span><span class="hljs-variable">.0</span></code></pre></div>
+
+<p>The first line <code>module learngo</code> specifies the module name. The next line <code>1.21.0</code> indicates that the files in this module use go version 1.21.0</p>
+<p>第一行<code>module learngo</code>制定了module的名称。下一行<code>1.21.0</code>表明在这个module当中，使用的go版本是1.21.0。</p>
+<h3 id="Hello-World"><a href="#Hello-World" class="headerlink" title="Hello World"></a>Hello World</h3><p>用你最喜欢的文本编辑器在<code>learngo</code>目录下创建一个名为<code>main.go</code>的文件，其中包含以下内容。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> <span class="hljs-string">&quot;fmt&quot;</span>
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	fmt.Println(<span class="hljs-string">&quot;Hello World&quot;</span>)
+&#125;</code></pre></div>
+
+<p>按照Go的管理，包含<code>main</code>函数的文件命名为<code>main.go</code>，但其他名称也同样适用。</p>
+<h3 id="运行go程序"><a href="#运行go程序" class="headerlink" title="运行go程序"></a>运行go程序</h3><p>有几种运行Go程序的不同方式。让我们一个个地来看。</p>
+<h4 id="1-go-install"><a href="#1-go-install" class="headerlink" title="1. go install"></a>1. go install</h4><p>第一种运行Go程序的方法是使用<code>go install</code>命令。让我们<code>cd</code>进我们刚刚创建的<code>learngo</code>目录。</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">cd ~/Documents/learngo/</code></pre></div>
+
+<p>运行如下命令。</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">go install</code></pre></div>
+
+<p>上面的命令将会变异程序并且安装(拷贝)二进制文件到<code>~/go/bin</code>路径。二进制文件的名称是go module的名称。在我们的示例中，它会被命名为<code>learngo</code>。</p>
+<p>当你尝试安装程序的时候，你可能会碰到下面的错误。</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">go install: no install location for directory /home/naveen/Documents/learngo outside GOPATH
+For more details see: &#x27;go help gopath&#x27;</code></pre></div>
+
+<p>上面的错误通常的意思是指，<code>go install</code>找不到位置安装编译后的二进制文件。所以让我们继续，并且给他一个位置。这个位置是由<code>GOBIN</code>环境变量控制的。</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">export GOBIN=~/go/bin/</code></pre></div>
+
+<p>上面的环境变量制定了<code>go install</code>应该拷贝并且编译二进制文件到<code>~go/bin</code>路径。这是对Go的二进制文件来说一个约定俗成的路径，但你也可以随心所欲的修改它到任意你想要的位置。现在试着重新运行<code>go install</code>，程序应该会正常编译并且运行了。</p>
+<p>你可以在终端里面输入<code>ls -al ~/go/bin/learngo</code>，你会发现实际上<code>go install</code>已经把二进制文件放到了<code>~/go/bin</code>路径下。</p>
+<p>现在，让我们来运行编译后的二进制文件。</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">~/go/bin/learngo</code></pre></div>
+
+<p>上面的命令将会运行<code>learngo</code>二进制文件并且打印如下输出。</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">Hello World</code></pre></div>
+
+<p>恭喜！你已经成功运行了你的第一个Go程序。</p>
+<p>如果你不想每次运行程序的时候都输入完整的路径<code>~/go/bin/learngo</code>，你可以把<code>~/go/bin/</code>添加到你的PATH环境变量中。</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">export PATH=$PATH:~/go/bin</code></pre></div>
+
+<p>现在，你只需要在终端输入<code>learngo</code>就可以运行你的程序了。</p>
+<p>你也许想知道当<code>learngo</code>目录包含多个go文件而不只有一个<code>main.go</code>时会发生什么。在这种情况下<code>go install</code>会发生什么？请别着急，我们将会在<a href="../%E3%80%90GolangBot%E3%80%917-%E5%8C%85/">包和Go Modules</a>一节中讨论这些。</p>
+<h4 id="2-go-build"><a href="#2-go-build" class="headerlink" title="2. go build"></a>2. go build</h4><p>运行程序的第二个选择是使用<code>go build</code>。<code>go build</code>和<code>go install</code>非常相似，除了它不会在<code>~/go/bin/</code>路径下安装(拷贝)二进制文件。相反，它会在安装<code>go build</code>的位置创建二进制文件。</p>
+<p>在终端输入以下命令将当前目录更改为<code>learngo</code>。</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">cd ~/Documents/learngo/</code></pre></div>
+
+<p>在那之后，输入下面的命令。</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">go build</code></pre></div>
+
+<p>上方的命令会在当前目录创建一个名为<code>learngo</code>的二进制文件。运行<code>ls -al</code>会发现一个名为<code>learngo</code>的文件被创建了。</p>
+<p>输入<code>./learngo</code>运行程序。这也会打印</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">Hello World</code></pre></div>
+
+<p>我们用<code>go build</code>同样成功运行了我们的第一个Go程序:)</p>
+<h4 id="3-go-run"><a href="#3-go-run" class="headerlink" title="3. go run"></a>3. go run</h4><p>第三种运行程序的方式是使用<code>go run</code>命令。</p>
+<p>在终端中输入<code>cd ~/Documents/learngo/</code>命令来改变当前目录到<code>learngo</code>。</p>
+<p>然后，输入如下的命令。</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">go run main.go</code></pre></div>
+
+<p>执行上面的命令后，我们会看到输出</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">Hello World</code></pre></div>
+
+<p><code>go run</code>与<code>go build/go install</code>命令的一个不同就在于，<code>go run</code>需要<code>.go</code>文件的名字作为一个参数。</p>
+<p>在底层，<code>go run</code>和<code>go build</code>非常相似。但<code>go run</code>不在当前目录编译和安装程序，而是向一个临时目录编译文件，并在该目录运行文件。如果你有兴趣想知道<code>go run</code>把文件编译到了哪里，请在运行<code>go run</code>的时候加上<code>--work</code>参数。</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">go run --work main.go</code></pre></div>
+
+<p>运行上面的命令，我这里输出</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">WORK=/tmp/go-build199689936
+Hello World</code></pre></div>
+
+<p>关键字<code>WORK</code>的值制定了程序将会被编译到的临时位置。在我的示例中，程序已经被编译到了<code>/tmp/go-build199689936</code>。你的运行情况可能有所不同:)</p>
+<h4 id="4-Go在线运行环境。"><a href="#4-Go在线运行环境。" class="headerlink" title="4. Go在线运行环境。"></a>4. Go在线运行环境。</h4><p>最后一种方式是使用Go在线运行环境。尽管有一些限制，但当我们想要运行简单的程序时，此方法将会派上用场，它使用浏览器运行，不需要在本地安装GO:)。我已经为Hello World 程序创建了一个在线环境。<a target="_blank" rel="noopener" href="https://go.dev/play/p/oXGayDtoLPh">点击这里</a>在线运行程序。</p>
+<p>你也可以使用Go在线运行环境来与其他人分享你的源码。</p>
+<p>现在我们知道了运行程序的四种不同的方式，你可能纠结于使用哪一种。答案是，视情况而定。当我想要做一个快速逻辑检查或一个标准库函数是否生效时，我一般会选择在线环境。在大多数情况下，我更喜欢<code>go install</code>，因为它给我一种选择，让我可以在终端里可以从任意目录运行程序，因为它将所有的程序编译到靠准<code>~/go/bin</code>路径。</p>
+<h4 id="对Hello-World程序的简短解释"><a href="#对Hello-World程序的简短解释" class="headerlink" title="对Hello World程序的简短解释"></a>对Hello World程序的简短解释</h4><p>这里是我们刚刚写的Hello World程序。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main 
+
+<span class="hljs-keyword">import</span> <span class="hljs-string">&quot;fmt&quot;</span> 
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123; 
+	fmt.Println(<span class="hljs-string">&quot;Hello World&quot;</span>) 
+&#125;</code></pre></div>
+
+<p>我们会简要讨论程序的每一行的作用。我们将在接下来的每一篇教程中深入探讨程序的各个部分。</p>
+<p><strong>package main - 每一个go文件都必须从<code>package name</code>语句开始</strong>。包用于提供代码的分隔和可重用性。这里用到了包名<code>main</code>。<code>main</code>函数应该永远处于main包中。</p>
+<p><strong>import “fmt”</strong> - import语句用来引用其他的包。在我们的示例中，<code>fmt</code>包被引用并且它用于在main函数中向标准输出打印文本。</p>
+<p><strong>fmt.Println(“Hello World”)</strong> - <code>fmt</code>包的 <code>Println</code> 函数用于向标准输出打印文本。<code>package.Function()</code>是调用包内函数的格式。</p>
+<p>代码可以在<a target="_blank" rel="noopener" href="https://github.com/golangbot/hello">GitHub</a>上下载。</p>
+<p>你现在可以去<a href="">【GolangBot】3-变量</a>来学习Go中的变量。</p>
+<p><strong>下一篇教程 - <a href="../%E3%80%90GolangBot%E3%80%913-%E5%8F%98%E9%87%8F/">变量</a></strong></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E5%BF%83%E5%BE%97/" class="category-chain-item">学习心得</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E5%BF%83%E5%BE%97/GolangBot/" class="category-chain-item">GolangBot</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Golang/" class="print-no-link">#Golang</a>
+      
+        <a href="/tags/%E6%95%99%E7%A8%8B/" class="print-no-link">#教程</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>【GolangBot】2-Hello World</div>
+      <div>https://zoekyhein.github.io/【GolangBot】2-Hello-World/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>ZoeKyHein</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年12月17日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/%E3%80%90GolangBot%E3%80%913-%E5%8F%98%E9%87%8F/" title="【GolangBot】3-变量">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">【GolangBot】3-变量</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/%E3%80%90GolangBot%E3%80%911-%E4%BB%8B%E7%BB%8D%E5%92%8C%E5%AE%89%E8%A3%85/" title="【GolangBot】1-介绍和安装">
+                        <span class="hidden-mobile">【GolangBot】1-介绍和安装</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

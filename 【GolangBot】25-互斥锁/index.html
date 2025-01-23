@@ -1,0 +1,769 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/icon.png">
+  <link rel="icon" href="/img/icon.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#ac9343">
+  <meta name="author" content="ZoeKyHein">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="欢迎来到 Golang系列教程 的第25篇教程。 在本教程中，我们将学习互斥锁（mutexes）。我们还将学习如何使用互斥锁和通道来解决竞态条件。 临界区在开始学习互斥锁之前，理解并发编程中临界区的概念很重要。当程序并发运行时，修改共享资源的代码部分不应该同时被多个 Goroutines 访问。这段修改共享资源的代码被称为临界区。例如，假设我们有一段将变量 x 加 1 的代码。 x &#x3D; x + 1">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【GolangBot】25-互斥锁">
+<meta property="og:url" content="https://zoekyhein.github.io/%E3%80%90GolangBot%E3%80%9125-%E4%BA%92%E6%96%A5%E9%94%81/index.html">
+<meta property="og:site_name" content="传火祭祀场">
+<meta property="og:description" content="欢迎来到 Golang系列教程 的第25篇教程。 在本教程中，我们将学习互斥锁（mutexes）。我们还将学习如何使用互斥锁和通道来解决竞态条件。 临界区在开始学习互斥锁之前，理解并发编程中临界区的概念很重要。当程序并发运行时，修改共享资源的代码部分不应该同时被多个 Goroutines 访问。这段修改共享资源的代码被称为临界区。例如，假设我们有一段将变量 x 加 1 的代码。 x &#x3D; x + 1">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://golangbot.com/content/images/2017/08/cs5.png">
+<meta property="og:image" content="https://golangbot.com/content/images/2017/08/cs-6.png">
+<meta property="article:published_time" content="2024-12-26T08:54:50.000Z">
+<meta property="article:modified_time" content="2025-01-23T07:44:45.569Z">
+<meta property="article:author" content="ZoeKyHein">
+<meta property="article:tag" content="Golang">
+<meta property="article:tag" content="教程">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://golangbot.com/content/images/2017/08/cs5.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>【GolangBot】25-互斥锁 - 传火祭祀场</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"zoekyhein.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"💥","loop":false,"scope":["home"]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>传火祭祀场</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/golangbot" target="_self">
+                <i class="iconfont icon-book"></i>
+                <span>Go教程</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/sunKnight.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">【GolangBot】25-互斥锁</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-12-26 08:54" pubdate>
+          2024年12月26日 早上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.9k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          16 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">【GolangBot】25-互斥锁</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>欢迎来到 <a href="../golangbot/">Golang系列教程</a> 的第25篇教程。</p>
+<p>在本教程中，我们将学习互斥锁（mutexes）。我们还将学习如何使用互斥锁和<a href="../%E3%80%90GolangBot%E3%80%9122-Channels">通道</a>来解决竞态条件。</p>
+<h3 id="临界区"><a href="#临界区" class="headerlink" title="临界区"></a>临界区</h3><p>在开始学习互斥锁之前，理解并发编程中<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Critical_section">临界区</a>的概念很重要。当程序并发运行时，修改共享资源的代码部分不应该同时被多个 <a href="../%E3%80%90GolangBot%E3%80%9122-Channels">Goroutines</a> 访问。这段修改共享资源的代码被称为临界区。例如，假设我们有一段将变量 x 加 1 的代码。</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">x = x + 1</code></pre></div>
+
+<p>只要上面这段代码被单个 Goroutine 访问，就不会有任何问题。</p>
+<p>让我们看看当有多个 Goroutine 并发运行时，为什么这段代码会失败。为了简单起见，让我们假设有 2 个 Goroutine 并发运行上面的代码。</p>
+<p>在内部，系统将按以下步骤执行上述代码（还有更多涉及寄存器、加法工作原理等技术细节，但为了本教程的目的，让我们假设这是三个步骤）：</p>
+<ol>
+<li>获取 x 的当前值</li>
+<li>计算 x + 1</li>
+<li>将步骤 2 中计算的值赋给 x</li>
+</ol>
+<p>当这三个步骤只由一个 Goroutine 执行时，一切正常。</p>
+<p>让我们讨论当 2 个 Goroutine 并发运行这段代码时会发生什么。下图描述了当两个 Goroutine 并发访问代码 <code>x = x + 1</code> 时可能发生的一种情况。</p>
+<p><img src="https://golangbot.com/content/images/2017/08/cs5.png" srcset="/img/loading.gif" lazyload alt="critical-section"></p>
+<p>我们假设 x 的初始值为 0。<em>Goroutine 1</em> 获取 x 的初始值，计算 x + 1，但在它能将计算的值赋给 x 之前，系统上下文切换到了 <code>Goroutine 2</code>。现在 <code>Goroutine 2</code> 获取 <code>x</code> 的初始值（仍然是 <code>0</code>），计算 <code>x + 1</code>。之后，系统再次上下文切换到 <em>Goroutine 1</em>。现在 <em>Goroutine 1</em> 将其计算的值 <em>1</em> 赋给 <em>x</em>，因此 x 变成了 1。然后 <em>Goroutine 2</em> 再次开始执行，将其计算的值（同样是 <code>1</code>）赋给 <code>x</code>，因此在两个 Goroutine 执行后 <code>x</code> 的值是 <code>1</code>。</p>
+<p>现在让我们看看可能发生的另一种情况。</p>
+<p><img src="https://golangbot.com/content/images/2017/08/cs-6.png" srcset="/img/loading.gif" lazyload alt="critical-section"></p>
+<p>在上面的情况中，<code>Goroutine 1</code> 开始执行并完成其所有三个步骤，因此 x 的值变成 <code>1</code>。然后 <code>Goroutine 2</code> 开始执行。现在 x 的值是 1，当 <code>Goroutine 2</code> 完成执行时，x 的值是 <code>2</code>。</p>
+<p>从这两种情况可以看出，x 的最终值是 <code>1</code> 或 <code>2</code>，这取决于上下文切换是如何发生的。这种程序输出依赖于 Goroutine 执行顺序的不良情况称为**<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Race_condition">竞态条件</a>**。</p>
+<p>在上述情况下，如果在任何时候只允许一个 Goroutine 访问代码的临界区，就可以避免竞态条件。这可以通过使用互斥锁来实现。</p>
+<h3 id="互斥锁"><a href="#互斥锁" class="headerlink" title="互斥锁"></a>互斥锁</h3><p>互斥锁用于提供一种锁定机制，以确保在任何时候只有一个 Goroutine 在运行代码的临界区，从而防止竞态条件的发生。</p>
+<p>互斥锁在 <a target="_blank" rel="noopener" href="https://golang.org/pkg/sync/">sync</a> 包中提供。<a target="_blank" rel="noopener" href="https://tip.golang.org/pkg/sync/#Mutex">Mutex</a> 上定义了两个方法，即 <a target="_blank" rel="noopener" href="https://tip.golang.org/pkg/sync/#Mutex.Lock">Lock</a> 和 <a target="_blank" rel="noopener" href="https://tip.golang.org/pkg/sync/#Mutex.Unlock">Unlock</a>。位于 <code>Lock</code> 和 <code>Unlock</code> 调用之间的任何代码将只能由一个 Goroutine 执行，从而避免竞态条件。</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">mutex.Lock()
+x = x + 1
+mutex.Unlock()</code></pre></div>
+
+<p>在上面的代码中，<code>x = x + 1</code> 在任何时候都只能由一个 Goroutine 执行，从而防止竞态条件。</p>
+<p><strong>如果一个 Goroutine 已经持有锁，而新的 Goroutine 试图获取锁，新的 Goroutine 将被阻塞，直到互斥锁被解锁。</strong></p>
+<h3 id="存在竞态条件的程序"><a href="#存在竞态条件的程序" class="headerlink" title="存在竞态条件的程序"></a>存在竞态条件的程序</h3><p>在本节中，我们将编写一个存在竞态条件的程序，在接下来的章节中，我们将修复这个竞态条件。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+<span class="hljs-keyword">import</span> (
+    <span class="hljs-string">&quot;fmt&quot;</span>
+    <span class="hljs-string">&quot;sync&quot;</span>
+)
+<span class="hljs-keyword">var</span> x = <span class="hljs-number">0</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">increment</span><span class="hljs-params">(wg *sync.WaitGroup)</span></span> &#123;
+    x = x + <span class="hljs-number">1</span>
+    wg.Done()
+&#125;
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+    <span class="hljs-keyword">var</span> w sync.WaitGroup
+    <span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">1000</span>; i++ &#123;
+        w.Add(<span class="hljs-number">1</span>)        
+        <span class="hljs-keyword">go</span> increment(&amp;w)
+    &#125;
+    w.Wait()
+    fmt.Println(<span class="hljs-string">&quot;final value of x&quot;</span>, x)
+&#125;</code></pre></div>
+
+<p>在上面的程序中，<code>increment</code> 函数将 x 的值加 1，然后在 <a href="../%E3%80%90GolangBot%E3%80%9123-%E7%BC%93%E5%86%B2%E9%80%9A%E9%81%93%E4%B8%8E%E5%B7%A5%E4%BD%9C%E6%B1%A0/#waitgroup">WaitGroup</a> 上调用 <code>Done()</code> 来通知其完成。</p>
+<p>我们在程序中生成了 1000 个 <code>increment</code> Goroutine。所有这些 Goroutine 都并发运行，当多个 Goroutine 试图同时访问 x 的值时，就会出现竞态条件。</p>
+<p><em>请在本地运行此程序，因为 playground 是确定性的，竞态条件不会在 playground 中出现。</em> 在本地机器上多次运行此程序，你会看到由于竞态条件，每次的输出都会不同。我遇到的一些输出是 <code>final value of x 941</code>、<code>final value of x 928</code>、<code>final value of x 922</code> 等。</p>
+<h3 id="使用互斥锁解决竞态条件"><a href="#使用互斥锁解决竞态条件" class="headerlink" title="使用互斥锁解决竞态条件"></a>使用互斥锁解决竞态条件</h3><p>在上面的程序中，我们生成了 1000 个 Goroutine。如果每个都将 x 的值加 1，x 的最终期望值应该是 1000。在本节中，我们将使用互斥锁修复上面程序中的竞态条件。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+<span class="hljs-keyword">import</span> (
+    <span class="hljs-string">&quot;fmt&quot;</span>
+    <span class="hljs-string">&quot;sync&quot;</span>
+)
+<span class="hljs-keyword">var</span> x = <span class="hljs-number">0</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">increment</span><span class="hljs-params">(wg *sync.WaitGroup, m *sync.Mutex)</span></span> &#123;
+    m.Lock()
+    x = x + <span class="hljs-number">1</span>
+    m.Unlock()
+    wg.Done()    
+&#125;
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+    <span class="hljs-keyword">var</span> w sync.WaitGroup
+    <span class="hljs-keyword">var</span> m sync.Mutex
+    <span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">1000</span>; i++ &#123;
+        w.Add(<span class="hljs-number">1</span>)        
+        <span class="hljs-keyword">go</span> increment(&amp;w, &amp;m)
+    &#125;
+    w.Wait()
+    fmt.Println(<span class="hljs-string">&quot;final value of x&quot;</span>, x)
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/VX9dwGhR62">在 playground 中运行</a></p>
+<p><a target="_blank" rel="noopener" href="https://golang.org/pkg/sync/#Mutex">Mutex</a> 是一个结构体类型，我们创建了一个零值变量 <code>m</code>，类型为 Mutex。在上面的程序中，我们修改了 <code>increment</code> 函数，使得递增 x 的代码 <code>x = x + 1</code> 位于 <code>m.Lock()</code> 和 <code>m.Unlock()</code> 之间。现在这段代码没有任何竞态条件，因为在任何时候只允许一个 Goroutine 执行这段代码。</p>
+<p>现在运行这个程序，它将输出</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">final value of x 1000</code></pre></div>
+
+<p>重要的是要传递互斥锁的地址。如果互斥锁通过值传递而不是传递地址，每个 Goroutine 将有其自己的互斥锁副本，竞态条件仍然会发生。</p>
+<h3 id="使用通道解决竞态条件"><a href="#使用通道解决竞态条件" class="headerlink" title="使用通道解决竞态条件"></a>使用通道解决竞态条件</h3><p>我们也可以使用通道来解决竞态条件。让我们看看如何实现。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+<span class="hljs-keyword">import</span> (
+    <span class="hljs-string">&quot;fmt&quot;</span>
+    <span class="hljs-string">&quot;sync&quot;</span>
+)
+<span class="hljs-keyword">var</span> x = <span class="hljs-number">0</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">increment</span><span class="hljs-params">(wg *sync.WaitGroup, ch <span class="hljs-keyword">chan</span> <span class="hljs-type">bool</span>)</span></span> &#123;
+    ch &lt;- <span class="hljs-literal">true</span>
+    x = x + <span class="hljs-number">1</span>
+    &lt;- ch
+    wg.Done()    
+&#125;
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+    <span class="hljs-keyword">var</span> w sync.WaitGroup
+    ch := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> <span class="hljs-type">bool</span>, <span class="hljs-number">1</span>)
+    <span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">1000</span>; i++ &#123;
+        w.Add(<span class="hljs-number">1</span>)        
+        <span class="hljs-keyword">go</span> increment(&amp;w, ch)
+    &#125;
+    w.Wait()
+    fmt.Println(<span class="hljs-string">&quot;final value of x&quot;</span>, x)
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/M1fPEK9lYz">在 playground 中运行</a></p>
+<p>在上面的程序中，我们创建了一个容量为 <code>1</code> 的<a href="../%E3%80%90GolangBot%E3%80%9123-%E7%BC%93%E5%86%B2%E9%80%9A%E9%81%93%E4%B8%8E%E5%B7%A5%E4%BD%9C%E6%B1%A0">缓冲通道</a>，并将其传递给 <code>increment</code> Goroutine。这个缓冲通道用于确保只有一个 Goroutine 访问增加 x 的临界区代码。这是通过在增加 x 之前向缓冲通道传递 <code>true</code> 来实现的。由于缓冲通道的容量为 <code>1</code>，所有其他试图向该通道写入的 Goroutine 都会被阻塞，直到在增加 x 后从该通道读取值。这有效地只允许一个 Goroutine 访问临界区。</p>
+<p>这个程序也会打印</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">final value of x 1000</code></pre></div>
+
+<h3 id="互斥锁-vs-通道"><a href="#互斥锁-vs-通道" class="headerlink" title="互斥锁 vs 通道"></a>互斥锁 vs 通道</h3><p>我们已经使用互斥锁和通道解决了竞态条件问题。那么我们如何决定在什么时候使用什么呢？答案在于你试图解决的问题。如果你要解决的问题更适合使用互斥锁，那就使用互斥锁。如果需要的话，不要犹豫使用互斥锁。如果问题似乎更适合使用通道，那就使用它 :)。</p>
+<p>大多数 Go 新手试图使用通道来解决每个并发问题，因为这是语言的一个很酷的特性。这是错误的。语言给了我们使用互斥锁或通道的选择，选择任何一个都没有错。</p>
+<p>一般来说，当 Goroutine 需要相互通信时使用通道，当只有一个 Goroutine 需要访问代码的临界区时使用互斥锁。</p>
+<p>对于我们上面解决的问题，我更倾向于使用互斥锁，因为这个问题不需要 goroutine 之间的任何通信。因此互斥锁会是一个自然的选择。</p>
+<p>我的建议是为问题选择合适的工具，而不是试图让问题适应工具 :)</p>
+<p><strong>下一篇教程 - <a href="../%E3%80%90GolangBot%E3%80%9126-%E7%BB%93%E6%9E%84%E4%BD%93%E4%BB%A3%E6%9B%BF%E7%B1%BB.md">Structs Instead of Classes</a></strong></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E5%BF%83%E5%BE%97/" class="category-chain-item">学习心得</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E5%BF%83%E5%BE%97/GolangBot/" class="category-chain-item">GolangBot</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Golang/" class="print-no-link">#Golang</a>
+      
+        <a href="/tags/%E6%95%99%E7%A8%8B/" class="print-no-link">#教程</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>【GolangBot】25-互斥锁</div>
+      <div>https://zoekyhein.github.io/【GolangBot】25-互斥锁/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>ZoeKyHein</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年12月26日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/%E3%80%90GolangBot%E3%80%9126-%E7%BB%93%E6%9E%84%E4%BD%93%E4%BB%A3%E6%9B%BF%E7%B1%BB/" title="【GolangBot】26-结构体代替类">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">【GolangBot】26-结构体代替类</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/%E3%80%90GolangBot%E3%80%9124-Select/" title="【GolangBot】24-Select">
+                        <span class="hidden-mobile">【GolangBot】24-Select</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

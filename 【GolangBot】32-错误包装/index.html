@@ -1,0 +1,782 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/icon.png">
+  <link rel="icon" href="/img/icon.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#ac9343">
+  <meta name="author" content="ZoeKyHein">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="欢迎来到 Golang 教程系列 的第 32 个教程。 在本教程中，我们将学习 Go 中的错误包装以及为什么我们需要错误包装。让我们开始吧。 什么是错误包装？错误包装是将一个错误封装到另一个错误中的过程。假设我们有一个访问数据库并尝试从数据库中获取记录的 Web 服务器。如果数据库调用返回错误，我们可以决定是否包装此错误或从 Web 服务发送我们自己的自定义错误。让我们编写一个小程序来理解这一点。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【GolangBot】32-错误包装">
+<meta property="og:url" content="https://zoekyhein.github.io/%E3%80%90GolangBot%E3%80%9132-%E9%94%99%E8%AF%AF%E5%8C%85%E8%A3%85/index.html">
+<meta property="og:site_name" content="传火祭祀场">
+<meta property="og:description" content="欢迎来到 Golang 教程系列 的第 32 个教程。 在本教程中，我们将学习 Go 中的错误包装以及为什么我们需要错误包装。让我们开始吧。 什么是错误包装？错误包装是将一个错误封装到另一个错误中的过程。假设我们有一个访问数据库并尝试从数据库中获取记录的 Web 服务器。如果数据库调用返回错误，我们可以决定是否包装此错误或从 Web 服务发送我们自己的自定义错误。让我们编写一个小程序来理解这一点。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-12-26T11:20:01.000Z">
+<meta property="article:modified_time" content="2025-01-23T07:44:45.570Z">
+<meta property="article:author" content="ZoeKyHein">
+<meta property="article:tag" content="Golang">
+<meta property="article:tag" content="教程">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>【GolangBot】32-错误包装 - 传火祭祀场</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"zoekyhein.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"💥","loop":false,"scope":["home"]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>传火祭祀场</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/golangbot" target="_self">
+                <i class="iconfont icon-book"></i>
+                <span>Go教程</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/sunKnight.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">【GolangBot】32-错误包装</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-12-26 11:20" pubdate>
+          2024年12月26日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.1k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          10 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">【GolangBot】32-错误包装</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>欢迎来到 <a href="../golangbot/">Golang 教程系列</a> 的第 32 个教程。</p>
+<p>在本教程中，我们将学习 Go 中的错误包装以及为什么我们需要错误包装。让我们开始吧。</p>
+<h3 id="什么是错误包装？"><a href="#什么是错误包装？" class="headerlink" title="什么是错误包装？"></a>什么是错误包装？</h3><p>错误包装是将一个错误封装到另一个错误中的过程。假设我们有一个访问数据库并尝试从数据库中获取记录的 Web 服务器。如果数据库调用返回错误，我们可以决定是否包装此错误或从 Web 服务发送我们自己的自定义错误。让我们编写一个小程序来理解这一点。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;errors&quot;</span>
+	<span class="hljs-string">&quot;fmt&quot;</span>
+)
+
+<span class="hljs-keyword">var</span> noRows = errors.New(<span class="hljs-string">&quot;no rows found&quot;</span>)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">getRecord</span><span class="hljs-params">()</span></span> <span class="hljs-type">error</span> &#123;
+	<span class="hljs-keyword">return</span> noRows
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">webService</span><span class="hljs-params">()</span></span> <span class="hljs-type">error</span> &#123;
+	<span class="hljs-keyword">if</span> err := getRecord(); err != <span class="hljs-literal">nil</span> &#123;
+		<span class="hljs-keyword">return</span> fmt.Errorf(<span class="hljs-string">&quot;Error %s when calling DB&quot;</span>, err)
+	&#125;
+	<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	<span class="hljs-keyword">if</span> err := webService(); err != <span class="hljs-literal">nil</span> &#123;
+		fmt.Printf(<span class="hljs-string">&quot;Error: %s when calling webservice\n&quot;</span>, err)
+		<span class="hljs-keyword">return</span>
+	&#125;
+	fmt.Println(<span class="hljs-string">&quot;webservice call successful&quot;</span>)
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://go.dev/play/p/0kVGzdt47GW">在 Playground 中运行</a></p>
+<p>在上面的程序中，在第 16 行，我们发送了调用 <code>getRecord</code> 函数时发生的错误的字符串描述。虽然这看起来像是错误包装，但实际上并不是 :)。让我们在下一节中了解如何包装错误。</p>
+<h3 id="错误包装和-Is-函数"><a href="#错误包装和-Is-函数" class="headerlink" title="错误包装和 Is 函数"></a>错误包装和 Is 函数</h3><p><a target="_blank" rel="noopener" href="https://pkg.go.dev/errors">errors</a> 包中的 <a target="_blank" rel="noopener" href="https://pkg.go.dev/errors#Is">Is</a> 函数报告错误链中的任何错误是否与目标匹配。在我们的例子中，我们在第 11 行从 <code>getRecord</code> 函数返回 <code>noRows</code> 错误。在第 16 行从 <code>webService</code> 函数返回此错误的字符串格式。让我们修改此程序的 <code>main</code> 函数，并使用 <code>Is</code> 函数检查错误链中的任何错误是否与 <code>noRows</code> 错误匹配。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	<span class="hljs-keyword">if</span> err := webService(); err != <span class="hljs-literal">nil</span> &#123;
+		<span class="hljs-keyword">if</span> errors.Is(err, noRows) &#123;
+			fmt.Printf(<span class="hljs-string">&quot;The searched record cannot be found. Error returned from DB is %s&quot;</span>, err)
+			<span class="hljs-keyword">return</span>
+		&#125;
+		fmt.Println(<span class="hljs-string">&quot;unknown error when searching record&quot;</span>)
+		<span class="hljs-keyword">return</span>
+	&#125;
+	fmt.Println(<span class="hljs-string">&quot;webservice call successful&quot;</span>)
+&#125;</code></pre></div>
+
+<p>在上面的 <code>main</code> 函数中，在第 3 行，<code>Is</code> 函数将检查 <code>err</code> 持有的错误链中的任何错误是否包含 <code>noRows</code> 错误。当前状态的代码将不起作用，并且上述 <code>main</code> 函数第 3 行的 <code>if</code> 条件将失败。为了使其工作，我们需要在从 <code>webService</code> 函数返回时包装 <code>noRows</code> 错误。一种方法是在返回错误时使用 <code>%w</code> 格式说明符而不是 <code>%s</code>。因此，如果我们将返回错误的行修改为：</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">return</span> fmt.Errorf(<span class="hljs-string">&quot;Error %w when calling DB&quot;</span>, err)</code></pre></div>
+
+<p>这意味着新返回的错误包装了原始的 <code>noRows</code>，并且上述 <code>main</code> 函数第 3 行的 <code>if</code> 条件将成功。带有错误包装的完整程序如下。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;errors&quot;</span>
+	<span class="hljs-string">&quot;fmt&quot;</span>
+)
+
+<span class="hljs-keyword">var</span> noRows = errors.New(<span class="hljs-string">&quot;no rows found&quot;</span>)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">getRecord</span><span class="hljs-params">()</span></span> <span class="hljs-type">error</span> &#123;
+	<span class="hljs-keyword">return</span> noRows
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">webService</span><span class="hljs-params">()</span></span> <span class="hljs-type">error</span> &#123;
+	<span class="hljs-keyword">if</span> err := getRecord(); err != <span class="hljs-literal">nil</span> &#123;
+		<span class="hljs-keyword">return</span> fmt.Errorf(<span class="hljs-string">&quot;Error %w when calling DB&quot;</span>, err)
+	&#125;
+	<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	<span class="hljs-keyword">if</span> err := webService(); err != <span class="hljs-literal">nil</span> &#123;
+		<span class="hljs-keyword">if</span> errors.Is(err, noRows) &#123;
+			fmt.Printf(<span class="hljs-string">&quot;The searched record cannot be found. Error returned from DB is %s&quot;</span>, err)
+			<span class="hljs-keyword">return</span>
+		&#125;
+		fmt.Println(<span class="hljs-string">&quot;unknown error when searching record&quot;</span>)
+		<span class="hljs-keyword">return</span>
+	&#125;
+	fmt.Println(<span class="hljs-string">&quot;webservice call successful&quot;</span>)
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://go.dev/play/p/t0h3WtJ5fu5">在 Playground 中运行</a></p>
+<p>运行此程序时，它将打印：</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">The searched record cannot be found. Error returned from DB is Error no rows found when calling DB</code></pre></div>
+
+<h3 id="As-函数"><a href="#As-函数" class="headerlink" title="As 函数"></a>As 函数</h3><p><a target="_blank" rel="noopener" href="https://pkg.go.dev/errors">errors</a> 包中的 <a target="_blank" rel="noopener" href="https://pkg.go.dev/errors#As">As</a> 函数将尝试将作为输入传递的错误转换为目标错误类型。如果错误链中的任何错误与目标匹配，它将成功。如果成功，它将返回 true，并将目标设置为错误链中与目标匹配的第一个错误。一个程序将使事情更容易理解 :)</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;errors&quot;</span>
+	<span class="hljs-string">&quot;fmt&quot;</span>
+)
+
+<span class="hljs-keyword">type</span> DBError <span class="hljs-keyword">struct</span> &#123;
+	desc <span class="hljs-type">string</span>
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(dbError DBError)</span></span> Error() <span class="hljs-type">string</span> &#123;
+	<span class="hljs-keyword">return</span> dbError.desc
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">getRecord</span><span class="hljs-params">()</span></span> <span class="hljs-type">error</span> &#123;
+	<span class="hljs-keyword">return</span> DBError&#123;
+		desc: <span class="hljs-string">&quot;no rows found&quot;</span>,
+	&#125;
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">webService</span><span class="hljs-params">()</span></span> <span class="hljs-type">error</span> &#123;
+	<span class="hljs-keyword">if</span> err := getRecord(); err != <span class="hljs-literal">nil</span> &#123;
+		<span class="hljs-keyword">return</span> fmt.Errorf(<span class="hljs-string">&quot;Error %w when calling DB&quot;</span>, err)
+	&#125;
+	<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	<span class="hljs-keyword">if</span> err := webService(); err != <span class="hljs-literal">nil</span> &#123;
+		<span class="hljs-keyword">var</span> dbError DBError
+		<span class="hljs-keyword">if</span> errors.As(err, &amp;dbError) &#123;
+			fmt.Printf(<span class="hljs-string">&quot;The searched record cannot be found. Error returned from DB is %s&quot;</span>, dbError)
+			<span class="hljs-keyword">return</span>
+		&#125;
+		fmt.Println(<span class="hljs-string">&quot;unknown error when searching record&quot;</span>)
+		<span class="hljs-keyword">return</span>
+	&#125;
+	fmt.Println(<span class="hljs-string">&quot;webservice call successful&quot;</span>)
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://go.dev/play/p/I268pAa4NyR">在 Playground 中运行</a></p>
+<p>在上面的程序中，我们修改了第 16 行的 <code>getRecord</code> 函数，以返回类型为 <code>DBError</code> 的<a href="../%E3%80%90GolangBot%E3%80%9131-%E8%87%AA%E5%AE%9A%E4%B9%89%E9%94%99%E8%AF%AF">自定义错误</a>。</p>
+<p>在 <code>main</code> 函数的第 32 行，我们尝试将从 <code>webService()</code> 函数调用返回的错误转换为 <code>DBError</code> 类型。第 32 行的 <code>if</code> 语句将成功，因为我们在第 24 行从 <code>webService()</code> 函数返回错误时包装了 <code>DBError</code>。运行此程序将打印：</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">The searched record cannot be found. Error returned from DB is no rows found</code></pre></div>
+
+<h3 id="我们应该包装错误吗？"><a href="#我们应该包装错误吗？" class="headerlink" title="我们应该包装错误吗？"></a>我们应该包装错误吗？</h3><p>这个问题的答案是，视情况而定。如果我们包装错误，我们将其暴露给我们的库&#x2F;函数的调用者。我们通常不希望包装包含函数内部实现细节的错误。另一个需要记住的重要事情是，如果我们返回一个包装的错误，然后决定删除错误包装，使用我们库的代码将开始失败。因此，包装的错误应被视为 API 的一部分，如果我们决定修改返回的错误，则应进行适当的版本更改。</p>
+<p><strong>下一个教程 - <a href="../%E3%80%90GolangBot%E3%80%9133-Panic%E5%92%8CRecover">Panic 和 Recover</a></strong></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E5%BF%83%E5%BE%97/" class="category-chain-item">学习心得</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E5%BF%83%E5%BE%97/GolangBot/" class="category-chain-item">GolangBot</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Golang/" class="print-no-link">#Golang</a>
+      
+        <a href="/tags/%E6%95%99%E7%A8%8B/" class="print-no-link">#教程</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>【GolangBot】32-错误包装</div>
+      <div>https://zoekyhein.github.io/【GolangBot】32-错误包装/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>ZoeKyHein</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年12月26日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/%E3%80%90GolangBot%E3%80%9133-Panic%E5%92%8CRecover/" title="【GolangBot】33-Panic和Recover">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">【GolangBot】33-Panic和Recover</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/%E3%80%90GolangBot%E3%80%9131-%E8%87%AA%E5%AE%9A%E4%B9%89%E9%94%99%E8%AF%AF/" title="【GolangBot】31-自定义错误">
+                        <span class="hidden-mobile">【GolangBot】31-自定义错误</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

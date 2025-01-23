@@ -1,0 +1,901 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/icon.png">
+  <link rel="icon" href="/img/icon.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#ac9343">
+  <meta name="author" content="ZoeKyHein">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="这是我们Golang系列教程的第三篇，这篇我们来处理Golang中的变量。 你可以阅读第二部分来学习配置Go，运行Hello World程序。 什么是变量？变量是给内存位置的名称，用来存储特定类型的值。Go中有多种语法来声明变量。我们来逐一查看。 声明单个变量var name type 是声明单个变量的语法。 package main  import &quot;fmt&quot;  func m">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【GolangBot】3-变量">
+<meta property="og:url" content="https://zoekyhein.github.io/%E3%80%90GolangBot%E3%80%913-%E5%8F%98%E9%87%8F/index.html">
+<meta property="og:site_name" content="传火祭祀场">
+<meta property="og:description" content="这是我们Golang系列教程的第三篇，这篇我们来处理Golang中的变量。 你可以阅读第二部分来学习配置Go，运行Hello World程序。 什么是变量？变量是给内存位置的名称，用来存储特定类型的值。Go中有多种语法来声明变量。我们来逐一查看。 声明单个变量var name type 是声明单个变量的语法。 package main  import &quot;fmt&quot;  func m">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-12-17T08:47:51.000Z">
+<meta property="article:modified_time" content="2025-01-23T07:44:45.570Z">
+<meta property="article:author" content="ZoeKyHein">
+<meta property="article:tag" content="Golang">
+<meta property="article:tag" content="教程">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>【GolangBot】3-变量 - 传火祭祀场</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"zoekyhein.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"💥","loop":false,"scope":["home"]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>传火祭祀场</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/golangbot" target="_self">
+                <i class="iconfont icon-book"></i>
+                <span>Go教程</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/sunKnight.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">【GolangBot】3-变量</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-12-17 08:47" pubdate>
+          2024年12月17日 早上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          14 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">【GolangBot】3-变量</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>这是我们<a href="../golangbot/">Golang系列教程</a>的第三篇，这篇我们来处理Golang中的变量。</p>
+<p>你可以阅读<a href="../%E3%80%90GolangBot%E3%80%912-Hello-World/">第二部分</a>来学习配置Go，运行Hello World程序。</p>
+<h3 id="什么是变量？"><a href="#什么是变量？" class="headerlink" title="什么是变量？"></a>什么是变量？</h3><p>变量是给内存位置的名称，用来存储特定<a href="../%E3%80%90GolangBot%E3%80%914-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/">类型</a>的值。Go中有多种语法来声明变量。我们来逐一查看。</p>
+<h3 id="声明单个变量"><a href="#声明单个变量" class="headerlink" title="声明单个变量"></a>声明单个变量</h3><p><strong>var name type</strong> 是声明单个变量的语法。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> <span class="hljs-string">&quot;fmt&quot;</span>
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	<span class="hljs-keyword">var</span> age <span class="hljs-type">int</span> <span class="hljs-comment">// variable declaration</span>
+	fmt.Println(<span class="hljs-string">&quot;My initial age is&quot;</span>, age)
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://go.dev/play/p/5sC9oz7j_lR">Run in playground</a></p>
+<p><code>var age int</code>语法定义了一个名为<code>age</code>，类型为<code>int</code>的变量。我们还没有给这个变量分配任何值。如果一个没有被分配任何值，Go会自动用变量类型的零值来为它赋值。在这个例子中，age被分配值为0，0是<code>int</code>类型的零值。如果你运行这个程序，你会看到如下输出。</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">My initial age is 0</code></pre></div>
+
+<p>一个变量可以被分配它类型的任意值。在上面的程序中，<code>age</code>可以被分配任意的整型值。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+ 
+<span class="hljs-keyword">import</span> <span class="hljs-string">&quot;fmt&quot;</span>
+ 
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	<span class="hljs-keyword">var</span> age <span class="hljs-type">int</span> <span class="hljs-comment">// variable declaration</span>
+	fmt.Println(<span class="hljs-string">&quot;My initial age is&quot;</span>, age)
+	age = <span class="hljs-number">29</span> <span class="hljs-comment">//assignment</span>
+	fmt.Println(<span class="hljs-string">&quot;My age after first assignment is&quot;</span>, age)
+	age = <span class="hljs-number">54</span> <span class="hljs-comment">//assignment</span>
+	fmt.Println(<span class="hljs-string">&quot;My age after second assignment is&quot;</span>, age)
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://go.dev/play/p/6olrLC2kBTB">Run in playground</a></p>
+<p>上面的程序将会打印如下内容。</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">My initial age is 0
+My age after first assignment is 29
+My age after second assignment is 54</code></pre></div>
+
+<h3 id="声明一个带初始值的变量"><a href="#声明一个带初始值的变量" class="headerlink" title="声明一个带初始值的变量"></a>声明一个带初始值的变量</h3><p>当一个变量被声明时，也可以初始化一个值。下面是声明一个带初始值的变量的语法。</p>
+<p>A variable can also be initialized with a value when it is declared. The following is the syntax to declare a variable with an initial value.</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">var</span> name <span class="hljs-keyword">type</span> = initialvalue</code></pre></div>
+
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> <span class="hljs-string">&quot;fmt&quot;</span>
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	<span class="hljs-keyword">var</span> age <span class="hljs-type">int</span> = <span class="hljs-number">29</span> <span class="hljs-comment">// variable declaration with initial value</span>
+
+	fmt.Println(<span class="hljs-string">&quot;My initial age is&quot;</span>, age)
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://go.dev/play/p/17Py5gyLc87">Run in playground</a></p>
+<p>在上面的程序中，<code>age</code>是一个<code>int</code>型变量，有初始值<code>29</code>。上面的程序会打印如下输出。</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">My initial age is 29</code></pre></div>
+
+<p>这证实了age已被初始化为值29.</p>
+<h3 id="类型推断"><a href="#类型推断" class="headerlink" title="类型推断"></a>类型推断</h3><p>如果一个变量有一个初始值，Go能够自动根据初始值推断出该变量的类型。因此如果变量有一个初始值，变量声明中的<code>type</code>就可以去掉。</p>
+<p>如果变量是用下面的语法声明</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">var name = initialvalue</code></pre></div>
+
+<p>Go会自动从初始值推断出变量的类型。</p>
+<p>在下面的例子中，我们可以看到第6行变量<code>age</code>的类型<code>int</code>已经被去掉了。因为变量有一个初始值<code>29</code>，Go可以推断出它是<code>int</code>类型。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> <span class="hljs-string">&quot;fmt&quot;</span>
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	<span class="hljs-keyword">var</span> age = <span class="hljs-number">29</span> <span class="hljs-comment">// type will be inferred</span>
+	fmt.Println(<span class="hljs-string">&quot;My initial age is&quot;</span>, age)
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://go.dev/play/p/3ybtHsu6uLk">Run in playground</a></p>
+<h3 id="多变量声明"><a href="#多变量声明" class="headerlink" title="多变量声明"></a>多变量声明</h3><p>多个变量可以用一条语句进行声明。</p>
+<p><strong>var name1, name2 type &#x3D; initialvalue1, initialvalue2</strong> 是多变量声明的语法。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> <span class="hljs-string">&quot;fmt&quot;</span>
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	<span class="hljs-keyword">var</span> price, quantity <span class="hljs-type">int</span> = <span class="hljs-number">5000</span>, <span class="hljs-number">100</span> <span class="hljs-comment">//declaring multiple variables</span>
+
+	fmt.Println(<span class="hljs-string">&quot;price is&quot;</span>, price, <span class="hljs-string">&quot;quantity is&quot;</span>, quantity)
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://go.dev/play/p/ik6-iRcjggI">Run in playground</a></p>
+<p>如果变量有初始值，类型可以去掉。因为上面的程序中，变量有初始值，类型<code>int</code>可以去掉。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> <span class="hljs-string">&quot;fmt&quot;</span>
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	<span class="hljs-keyword">var</span> price, quantity = <span class="hljs-number">5000</span>, <span class="hljs-number">100</span> <span class="hljs-comment">//declaring multiple variables with type inference</span>
+
+	fmt.Println(<span class="hljs-string">&quot;price is&quot;</span>, price, <span class="hljs-string">&quot;quantity is&quot;</span>, quantity)
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://go.dev/play/p/cwD5TmYG2Nf">Run in playground</a></p>
+<p>上面的程序将会打印</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">price is 5000 quantity is 100</code></pre></div>
+
+<p>现在也许你已经猜到了，如果初始值未指定<code>price</code>和<code>quanlity</code>的初始值，它们的初始值将是<code>0</code>。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> <span class="hljs-string">&quot;fmt&quot;</span>
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	<span class="hljs-keyword">var</span> price, quantity <span class="hljs-type">int</span>
+	fmt.Println(<span class="hljs-string">&quot;price is&quot;</span>, price, <span class="hljs-string">&quot;quantity is&quot;</span>, quantity)
+	price = <span class="hljs-number">3000</span>
+	quantity = <span class="hljs-number">500</span>
+	fmt.Println(<span class="hljs-string">&quot;new price is&quot;</span>, price, <span class="hljs-string">&quot;new quantity is&quot;</span>, quantity)
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://go.dev/play/p/W2zBg9dNzNA">Run in playground</a></p>
+<p>上面的程序将会打印</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">price is 0 quantity is 0
+new price is 3000 new quantity is 500</code></pre></div>
+
+<p>有一种情况，我们可能会想要在一条语句中定义多个变量，并且它们属于不同的数据类型。这么做的语法是</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">var (
+      name1 = initialvalue1
+      name2 = initialvalue2
+)</code></pre></div>
+
+<p>下面的程序使用了上面的语法来声明不同类型的变量。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> <span class="hljs-string">&quot;fmt&quot;</span>
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	<span class="hljs-keyword">var</span> (
+		name   = <span class="hljs-string">&quot;Naveen&quot;</span>
+		age    = <span class="hljs-number">38</span>
+		height <span class="hljs-type">int</span>
+	)
+	fmt.Println(<span class="hljs-string">&quot;my name is&quot;</span>, name)
+	fmt.Println(<span class="hljs-string">&quot;my age is&quot;</span>, age)
+	fmt.Println(<span class="hljs-string">&quot;my height is&quot;</span>, height)
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://go.dev/play/p/UMeFO9KoV-U">Run in playground</a></p>
+<p>这里我们声明了一个<code>string</code>类型的变量<code>name</code>，<code>int</code>类型的<code>age</code>和<code>height</code>。(我们将会在<a href="../%E3%80%90GolangBot%E3%80%914-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/">下一篇</a>讨论Golang中不同类型的变量)</p>
+<p>运行上面的程序将会打印。</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">my name is Naveen
+my age is 38
+my height is 0</code></pre></div>
+
+<h3 id="简短声明"><a href="#简短声明" class="headerlink" title="简短声明"></a>简短声明</h3><p>Go也提供了另一种简短的声明变量方式。这就是所谓的简短声明，它使用<code>:=</code>操作符。</p>
+<p><strong>name :&#x3D; initialvalue</strong> 是声明一个变量的简短语法。</p>
+<p>下面的程序使用了简短语法声明了一个初始化为<code>10</code>的变量<code>count</code>。Go会自动推断出<code>count</code>是<code>int</code>类型，因为它被整型值<code>10</code>初始化。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> <span class="hljs-string">&quot;fmt&quot;</span>
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	count := <span class="hljs-number">10</span>
+	fmt.Println(<span class="hljs-string">&quot;Count =&quot;</span>,count)
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://go.dev/play/p/9X5FGM0QYxS">Run in playground</a></p>
+<p>上面的程序将会打印，</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">Count = 10</code></pre></div>
+
+<p>使用简短声明语法声明多个变量也是可以的。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> <span class="hljs-string">&quot;fmt&quot;</span>
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	name, age := <span class="hljs-string">&quot;Naveen&quot;</span>, <span class="hljs-number">29</span> <span class="hljs-comment">//short hand declaration</span>
+
+	fmt.Println(<span class="hljs-string">&quot;my name is&quot;</span>, name)
+	fmt.Println(<span class="hljs-string">&quot;my age is&quot;</span>, age)
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://go.dev/play/p/t_leq8orwxL">Run in playground</a></p>
+<p>上面的程序声明了两个变量<code>name</code>和<code>age</code>，它们分别是<code>string</code>和<code>int</code>类型。</p>
+<p>如果你运行上面的程序，你将会看到下面的内容被打印。</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">my name is Naveen
+my age is 29</code></pre></div>
+
+<p>简短声明要求赋值左侧的所有变量都有初始值。下面的程序将会打印错误<code>assignment mismatch: 2 variables but 1 value</code>。这是因为<strong>age没有被分配值</strong>。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> <span class="hljs-string">&quot;fmt&quot;</span>
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	name, age := <span class="hljs-string">&quot;Naveen&quot;</span> <span class="hljs-comment">//error</span>
+
+	fmt.Println(<span class="hljs-string">&quot;my name is&quot;</span>, name, <span class="hljs-string">&quot;age is&quot;</span>, age)
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://go.dev/play/p/kM93hDPatVP">Run in playground</a></p>
+<p>简短声明只能在**:&#x3D;**左边至少有一个新声明的变量时才可以使用。看一下下面的程序，</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> <span class="hljs-string">&quot;fmt&quot;</span>
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	a, b := <span class="hljs-number">20</span>, <span class="hljs-number">30</span> <span class="hljs-comment">// declare variables a and b</span>
+	fmt.Println(<span class="hljs-string">&quot;a is&quot;</span>, a, <span class="hljs-string">&quot;b is&quot;</span>, b)
+	b, c := <span class="hljs-number">40</span>, <span class="hljs-number">50</span> <span class="hljs-comment">// b is already declared but c is new</span>
+	fmt.Println(<span class="hljs-string">&quot;b is&quot;</span>, b, <span class="hljs-string">&quot;c is&quot;</span>, c)
+	b, c = <span class="hljs-number">80</span>, <span class="hljs-number">90</span> <span class="hljs-comment">// assign new values to already declared variables b and c</span>
+	fmt.Println(<span class="hljs-string">&quot;changed b is&quot;</span>, b, <span class="hljs-string">&quot;c is&quot;</span>, c)
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://go.dev/play/p/V2aMZKS5Kpj">Run in playground</a></p>
+<p>在上面的程序中，第8行，<strong>b</strong>已经被声明过了，而<strong>c</strong>是新声明的，因此它可以正常运行并且输出。</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">a is 20 b is 30
+b is 40 c is 50
+changed b is 80 c is 90</code></pre></div>
+
+<p>而如果我们运行下面的程序，</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> <span class="hljs-string">&quot;fmt&quot;</span>
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	a, b := <span class="hljs-number">20</span>, <span class="hljs-number">30</span> <span class="hljs-comment">//a and b declared</span>
+	fmt.Println(<span class="hljs-string">&quot;a is&quot;</span>, a, <span class="hljs-string">&quot;b is&quot;</span>, b)
+	a, b := <span class="hljs-number">40</span>, <span class="hljs-number">50</span> <span class="hljs-comment">//error, no new variables</span>
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://go.dev/play/p/SYyrrmPHMG_F">Run in playground</a></p>
+<p>它会打印错误<code>./prog.go:8:7: no new variables on left side of :=</code>。这是因为变量<strong>a</strong>和<strong>b</strong>都已经被定义过，并且第8行**:&#x3D;**左边没有新变量了。</p>
+<p>变量也可以分配值，这些值时在运行时计算得出的。请看下面的程序，</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;fmt&quot;</span>
+	<span class="hljs-string">&quot;math&quot;</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	a, b := <span class="hljs-number">145.8</span>, <span class="hljs-number">543.8</span>
+	c := math.Min(a, b)
+	fmt.Println(<span class="hljs-string">&quot;Minimum value is&quot;</span>, c)
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://go.dev/play/p/SVQ2RGT7JuP">Run in playground</a></p>
+<p>在上面的程序中，<a target="_blank" rel="noopener" href="https://golang.org/pkg/math/">math</a>是一个<a target="_blank" rel="noopener" href="https://golangbot.com/go-packages/">包</a>，<a target="_blank" rel="noopener" href="https://golang.org/pkg/math/#Min">Min</a>是那个包中的一个<a target="_blank" rel="noopener" href="https://golangbot.com/functions/">函数</a>。现在不需要担心这个，我们将会在接下来的章节<a href="../%E3%80%90GolangBot%E3%80%917-%E5%8C%85/">包</a>和<a href="../%E3%80%90GolangBot%E3%80%916-%E5%87%BD%E6%95%B0/">函数</a>中详细介绍它们。我们现在只需要知道，<code>c</code>的值时在运行过程中计算出来的，并且它时<code>a</code>和<code>b</code>之中的最小值。上面的程序将会打印，</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">Minimum value is  145.8</code></pre></div>
+
+<p>因为Go是强类型的，声明为一种类型的变量不能赋值给另外一种类型。下面的程序将会打印错误<code>cannot use &quot;Naveen&quot; (untyped string constant) as int value in assignment</code>，因为<code>age</code>声明为<code>int</code>类型，我们正尝试为它分配一个<code>string</code>值。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	age := <span class="hljs-number">29</span>      <span class="hljs-comment">// age is int</span>
+	age = <span class="hljs-string">&quot;Naveen&quot;</span> <span class="hljs-comment">// error since we are trying to assign a string to a variable of type int</span>
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://go.dev/play/p/_L67J5Mxy8F">Run in playground</a></p>
+<p><strong>下一篇教程 - <a href="../%E3%80%90GolangBot%E3%80%914-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/">类型</a></strong></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E5%BF%83%E5%BE%97/" class="category-chain-item">学习心得</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E5%BF%83%E5%BE%97/GolangBot/" class="category-chain-item">GolangBot</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Golang/" class="print-no-link">#Golang</a>
+      
+        <a href="/tags/%E6%95%99%E7%A8%8B/" class="print-no-link">#教程</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>【GolangBot】3-变量</div>
+      <div>https://zoekyhein.github.io/【GolangBot】3-变量/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>ZoeKyHein</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年12月17日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/%E3%80%90GolangBot%E3%80%914-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/" title="【GolangBot】4-数据类型">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">【GolangBot】4-数据类型</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/%E3%80%90GolangBot%E3%80%912-Hello-World/" title="【GolangBot】2-Hello World">
+                        <span class="hidden-mobile">【GolangBot】2-Hello World</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

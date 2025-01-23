@@ -1,0 +1,914 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/icon.png">
+  <link rel="icon" href="/img/icon.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#ac9343">
+  <meta name="author" content="ZoeKyHein">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="欢迎来到 Golang 教程系列 的第 37 个教程。 在本教程中，我们将学习如何使用 Go 将数据写入文件。我们还将学习如何并发地写入文件。 本教程包含以下部分：  将字符串写入文件 将字节写入文件 逐行将数据写入文件 追加到文件 并发写入文件  请在你的本地系统中运行本教程的所有程序，因为 playground 不支持文件操作。 将字符串写入文件最常见的文件写入操作之一是将字符串写入文件。这非">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【GolangBot】37-写文件">
+<meta property="og:url" content="https://zoekyhein.github.io/%E3%80%90GolangBot%E3%80%9137-%E5%86%99%E6%96%87%E4%BB%B6/index.html">
+<meta property="og:site_name" content="传火祭祀场">
+<meta property="og:description" content="欢迎来到 Golang 教程系列 的第 37 个教程。 在本教程中，我们将学习如何使用 Go 将数据写入文件。我们还将学习如何并发地写入文件。 本教程包含以下部分：  将字符串写入文件 将字节写入文件 逐行将数据写入文件 追加到文件 并发写入文件  请在你的本地系统中运行本教程的所有程序，因为 playground 不支持文件操作。 将字符串写入文件最常见的文件写入操作之一是将字符串写入文件。这非">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-12-26T14:20:14.000Z">
+<meta property="article:modified_time" content="2025-01-23T07:44:45.571Z">
+<meta property="article:author" content="ZoeKyHein">
+<meta property="article:tag" content="Golang">
+<meta property="article:tag" content="教程">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>【GolangBot】37-写文件 - 传火祭祀场</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"zoekyhein.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"💥","loop":false,"scope":["home"]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>传火祭祀场</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/golangbot" target="_self">
+                <i class="iconfont icon-book"></i>
+                <span>Go教程</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/sunKnight.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">【GolangBot】37-写文件</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-12-26 14:20" pubdate>
+          2024年12月26日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.9k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          16 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">【GolangBot】37-写文件</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>欢迎来到 <a href="../golangbot/">Golang 教程系列</a> 的第 37 个教程。</p>
+<p>在本教程中，我们将学习如何使用 Go 将数据写入文件。我们还将学习如何并发地写入文件。</p>
+<p>本教程包含以下部分：</p>
+<ul>
+<li>将字符串写入文件</li>
+<li>将字节写入文件</li>
+<li>逐行将数据写入文件</li>
+<li>追加到文件</li>
+<li>并发写入文件</li>
+</ul>
+<p>请在你的本地系统中运行本教程的所有程序，因为 playground 不支持文件操作。</p>
+<h3 id="将字符串写入文件"><a href="#将字符串写入文件" class="headerlink" title="将字符串写入文件"></a>将字符串写入文件</h3><p>最常见的文件写入操作之一是将字符串写入文件。这非常简单。它包括以下步骤：</p>
+<ol>
+<li>创建文件</li>
+<li>将字符串写入文件</li>
+</ol>
+<p>让我们直接看代码。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;fmt&quot;</span>
+	<span class="hljs-string">&quot;os&quot;</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	f, err := os.Create(<span class="hljs-string">&quot;test.txt&quot;</span>)
+	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
+		fmt.Println(err)
+		<span class="hljs-keyword">return</span>
+	&#125;
+	l, err := f.WriteString(<span class="hljs-string">&quot;Hello World&quot;</span>)
+	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
+		fmt.Println(err)
+        f.Close()
+		<span class="hljs-keyword">return</span>
+	&#125;
+	fmt.Println(l, <span class="hljs-string">&quot;bytes written successfully&quot;</span>)
+	err = f.Close()
+	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
+		fmt.Println(err)
+		<span class="hljs-keyword">return</span>
+	&#125;
+&#125;</code></pre></div>
+
+<p>程序第 9 行的 <code>create</code> 函数创建了一个名为 <em>test.txt</em> 的文件。如果该文件已经存在，则 <code>create</code> 函数会截断该文件。此函数返回一个 <a target="_blank" rel="noopener" href="https://pkg.go.dev/os#File">文件描述符</a>。</p>
+<p>在第 14 行，我们使用 <code>WriteString</code> 方法将字符串 <strong>Hello World</strong> 写入文件。此方法返回写入的字节数和可能的错误。</p>
+<p>最后，我们在第 21 行关闭文件。</p>
+<p>上述程序将打印：</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">11 bytes written successfully</code></pre></div>
+
+<p>你可以在运行此程序的目录中找到一个名为 <strong>test.txt</strong> 的文件。如果你使用任何文本编辑器打开该文件，你会发现它包含文本 <strong>Hello World</strong>。</p>
+<h3 id="将字节写入文件"><a href="#将字节写入文件" class="headerlink" title="将字节写入文件"></a>将字节写入文件</h3><p>将字节写入文件与将字符串写入文件非常相似。我们将使用 <a target="_blank" rel="noopener" href="https://pkg.go.dev/os#File.Write">Write</a> 方法将字节写入文件。以下程序将字节切片写入文件。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;fmt&quot;</span>
+	<span class="hljs-string">&quot;os&quot;</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	f, err := os.Create(<span class="hljs-string">&quot;/home/naveen/bytes&quot;</span>)
+	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
+		fmt.Println(err)
+		<span class="hljs-keyword">return</span>
+	&#125;
+	d2 := []<span class="hljs-type">byte</span>&#123;<span class="hljs-number">104</span>, <span class="hljs-number">101</span>, <span class="hljs-number">108</span>, <span class="hljs-number">108</span>, <span class="hljs-number">111</span>, <span class="hljs-number">32</span>, <span class="hljs-number">98</span>, <span class="hljs-number">121</span>, <span class="hljs-number">116</span>, <span class="hljs-number">101</span>, <span class="hljs-number">115</span>&#125;
+	n2, err := f.Write(d2)
+	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
+		fmt.Println(err)
+        f.Close()
+		<span class="hljs-keyword">return</span>
+	&#125;
+	fmt.Println(n2, <span class="hljs-string">&quot;bytes written successfully&quot;</span>)
+	err = f.Close()
+	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
+		fmt.Println(err)
+		<span class="hljs-keyword">return</span>
+	&#125;
+&#125;</code></pre></div>
+
+<p>在上述程序中，第 15 行我们使用 <strong>Write</strong> 方法将字节切片写入目录 <code>/home/naveen</code> 中名为 <code>bytes</code> 的文件。你可以将此目录更改为其他目录。程序的其余部分不言自明。该程序将打印 <code>11 bytes written successfully</code>，并创建一个名为 <code>bytes</code> 的文件。打开该文件，你可以看到它包含文本 <code>hello bytes</code>。</p>
+<h3 id="逐行将字符串写入文件"><a href="#逐行将字符串写入文件" class="headerlink" title="逐行将字符串写入文件"></a>逐行将字符串写入文件</h3><p>另一个常见的文件操作是需要逐行将字符串写入文件。在本节中，我们将编写一个程序来创建一个包含以下内容的文件。</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">Welcome to the world of Go.
+Go is a compiled language.
+It is easy to learn Go.</code></pre></div>
+
+<p>让我们直接看代码。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;fmt&quot;</span>
+	<span class="hljs-string">&quot;os&quot;</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	f, err := os.Create(<span class="hljs-string">&quot;lines&quot;</span>)
+	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
+		fmt.Println(err)
+                f.Close()
+		<span class="hljs-keyword">return</span>
+	&#125;
+	d := []<span class="hljs-type">string</span>&#123;<span class="hljs-string">&quot;Welcome to the world of Go1.&quot;</span>, <span class="hljs-string">&quot;Go is a compiled language.&quot;</span>, <span class="hljs-string">&quot;It is easy to learn Go.&quot;</span>&#125;
+
+	<span class="hljs-keyword">for</span> _, v := <span class="hljs-keyword">range</span> d &#123;
+		fmt.Fprintln(f, v)
+        <span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
+			fmt.Println(err)
+			<span class="hljs-keyword">return</span>
+		&#125;
+	&#125;
+	err = f.Close()
+	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
+		fmt.Println(err)
+		<span class="hljs-keyword">return</span>
+	&#125;
+	fmt.Println(<span class="hljs-string">&quot;file written successfully&quot;</span>)
+&#125;</code></pre></div>
+
+<p>在程序的第 9 行，我们创建了一个名为 <strong>lines</strong> 的新文件。在第 17 行，我们使用 for range 循环遍历数组，并使用 <a target="_blank" rel="noopener" href="https://golang.org/pkg/fmt/#Fprintln">Fprintln</a> 函数将行写入文件。<strong>Fprintln</strong> 函数以 <code>io.writer</code> 作为参数，并追加一个新行，这正是我们想要的。运行此程序将打印 <code>file written successfully</code>，并在当前目录中创建一个文件 <code>lines</code>。文件 <code>lines</code> 的内容如下：</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">Welcome to the world of Go1.
+Go is a compiled language.
+It is easy to learn Go.</code></pre></div>
+
+<h3 id="追加到文件"><a href="#追加到文件" class="headerlink" title="追加到文件"></a>追加到文件</h3><p>在本节中，我们将向上一节中创建的 <code>lines</code> 文件追加一行。我们将追加行 <strong>File handling is easy</strong> 到 <code>lines</code> 文件。</p>
+<p>文件必须以追加和只写模式打开。这些标志作为参数传递给 <a target="_blank" rel="noopener" href="https://pkg.go.dev/os#OpenFile">Open</a> 函数。文件以追加模式打开后，我们将新行添加到文件中。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;fmt&quot;</span>
+	<span class="hljs-string">&quot;os&quot;</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	f, err := os.OpenFile(<span class="hljs-string">&quot;lines&quot;</span>, os.O_APPEND|os.O_WRONLY, <span class="hljs-number">0644</span>)
+	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
+		fmt.Println(err)
+		<span class="hljs-keyword">return</span>
+	&#125;
+	newLine := <span class="hljs-string">&quot;File handling is easy.&quot;</span>
+	_, err = fmt.Fprintln(f, newLine)
+	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
+		fmt.Println(err)
+                f.Close()
+		<span class="hljs-keyword">return</span>
+	&#125;
+	err = f.Close()
+	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
+		fmt.Println(err)
+		<span class="hljs-keyword">return</span>
+	&#125;
+	fmt.Println(<span class="hljs-string">&quot;file appended successfully&quot;</span>)
+&#125;</code></pre></div>
+
+<p>在程序的第 9 行，我们以追加和只写模式打开文件。文件成功打开后，我们在第 15 行向文件添加新行。该程序将打印 <code>file appended successfully</code>。运行此程序后，<code>lines</code> 文件的内容将是：</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">Welcome to the world of Go1.
+Go is a compiled language.
+It is easy to learn Go.
+File handling is easy.</code></pre></div>
+
+<h3 id="并发写入文件"><a href="#并发写入文件" class="headerlink" title="并发写入文件"></a>并发写入文件</h3><p>当多个 <a href="../%E3%80%90GolangBot%E3%80%9121-Goroutines">goroutines</a> 并发写入文件时，我们将遇到 <a href="../%E3%80%90GolangBot%E3%80%9125-%E4%BA%92%E6%96%A5%E9%94%81/#%E4%BD%BF%E7%94%A8%E4%BA%92%E6%96%A5%E9%94%81%E8%A7%A3%E5%86%B3%E7%AB%9E%E6%80%81%E6%9D%A1%E4%BB%B6">竞态条件</a>。因此，必须使用通道来协调对文件的并发写入。</p>
+<p>我们将编写一个程序，创建 100 个 goroutines。每个 goroutine 将并发生成一个随机数，从而总共生成 100 个随机数。这些随机数将被写入文件。我们将通过以下方法解决 <a href="../%E3%80%90GolangBot%E3%80%9125-%E4%BA%92%E6%96%A5%E9%94%81/#%E4%BD%BF%E7%94%A8%E4%BA%92%E6%96%A5%E9%94%81%E8%A7%A3%E5%86%B3%E7%AB%9E%E6%80%81%E6%9D%A1%E4%BB%B6">竞态条件</a> 问题。</p>
+<ol>
+<li>创建一个通道，用于读取和写入生成的随机数。</li>
+<li>创建 100 个生产者 goroutines。每个 goroutine 将生成一个随机数，并将随机数写入通道。</li>
+<li>创建一个消费者 goroutine，它将从通道中读取并将生成的随机数写入文件。因此，我们只有一个 goroutine 并发写入文件，从而避免竞态条件 :)</li>
+<li>完成后关闭文件。</li>
+</ol>
+<p>让我们首先编写生成随机数的 <code>produce</code> 函数。</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">func produce(data chan int, wg *sync.WaitGroup) &#123;
+	n := rand.Intn(999)
+	data &lt;- n
+	wg.Done()
+&#125;</code></pre></div>
+
+<p>上述函数生成一个随机数并将其写入通道 <code>data</code>，然后在 <a href="../%E3%80%90GolangBot%E3%80%9123-%E7%BC%93%E5%86%B2%E9%80%9A%E9%81%93%E4%B8%8E%E5%B7%A5%E4%BD%9C%E6%B1%A0/#waitgroup">waitgroup</a> 上调用 <code>Done</code> 以通知它已完成其任务。</p>
+<p>让我们现在转到写入文件的函数。</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">func consume(data chan int, done chan bool) &#123;
+	f, err := os.Create(&quot;concurrent&quot;)
+	if err != nil &#123;
+		fmt.Println(err)
+		return
+	&#125;
+	for d := range data &#123;
+		_, err = fmt.Fprintln(f, d)
+		if err != nil &#123;
+			fmt.Println(err)
+			f.Close()
+			done &lt;- false
+			return
+		&#125;
+	&#125;
+	err = f.Close()
+	if err != nil &#123;
+		fmt.Println(err)
+		done &lt;- false
+		return
+	&#125;
+	done &lt;- true
+&#125;</code></pre></div>
+
+<p><code>consume</code> 函数创建一个名为 <code>concurrent</code> 的文件。然后它从 <code>data</code> 通道读取随机数并将其写入文件。一旦它读取并写入了所有随机数，它就会向 <code>done</code> 通道写入 <code>true</code>，以通知它已完成其任务。</p>
+<p>让我们编写 <code>main</code> 函数并完成此程序。我提供了整个程序如下。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;fmt&quot;</span>
+	<span class="hljs-string">&quot;math/rand&quot;</span>
+	<span class="hljs-string">&quot;os&quot;</span>
+	<span class="hljs-string">&quot;sync&quot;</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">produce</span><span class="hljs-params">(data <span class="hljs-keyword">chan</span> <span class="hljs-type">int</span>, wg *sync.WaitGroup)</span></span> &#123;
+	n := rand.Intn(<span class="hljs-number">999</span>)
+	data &lt;- n
+	wg.Done()
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">consume</span><span class="hljs-params">(data <span class="hljs-keyword">chan</span> <span class="hljs-type">int</span>, done <span class="hljs-keyword">chan</span> <span class="hljs-type">bool</span>)</span></span> &#123;
+	f, err := os.Create(<span class="hljs-string">&quot;concurrent&quot;</span>)
+	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
+		fmt.Println(err)
+		<span class="hljs-keyword">return</span>
+	&#125;
+	<span class="hljs-keyword">for</span> d := <span class="hljs-keyword">range</span> data &#123;
+		_, err = fmt.Fprintln(f, d)
+		<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
+			fmt.Println(err)
+			f.Close()
+			done &lt;- <span class="hljs-literal">false</span>
+			<span class="hljs-keyword">return</span>
+		&#125;
+	&#125;
+	err = f.Close()
+	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
+		fmt.Println(err)
+		done &lt;- <span class="hljs-literal">false</span>
+		<span class="hljs-keyword">return</span>
+	&#125;
+	done &lt;- <span class="hljs-literal">true</span>
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	data := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> <span class="hljs-type">int</span>)
+	done := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> <span class="hljs-type">bool</span>)
+	wg := sync.WaitGroup&#123;&#125;
+	<span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">100</span>; i++ &#123;
+		wg.Add(<span class="hljs-number">1</span>)
+		<span class="hljs-keyword">go</span> produce(data, &amp;wg)
+	&#125;
+	<span class="hljs-keyword">go</span> consume(data, done)
+	<span class="hljs-keyword">go</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span></span> &#123;
+		wg.Wait()
+		<span class="hljs-built_in">close</span>(data)
+	&#125;()
+	d := &lt;-done
+	<span class="hljs-keyword">if</span> d &#123;
+		fmt.Println(<span class="hljs-string">&quot;File written successfully&quot;</span>)
+	&#125; <span class="hljs-keyword">else</span> &#123;
+		fmt.Println(<span class="hljs-string">&quot;File writing failed&quot;</span>)
+	&#125;
+&#125;</code></pre></div>
+
+<p>主函数在第 41 行创建 <code>data</code> 通道，从中读取随机数并写入。第 42 行的 <code>done</code> 通道由 <code>consume</code> goroutine 用于通知 <code>main</code> 它已完成其任务。第 43 行的 <code>wg</code> waitgroup 用于等待所有 100 个 goroutines 完成生成随机数。</p>
+<p>第 44 行的 <code>for</code> 循环创建了 100 个 goroutines。第 49 行的 goroutine 调用在 waitgroup 上调用 <code>wait()</code>，以等待所有 100 个 goroutines 完成创建随机数。之后，它关闭通道。一旦通道关闭并且 <code>consume</code> goroutine 已完成将所有生成的随机数写入文件，它将在第 37 行向 <code>done</code> 通道写入 <code>true</code>，主 goroutine 被解除阻塞并打印 <code>File written successfully</code>。</p>
+<p>现在你可以在任何文本编辑器中打开文件 <strong>concurrent</strong>，并查看生成的 100 个随机数 :)</p>
+<p>本教程到此结束。希望你喜欢阅读。祝你有个美好的一天。</p>
+<p>上一个教程 - <a href="../%E3%80%90GolangBot%E3%80%9136-%E8%AF%BB%E6%96%87%E4%BB%B6">读取文件</a></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E5%BF%83%E5%BE%97/" class="category-chain-item">学习心得</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E5%BF%83%E5%BE%97/GolangBot/" class="category-chain-item">GolangBot</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Golang/" class="print-no-link">#Golang</a>
+      
+        <a href="/tags/%E6%95%99%E7%A8%8B/" class="print-no-link">#教程</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>【GolangBot】37-写文件</div>
+      <div>https://zoekyhein.github.io/【GolangBot】37-写文件/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>ZoeKyHein</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年12月26日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/" title="单元测试">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">单元测试</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/%E3%80%90GolangBot%E3%80%9136-%E8%AF%BB%E6%96%87%E4%BB%B6/" title="【GolangBot】36-读文件">
+                        <span class="hidden-mobile">【GolangBot】36-读文件</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

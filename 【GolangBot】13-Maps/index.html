@@ -1,0 +1,969 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/icon.png">
+  <link rel="icon" href="/img/icon.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#ac9343">
+  <meta name="author" content="ZoeKyHein">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="欢迎来到Golang系列教程的第13篇。 什么是map？Go 中的 map 是一种内建的数据类型，用于存储键值对。一个实际的使用场景是存储货币代码和相应的货币名称。 USD - United States Dollar EUR - Euro INR - India Rupee  一个 map 非常适合上面的使用场景。货币代码可以作为键，货币名称可以作为值。map 类似于其他语言（如 Python）">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【GolangBot】13-Maps">
+<meta property="og:url" content="https://zoekyhein.github.io/%E3%80%90GolangBot%E3%80%9113-Maps/index.html">
+<meta property="og:site_name" content="传火祭祀场">
+<meta property="og:description" content="欢迎来到Golang系列教程的第13篇。 什么是map？Go 中的 map 是一种内建的数据类型，用于存储键值对。一个实际的使用场景是存储货币代码和相应的货币名称。 USD - United States Dollar EUR - Euro INR - India Rupee  一个 map 非常适合上面的使用场景。货币代码可以作为键，货币名称可以作为值。map 类似于其他语言（如 Python）">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-12-23T15:50:54.000Z">
+<meta property="article:modified_time" content="2025-01-23T07:44:45.568Z">
+<meta property="article:author" content="ZoeKyHein">
+<meta property="article:tag" content="Golang">
+<meta property="article:tag" content="教程">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>【GolangBot】13-Maps - 传火祭祀场</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"zoekyhein.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"💥","loop":false,"scope":["home"]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>传火祭祀场</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/golangbot" target="_self">
+                <i class="iconfont icon-book"></i>
+                <span>Go教程</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/sunKnight.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">【GolangBot】13-Maps</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-12-23 15:50" pubdate>
+          2024年12月23日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.3k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          19 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">【GolangBot】13-Maps</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>欢迎来到<a href="../GolangBot/">Golang系列教程</a>的第13篇。</p>
+<h3 id="什么是map？"><a href="#什么是map？" class="headerlink" title="什么是map？"></a>什么是map？</h3><p>Go 中的 map 是一种内建的数据类型，用于存储键值对。一个实际的使用场景是存储货币代码和相应的货币名称。</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">USD - United States Dollar
+EUR - Euro
+INR - India Rupee</code></pre></div>
+
+<p>一个 map 非常适合上面的使用场景。货币代码可以作为键，货币名称可以作为值。map 类似于其他语言（如 Python）中的字典。</p>
+<h3 id="如何创建一个-map？"><a href="#如何创建一个-map？" class="headerlink" title="如何创建一个 map？"></a><strong>如何创建一个 map？</strong></h3><p>可以通过将键和值的<a href="../%E3%80%90GolangBot%E3%80%914-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/">数据类型</a>传递给 <code>make</code> 函数来创建一个 map。以下是创建新 map 的语法。</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">make(map[type of key]type of value)
+currencyCode := make(map[string]string)</code></pre></div>
+
+<p>上面的代码创建了一个名为 currencyCode 的 map，其键和值的类型均为 string。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;fmt&quot;</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	currencyCode := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">map</span>[<span class="hljs-type">string</span>]<span class="hljs-type">string</span>)
+	fmt.Println(currencyCode)
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://go.dev/play/p/A31zIgnFiW5">Run in Playground</a></p>
+<p>上述程序创建了一个名为 currencyCode 的 map，其键和值的类型均为 string。程序的输出将是：</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">map[]</code></pre></div>
+
+<p>因为我们没有把任何元素添加进map，所以它是空的。</p>
+<h3 id="向-Map-中添加条目"><a href="#向-Map-中添加条目" class="headerlink" title="向 Map 中添加条目"></a>向 Map 中添加条目</h3><p>向 map 中添加新条目的语法与 <a href="../%E3%80%90GolangBot%E3%80%9111-%E6%95%B0%E7%BB%84%E5%92%8C%E5%88%87%E7%89%87/">数组</a> 的操作类似。下面的程序向 <code>currencyCode</code> map 中添加了一些新的货币代码和对应的货币名称：</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;fmt&quot;</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	currencyCode := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">map</span>[<span class="hljs-type">string</span>]<span class="hljs-type">string</span>)
+	currencyCode[<span class="hljs-string">&quot;USD&quot;</span>] = <span class="hljs-string">&quot;US Dollar&quot;</span>
+	currencyCode[<span class="hljs-string">&quot;GBP&quot;</span>] = <span class="hljs-string">&quot;Pound Sterling&quot;</span>
+	currencyCode[<span class="hljs-string">&quot;EUR&quot;</span>] = <span class="hljs-string">&quot;Euro&quot;</span>
+	currencyCode[<span class="hljs-string">&quot;INR&quot;</span>] = <span class="hljs-string">&quot;Indian Rupee&quot;</span>
+	fmt.Println(<span class="hljs-string">&quot;currencyCode map contents:&quot;</span>, currencyCode)
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://go.dev/play/p/2M4ZVP1QaQ1">Run in playground</a></p>
+<p>我们添加了4个货币代码，分别是 <code>USD</code>、<code>GBP</code>、<code>EUR</code> 和<code>INR</code>，以及它们对应的名称。</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">currencyCode map contents: map[EUR:Euro GBP:Pound Sterling INR:Indian Rupee USD:US Dollar]</code></pre></div>
+
+<p><strong>正如你可能从上述输出中注意到的，从 map 中检索值的顺序并不保证与添加到 map 中的顺序相同。</strong></p>
+<p>在声明时，也可以直接对 map 进行初始化。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;fmt&quot;</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	currencyCode := <span class="hljs-keyword">map</span>[<span class="hljs-type">string</span>]<span class="hljs-type">string</span> &#123;
+		<span class="hljs-string">&quot;USD&quot;</span>: <span class="hljs-string">&quot;US Dollar&quot;</span>,
+		<span class="hljs-string">&quot;GBP&quot;</span>: <span class="hljs-string">&quot;Pound Sterling&quot;</span>,
+		<span class="hljs-string">&quot;EUR&quot;</span>: <span class="hljs-string">&quot;Euro&quot;</span>,
+	&#125;
+	currencyCode[<span class="hljs-string">&quot;INR&quot;</span>] = <span class="hljs-string">&quot;Indian Rupee&quot;</span>
+	fmt.Println(<span class="hljs-string">&quot;currencyCode map contents:&quot;</span>, currencyCode)
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://go.dev/play/p/Rd6QoqZ7udE">Run in playground</a></p>
+<p>上述程序在声明时定义了 <code>currencyCode</code> map，并初始化了 3 个键值对。随后又添加了一个键为 <code>INR</code> 的新元素。程序的输出为：</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">currencyCode map contents: map[EUR:Euro GBP:Pound Sterling INR:Indian Rupee USD:US Dollar]</code></pre></div>
+
+<p>键的类型并不局限于 <a href="../%E3%80%90GolangBot%E3%80%9114-Strings/">string</a>。所有可以比较的类型（如布尔值、整数、浮点数、复数、字符串等）都可以用作键。甚至用户定义的类型（如 <a href="../%E3%80%90GolangBot%E3%80%9116-%E7%BB%93%E6%9E%84%E4%BD%93/">structs</a>）也可以作为键。</p>
+<p>如果您想了解更多关于可比较类型的信息，请访问 <a target="_blank" rel="noopener" href="https://go.dev/ref/spec#Comparison_operators">Go 官方文档</a>。</p>
+<h3 id="nil-map-panics"><a href="#nil-map-panics" class="headerlink" title="nil map panics"></a>nil map panics</h3><p>映射（map）的零值是 nil。如果尝试向一个 nil 映射中添加元素，会触发运行时的 <a href="../%E3%80%90GolangBot%E3%80%9133-Panic%E5%92%8CRecover/">panic</a>。因此，在向映射中添加元素之前，必须先对映射进行初始化。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	<span class="hljs-keyword">var</span> currencyCode <span class="hljs-keyword">map</span>[<span class="hljs-type">string</span>]<span class="hljs-type">string</span>
+	currencyCode[<span class="hljs-string">&quot;USD&quot;</span>] = <span class="hljs-string">&quot;US Dollar&quot;</span>
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://go.dev/play/p/UuJ8pmtOp5D">Run in playground</a></p>
+<p>在上面的程序中，<code>currencyCode</code> 是 <code>nil</code>，我们尝试向一个 <code>nil</code> 映射中添加新键值对。程序将会发生 panic，错误信息如下：</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-built_in">panic</span>: assignment to entry in <span class="hljs-literal">nil</span> <span class="hljs-keyword">map</span></code></pre></div>
+
+<h3 id="从映射中检索键的值"><a href="#从映射中检索键的值" class="headerlink" title="从映射中检索键的值"></a>从映射中检索键的值</h3><p>现在我们已经向映射中添加了一些元素，接下来学习如何检索它们。使用 <code>map[key]</code> 语法来检索映射中的元素。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;fmt&quot;</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	currencyCode := <span class="hljs-keyword">map</span>[<span class="hljs-type">string</span>]<span class="hljs-type">string</span>&#123;
+		<span class="hljs-string">&quot;USD&quot;</span>: <span class="hljs-string">&quot;US Dollar&quot;</span>,
+		<span class="hljs-string">&quot;GBP&quot;</span>: <span class="hljs-string">&quot;Pound Sterling&quot;</span>,
+		<span class="hljs-string">&quot;EUR&quot;</span>: <span class="hljs-string">&quot;Euro&quot;</span>,
+	&#125;
+	currency := <span class="hljs-string">&quot;USD&quot;</span>
+	currencyName := currencyCode[currency]
+	fmt.Println(<span class="hljs-string">&quot;Currency name for currency code&quot;</span>, currency, <span class="hljs-string">&quot;is&quot;</span>, currencyName)
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://go.dev/play/p/5eLMNMwQJbY">Run in playground</a>	</p>
+<p>上面的程序非常简单。程序检索并打印了货币代码 <code>USD</code> 对应的货币名称。程序的输出是：</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">Currency name for currency code USD is US Dollar</code></pre></div>
+
+<p>如果尝试访问不存在的元素，map 将返回该元素类型的零值。在 <code>currencyCode</code> map 的例子中，如果我们尝试访问一个不存在的元素，返回的将是该类型的零值，即空字符串 “”。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;fmt&quot;</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	currencyCode := <span class="hljs-keyword">map</span>[<span class="hljs-type">string</span>]<span class="hljs-type">string</span>&#123;
+		<span class="hljs-string">&quot;USD&quot;</span>: <span class="hljs-string">&quot;US Dollar&quot;</span>,
+		<span class="hljs-string">&quot;GBP&quot;</span>: <span class="hljs-string">&quot;Pound Sterling&quot;</span>,
+		<span class="hljs-string">&quot;EUR&quot;</span>: <span class="hljs-string">&quot;Euro&quot;</span>,
+	&#125;
+	fmt.Println(<span class="hljs-string">&quot;Currency name for currency code INR is&quot;</span>, currencyCode[<span class="hljs-string">&quot;INR&quot;</span>])
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://go.dev/play/p/zikbC-C_DEP">Run in playground</a></p>
+<p>上述程序的输出是</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">Currency name for currency code INR is</code></pre></div>
+
+<p>在上述程序中，尝试获取 <code>INR</code> 的货币名称时，返回的是空字符串。这表明，当尝试检索一个不存在的键时，<strong>map 不会抛出运行时错误</strong>。</p>
+<h3 id="检查key是否存在"><a href="#检查key是否存在" class="headerlink" title="检查key是否存在"></a>检查key是否存在</h3><p>在上一节中，我们了解到，当一个键不存在时，map 会返回该类型的零值。然而，这在我们需要确认某个键是否实际存在于 map 中时并不起作用。</p>
+<p>例如，我们想知道某个货币代码键是否存在于 <code>currencyCode</code> map 中。可以使用以下语法来检查某个键是否存在于 map 中：</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">value, ok := map[key]</code></pre></div>
+
+<p>在上述代码中，当键存在时，<code>ok</code> 的值为 <code>true</code>，对应键的值会存储在变量 <code>value</code> 中。<br>如果键不存在，<code>ok</code> 的值为 <code>false</code>，而 <code>value</code> 则会返回类型的零值。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;fmt&quot;</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	currencyCode := <span class="hljs-keyword">map</span>[<span class="hljs-type">string</span>]<span class="hljs-type">string</span>&#123;
+		<span class="hljs-string">&quot;USD&quot;</span>: <span class="hljs-string">&quot;US Dollar&quot;</span>,
+		<span class="hljs-string">&quot;GBP&quot;</span>: <span class="hljs-string">&quot;Pound Sterling&quot;</span>,
+		<span class="hljs-string">&quot;EUR&quot;</span>: <span class="hljs-string">&quot;Euro&quot;</span>,
+	&#125;
+	cyCode := <span class="hljs-string">&quot;INR&quot;</span>
+	<span class="hljs-keyword">if</span> currencyName, ok := currencyCode[cyCode]; ok &#123;
+		fmt.Println(<span class="hljs-string">&quot;Currency name for currency code&quot;</span>, cyCode, <span class="hljs-string">&quot; is&quot;</span>, currencyName)
+		<span class="hljs-keyword">return</span>
+	&#125;
+	fmt.Println(<span class="hljs-string">&quot;Currency name for currency code&quot;</span>, cyCode, <span class="hljs-string">&quot;not found&quot;</span>)
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://go.dev/play/p/Jo3AUobSf9J">Run in playground</a></p>
+<p>在上述程序中，第 14 行的 <code>ok</code> 将为 <code>false</code>，因为键 <code>INR</code> 不存在。因此，程序将打印：</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">Currency name for currency code INR not found</code></pre></div>
+
+<h3 id="遍历-map-中的所有元素"><a href="#遍历-map-中的所有元素" class="headerlink" title="遍历 map 中的所有元素"></a>遍历 map 中的所有元素</h3><p>可以使用 <code>for</code> 循环的 <code>range</code> 形式来遍历 map 中的所有元素。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;fmt&quot;</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	currencyCode := <span class="hljs-keyword">map</span>[<span class="hljs-type">string</span>]<span class="hljs-type">string</span>&#123;
+		<span class="hljs-string">&quot;USD&quot;</span>: <span class="hljs-string">&quot;US Dollar&quot;</span>,
+		<span class="hljs-string">&quot;GBP&quot;</span>: <span class="hljs-string">&quot;Pound Sterling&quot;</span>,
+		<span class="hljs-string">&quot;EUR&quot;</span>: <span class="hljs-string">&quot;Euro&quot;</span>,
+	&#125;
+	<span class="hljs-keyword">for</span> code, name := <span class="hljs-keyword">range</span> currencyCode &#123;
+		fmt.Printf(<span class="hljs-string">&quot;Currency Name for currency code %s is %s\n&quot;</span>, code, name)
+	&#125;
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://go.dev/play/p/nCbYjtQxA2m">Run in playground</a></p>
+<p>上述程序将会输出，</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">Currency Name for currency code GBP is Pound Sterling
+Currency Name for currency code EUR is Euro
+Currency Name for currency code USD is US Dollar</code></pre></div>
+
+<p><em>一个需要注意的重要事实是，使用 <code>for range</code> 遍历 map 时，值的检索顺序在每次程序执行时都可能不同。它也不一定与元素添加到 map 的顺序相同。</em></p>
+<h3 id="从-map-中删除元素"><a href="#从-map-中删除元素" class="headerlink" title="从 map 中删除元素"></a>从 map 中删除元素</h3><p>要从 <code>map</code> 中删除某个键，可以使用以下语法：<br><em><a target="_blank" rel="noopener" href="https://pkg.go.dev/builtin#delete">delete(map, key)</a></em>。</p>
+<p><code>delete</code> 函数不会返回任何值。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;fmt&quot;</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	currencyCode := <span class="hljs-keyword">map</span>[<span class="hljs-type">string</span>]<span class="hljs-type">string</span>&#123;
+		<span class="hljs-string">&quot;USD&quot;</span>: <span class="hljs-string">&quot;US Dollar&quot;</span>,
+		<span class="hljs-string">&quot;GBP&quot;</span>: <span class="hljs-string">&quot;Pound Sterling&quot;</span>,
+		<span class="hljs-string">&quot;EUR&quot;</span>: <span class="hljs-string">&quot;Euro&quot;</span>,
+	&#125;
+	fmt.Println(<span class="hljs-string">&quot;map before deletion&quot;</span>, currencyCode)
+	<span class="hljs-built_in">delete</span>(currencyCode, <span class="hljs-string">&quot;EUR&quot;</span>)
+	fmt.Println(<span class="hljs-string">&quot;map after deletion&quot;</span>, currencyCode)
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://go.dev/play/p/6R00ro5T6Q0">Run in playground</a></p>
+<p>上述程序删除键<code>EUR</code>，它打印</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">map before deletion map[EUR:Euro GBP:Pound Sterling USD:US Dollar]
+map after deletion map[GBP:Pound Sterling USD:US Dollar]</code></pre></div>
+
+<p>即使我们尝试删除一个 map 中不存在的键，也不会发生运行时错误。</p>
+<h3 id="结构体的-map"><a href="#结构体的-map" class="headerlink" title="结构体的 map"></a>结构体的 map</h3><p>到目前为止，我们仅在 map 中存储了货币名称。如果还能存储货币符号，是不是更方便呢？这可以通过使用结构体的map来实现。<br>货币可以用一个包含货币名称和货币符号字段的结构体表示。然后可以将该结构体作为值存储在 map 中，并以货币代码作为键。<br>让我们通过编写一个程序来理解如何实现这一点。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;fmt&quot;</span>
+)
+
+<span class="hljs-keyword">type</span> currency <span class="hljs-keyword">struct</span> &#123;
+	name   <span class="hljs-type">string</span>
+	symbol <span class="hljs-type">string</span>
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	curUSD := currency&#123;
+		name:   <span class="hljs-string">&quot;US Dollar&quot;</span>,
+		symbol: <span class="hljs-string">&quot;$&quot;</span>,
+	&#125;
+	curGBP := currency&#123;
+		name:   <span class="hljs-string">&quot;Pound Sterling&quot;</span>,
+		symbol: <span class="hljs-string">&quot;£&quot;</span>,
+	&#125;
+	curEUR := currency&#123;
+		name:   <span class="hljs-string">&quot;Euro&quot;</span>,
+		symbol: <span class="hljs-string">&quot;€&quot;</span>,
+	&#125;
+
+	currencyCode := <span class="hljs-keyword">map</span>[<span class="hljs-type">string</span>]currency&#123;
+		<span class="hljs-string">&quot;USD&quot;</span>: curUSD,
+		<span class="hljs-string">&quot;GBP&quot;</span>: curGBP,
+		<span class="hljs-string">&quot;EUR&quot;</span>: curEUR,
+	&#125;
+
+	<span class="hljs-keyword">for</span> cyCode, cyInfo := <span class="hljs-keyword">range</span> currencyCode &#123;
+		fmt.Printf(<span class="hljs-string">&quot;Currency Code: %s, Name: %s, Symbol: %s\n&quot;</span>, cyCode, cyInfo.name, cyInfo.symbol)
+	&#125;
+
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://go.dev/play/p/o6ONzGDm6-m">Run in playground</a></p>
+<p>在上述程序中，<code>currency</code> 结构体包含 <code>name</code> 和 <code>symbol</code> 字段。我们创建了三个货币对象：<code>curUSD</code>、<code>curGBP</code> 和 <code>curEUR</code>。</p>
+<p>在第 26 行，我们初始化了一个以 <code>string</code> 类型为键、<code>currency</code> 类型为值的 map，其中包含我们创建的三个货币。</p>
+<p>第 32 行使用 <code>for range</code> 遍历 map，接下来的代码打印了货币的详细信息。程序将输出如下内容：</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">Currency Code: USD, Name: US Dollar, Symbol: $
+Currency Code: GBP, Name: Pound Sterling, Symbol: £
+Currency Code: EUR, Name: Euro, Symbol: €</code></pre></div>
+
+<h3 id="map的长度"><a href="#map的长度" class="headerlink" title="map的长度"></a>map的长度</h3><p>可以使用 <a target="_blank" rel="noopener" href="https://pkg.go.dev/builtin#len">len</a> 函数来确定 map 的长度。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;fmt&quot;</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	currencyCode := <span class="hljs-keyword">map</span>[<span class="hljs-type">string</span>]<span class="hljs-type">string</span>&#123;
+		<span class="hljs-string">&quot;USD&quot;</span>: <span class="hljs-string">&quot;US Dollar&quot;</span>,
+		<span class="hljs-string">&quot;GBP&quot;</span>: <span class="hljs-string">&quot;Pound Sterling&quot;</span>,
+		<span class="hljs-string">&quot;EUR&quot;</span>: <span class="hljs-string">&quot;Euro&quot;</span>,
+	&#125;
+	fmt.Println(<span class="hljs-string">&quot;length is&quot;</span>, <span class="hljs-built_in">len</span>(currencyCode))
+
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://go.dev/play/p/jGWltEW5X1c">Run in playground</a></p>
+<p>上面的程序中，<code>len(currencyCode)</code> 返回 map 的长度。程序会输出：</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">length is 3</code></pre></div>
+
+<h3 id="Map-是引用类型"><a href="#Map-是引用类型" class="headerlink" title="Map 是引用类型"></a>Map 是引用类型</h3><p>与 <a href="../%E3%80%90GolangBot%E3%80%9111-%E6%95%B0%E7%BB%84%E5%92%8C%E5%88%87%E7%89%87/">切片</a>类似，map 是引用类型。当一个 map 被赋值给一个新变量时，它们都会指向相同的底层数据结构。因此，在一个变量中所做的更改会反映在另一个变量中。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;fmt&quot;</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	employeeSalary := <span class="hljs-keyword">map</span>[<span class="hljs-type">string</span>]<span class="hljs-type">int</span>&#123;
+		<span class="hljs-string">&quot;steve&quot;</span>: <span class="hljs-number">12000</span>,
+		<span class="hljs-string">&quot;jamie&quot;</span>: <span class="hljs-number">15000</span>,		
+		<span class="hljs-string">&quot;mike&quot;</span>: <span class="hljs-number">9000</span>,
+	&#125;
+	fmt.Println(<span class="hljs-string">&quot;Original employee salary&quot;</span>, employeeSalary)
+	modified := employeeSalary
+	modified[<span class="hljs-string">&quot;mike&quot;</span>] = <span class="hljs-number">18000</span>
+	fmt.Println(<span class="hljs-string">&quot;Employee salary changed&quot;</span>, employeeSalary)
+
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://go.dev/play/p/YUhmL6d0K5__x">Run in playground</a></p>
+<p>在上面程序的第 14 行，<code>employeeSalary</code> 被赋值给了 <code>modified</code>。接下来一行中，<code>mike</code> 的薪水在 <code>modified</code> map 中被更改为 <code>18000</code>。由于 map 是引用类型，<code>employeeSalary</code> 中 <code>mike</code> 的薪水也会变成 <code>18000</code>。</p>
+<p>程序会输出：</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">Original employee salary map[jamie:15000 mike:9000 steve:12000]
+Employee salary changed map[jamie:15000 mike:18000 steve:12000]</code></pre></div>
+
+<p>类似地，当 map 被作为参数传递给函数时，对 map 的任何修改也会影响到调用者。</p>
+<h3 id="Map-的相等性"><a href="#Map-的相等性" class="headerlink" title="Map 的相等性"></a>Map 的相等性</h3><p>Map 不能使用 <code>==</code> 运算符进行比较。<code>==</code> 运算符只能用于检查一个 map 是否是 <code>nil</code>。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;  
+    map1 := <span class="hljs-keyword">map</span>[<span class="hljs-type">string</span>]<span class="hljs-type">int</span>&#123;
+        <span class="hljs-string">&quot;one&quot;</span>: <span class="hljs-number">1</span>,
+        <span class="hljs-string">&quot;two&quot;</span>: <span class="hljs-number">2</span>,
+    &#125;
+
+    map2 := map1
+
+    <span class="hljs-keyword">if</span> map1 == map2 &#123;
+    &#125;
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://go.dev/play/p/mkfkORUV5pi">Run in playground</a></p>
+<p>The above program will fail to compile with error</p>
+<p>上面的程序将会编译错误</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">invalid operation: map1 == map2 (map can only be compared to nil)</code></pre></div>
+
+<p>检查两个 map 是否相等的一种方法是逐个比较它们的元素。另一种方法是使用 <a href="../%E3%80%90GolangBot%E3%80%9135-%E5%8F%8D%E5%B0%84/">反射</a>。我鼓励你自己写一个程序来实现这个功能并使其工作 :)。</p>
+<p><strong>下一篇教程 - <a href="../%E3%80%90GolangBot%E3%80%9114-Strings/">Strings</a></strong></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E5%BF%83%E5%BE%97/" class="category-chain-item">学习心得</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E5%BF%83%E5%BE%97/GolangBot/" class="category-chain-item">GolangBot</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Golang/" class="print-no-link">#Golang</a>
+      
+        <a href="/tags/%E6%95%99%E7%A8%8B/" class="print-no-link">#教程</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>【GolangBot】13-Maps</div>
+      <div>https://zoekyhein.github.io/【GolangBot】13-Maps/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>ZoeKyHein</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年12月23日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/%E3%80%90GolangBot%E3%80%9114-Strings/" title="【GolangBot】14-Strings">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">【GolangBot】14-Strings</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/%E3%80%90GolangBot%E3%80%9112-%E5%8F%AF%E5%8F%98%E5%8F%82%E6%95%B0%E5%87%BD%E6%95%B0/" title="【GolangBot】12-可变参数函数">
+                        <span class="hidden-mobile">【GolangBot】12-可变参数函数</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

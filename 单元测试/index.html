@@ -1,0 +1,1161 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/icon.png">
+  <link rel="icon" href="/img/icon.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#ac9343">
+  <meta name="author" content="ZoeKyHein">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="最近在研究如何规范编码，那么单元测试当然是其中必不可少的一部分。记录一下学习过程，方便自己，希望你有需要的时候也能帮到你。 一些规定单元测试有一些强制性的规定，也有一些约定俗成的习惯。强制性的有  测试文件必须以_test.go结尾，例如string_test.go。 测试文件中，每个测试函数须以Test开头。 单元测试的测试函数必须接收*testing.T类型的参数。  习惯性的有  测试文件一">
+<meta property="og:type" content="article">
+<meta property="og:title" content="单元测试">
+<meta property="og:url" content="https://zoekyhein.github.io/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/index.html">
+<meta property="og:site_name" content="传火祭祀场">
+<meta property="og:description" content="最近在研究如何规范编码，那么单元测试当然是其中必不可少的一部分。记录一下学习过程，方便自己，希望你有需要的时候也能帮到你。 一些规定单元测试有一些强制性的规定，也有一些约定俗成的习惯。强制性的有  测试文件必须以_test.go结尾，例如string_test.go。 测试文件中，每个测试函数须以Test开头。 单元测试的测试函数必须接收*testing.T类型的参数。  习惯性的有  测试文件一">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-01-22T11:29:19.000Z">
+<meta property="article:modified_time" content="2025-01-23T07:44:45.571Z">
+<meta property="article:author" content="ZoeKyHein">
+<meta property="article:tag" content="Golang">
+<meta property="article:tag" content="编码规范">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>单元测试 - 传火祭祀场</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"zoekyhein.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"💥","loop":false,"scope":["home"]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>传火祭祀场</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/golangbot" target="_self">
+                <i class="iconfont icon-book"></i>
+                <span>Go教程</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/sunKnight.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">单元测试</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-01-22 11:29" pubdate>
+          2025年1月22日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          29 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">单元测试</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>最近在研究如何规范编码，那么单元测试当然是其中必不可少的一部分。记录一下学习过程，方便自己，希望你有需要的时候也能帮到你。</p>
+<h4 id="一些规定"><a href="#一些规定" class="headerlink" title="一些规定"></a>一些规定</h4><p>单元测试有一些强制性的规定，也有一些约定俗成的习惯。<br>强制性的有</p>
+<ul>
+<li>测试文件必须以<code>_test.go</code>结尾，例如<code>string_test.go</code>。</li>
+<li>测试文件中，每个测试函数须以<code>Test</code>开头。</li>
+<li>单元测试的测试函数必须接收<code>*testing.T</code>类型的参数。</li>
+</ul>
+<p>习惯性的有</p>
+<ul>
+<li><p>测试文件一般放在被测文件的后面（习惯因人而异，你也可以在每个包下单独建一个test包用来专门存放测试文件）</p>
+</li>
+<li><p>测试函数中包含被测函数的名字，比如我们有个函数名为<code>func ABC()&#123;&#125;</code>，那么测试函数最好命名为<code>func TestABC(t *testing.T)&#123;&#125;</code>。</p>
+</li>
+</ul>
+<p>​	</p>
+<p>综上，我们最好保持如下的项目结构。</p>
+<div class="code-wrapper"><pre><code class="hljs shell">Blog
+├── util
+│   ├── string.go # 被测文件
+│   ├── string_test.go # 测试文件
+│   ├── float.go
+│   └── float_test.go
+├── go.mod
+└── go.sum</code></pre></div>
+<blockquote>
+<p>为什么要这样设计？</p>
+<ul>
+<li>测试文件与被测文件相邻，方便快速定位。</li>
+<li>使用<code>_test.go</code>后缀是Go的强制要求。</li>
+<li>每个功能模块独立测试，避免混乱。</li>
+</ul>
+</blockquote>
+<p>如上面，我们有个<code>util</code>包，其中放着一些处理各类数据结构的公共方法，每一个文件都配套一个对应的测试文件。我们这里拿<code>string.go</code>和<code>string_test.go</code>来举例。比如我的<code>string.go</code>文件中有一个用于进行大写化(把所有字符串变为大写)的函数。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">ToUpperCase</span><span class="hljs-params">(s <span class="hljs-type">string</span>)</span></span><span class="hljs-type">string</span>&#123;
+    <span class="hljs-keyword">return</span> strings.ToUpper(s)
+&#125;</code></pre></div>
+<p>那么我们的<code>string_test.go</code>文件中需要有一个对应的测试函数。单元测试的函数有一个规定，需要以<code>Test</code>开头，比如</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">TestToUpperCase</span><span class="hljs-params">(t *testing.T)</span></span> &#123; <span class="hljs-comment">// 单元测试的参数是  *testing.T</span>
+	<span class="hljs-comment">// 准备测试用例</span>
+	testData := []<span class="hljs-keyword">struct</span> &#123;
+		name  <span class="hljs-type">string</span>
+		input <span class="hljs-type">string</span>
+		want  <span class="hljs-type">string</span>
+	&#125;&#123;
+		&#123;<span class="hljs-string">&quot;英文小写转大写&quot;</span>, <span class="hljs-string">&quot;hello&quot;</span>, <span class="hljs-string">&quot;HELLO&quot;</span>&#125;,
+		&#123;<span class="hljs-string">&quot;中文不变&quot;</span>, <span class="hljs-string">&quot;你好&quot;</span>, <span class="hljs-string">&quot;你好&quot;</span>&#125;,
+		&#123;<span class="hljs-string">&quot;空字符串&quot;</span>, <span class="hljs-string">&quot;&quot;</span>, <span class="hljs-string">&quot;&quot;</span>&#125;,
+		&#123;<span class="hljs-string">&quot;带特殊符号&quot;</span>, <span class="hljs-string">&quot;a!b@c#&quot;</span>, <span class="hljs-string">&quot;A!B@C#&quot;</span>&#125;,
+	&#125;
+
+	<span class="hljs-comment">// 逐个检查</span>
+	<span class="hljs-keyword">for</span> _, td := <span class="hljs-keyword">range</span> testData &#123;
+		t.Run(td.name, <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(t *testing.T)</span></span> &#123;
+			got := ToUpperCase(td.input)
+			<span class="hljs-keyword">if</span> got != td.want &#123;
+				t.Errorf(<span class="hljs-string">&quot;输入 %q 时出错, 得到 %q, 期望 %q&quot;</span>, td.input, got, td.want)
+			&#125;
+		&#125;)
+	&#125;
+&#125;</code></pre></div>
+
+<p>可以看到我们把测试用例放在结构体数组中，这种方式叫做<strong>表格驱动测试</strong>，好处是：</p>
+<ul>
+<li>可以轻松添加新的测试场景</li>
+<li>代码更简洁</li>
+<li>测试更全面</li>
+</ul>
+<h4 id="运行测试"><a href="#运行测试" class="headerlink" title="运行测试"></a>运行测试</h4><p>那么这个时候问题来了，我们该如何运行这个单元测试呢？有这样一行命令。</p>
+<p><code>go test -v blog/util/ -run=TestTpUpperCase -count=1</code></p>
+<p>很多参数，先不管，我们先运行。</p>
+<div class="code-wrapper"><pre><code class="hljs shell">➜  Blog-demo go test -v blog/util/ -run=ToUpperCase -count=1
+=== RUN   TestToUpperCase
+=== RUN   TestToUpperCase/英文小写转大写
+hello
+=== RUN   TestToUpperCase/中文不变
+你好
+=== RUN   TestToUpperCase/空字符串
+
+=== RUN   TestToUpperCase/带特殊符号
+a!b@c#
+--- PASS: TestToUpperCase (0.00s)
+    --- PASS: TestToUpperCase/英文小写转大写 (0.00s)
+    --- PASS: TestToUpperCase/中文不变 (0.00s)
+    --- PASS: TestToUpperCase/空字符串 (0.00s)
+    --- PASS: TestToUpperCase/带特殊符号 (0.00s)
+PASS
+ok      blog/util       0.215s</code></pre></div>
+
+<p>可以看到，我们的四个测试用例依次进行，并且都通过了测试。下面我们来看一下这些参数都代表什么。</p>
+<h5 id="v"><a href="#v" class="headerlink" title="-v"></a>-v</h5><p><code>-v</code>参数代表详细输出，你可能在<code>git</code>中用过它，比如<code>git remote -v</code>等。如果你细心的话，你会发现，每个测试用例都给我们打印了详细的测试信息。如果我们去掉<code>-v</code>参数，那么运行测试时，则不会输出这些内容。测试结果如下：</p>
+<div class="code-wrapper"><pre><code class="hljs shell">➜  Blog-demo go test  blog/util/ -run=ToUpperCase -count=1 
+ok      blog/util       0.450s</code></pre></div>
+
+<p>我想到这里你应该会明白<code>-v</code>参数的作用了。</p>
+<h5 id="run-ToUpperCase"><a href="#run-ToUpperCase" class="headerlink" title="-run&#x3D;ToUpperCase"></a>-run&#x3D;ToUpperCase</h5><p>在理解<code>blog/util</code>之前，我们需要先知道<code>-run</code>参数。其实<code>-run</code>参数就是以正则的方式匹配需要进行测试的函数。例如现在，<code>-run=ToUpperCase</code>就意味着启动测试时，go会运行**范围内（后面会说什么范围）**所有名字中有<code>ToUpperCase</code>的测试函数。如果我新建一个测试函数，只是在原来的基础上名字加一个<code>2</code>,如下：</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> util
+
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;testing&quot;</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">TestToUpperCase</span><span class="hljs-params">(t *testing.T)</span></span> &#123; <span class="hljs-comment">// 单元测试的参数是  *testing.T</span>
+	<span class="hljs-comment">// 准备测试用例</span>
+	testData := []<span class="hljs-keyword">struct</span> &#123;
+		name  <span class="hljs-type">string</span>
+		input <span class="hljs-type">string</span>
+		want  <span class="hljs-type">string</span>
+	&#125;&#123;
+		&#123;<span class="hljs-string">&quot;英文小写转大写&quot;</span>, <span class="hljs-string">&quot;hello&quot;</span>, <span class="hljs-string">&quot;HELLO&quot;</span>&#125;,
+		&#123;<span class="hljs-string">&quot;中文不变&quot;</span>, <span class="hljs-string">&quot;你好&quot;</span>, <span class="hljs-string">&quot;你好&quot;</span>&#125;,
+		&#123;<span class="hljs-string">&quot;空字符串&quot;</span>, <span class="hljs-string">&quot;&quot;</span>, <span class="hljs-string">&quot;&quot;</span>&#125;,
+		&#123;<span class="hljs-string">&quot;带特殊符号&quot;</span>, <span class="hljs-string">&quot;a!b@c#&quot;</span>, <span class="hljs-string">&quot;A!B@C#&quot;</span>&#125;,
+	&#125;
+
+	<span class="hljs-comment">// 逐个检查</span>
+	<span class="hljs-keyword">for</span> _, td := <span class="hljs-keyword">range</span> testData &#123;
+		t.Run(td.name, <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(t *testing.T)</span></span> &#123;
+			got := ToUpperCase(td.input)
+			<span class="hljs-keyword">if</span> got != td.want &#123;
+				t.Errorf(<span class="hljs-string">&quot;输入 %q 时出错, 得到 %q, 期望 %q&quot;</span>, td.input, got, td.want)
+			&#125;
+		&#125;)
+	&#125;
+&#125;
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">TestToUpperCase2</span><span class="hljs-params">(t *testing.T)</span></span> &#123; <span class="hljs-comment">// 单元测试的参数是  *testing.T</span>
+	<span class="hljs-comment">// 准备测试用例</span>
+	testData := []<span class="hljs-keyword">struct</span> &#123;
+		name  <span class="hljs-type">string</span>
+		input <span class="hljs-type">string</span>
+		want  <span class="hljs-type">string</span>
+	&#125;&#123;
+		&#123;<span class="hljs-string">&quot;英文小写转大写&quot;</span>, <span class="hljs-string">&quot;hello&quot;</span>, <span class="hljs-string">&quot;HELLO&quot;</span>&#125;,
+		&#123;<span class="hljs-string">&quot;中文不变&quot;</span>, <span class="hljs-string">&quot;你好&quot;</span>, <span class="hljs-string">&quot;你好&quot;</span>&#125;,
+		&#123;<span class="hljs-string">&quot;空字符串&quot;</span>, <span class="hljs-string">&quot;&quot;</span>, <span class="hljs-string">&quot;&quot;</span>&#125;,
+		&#123;<span class="hljs-string">&quot;带特殊符号&quot;</span>, <span class="hljs-string">&quot;a!b@c#&quot;</span>, <span class="hljs-string">&quot;A!B@C#&quot;</span>&#125;,
+	&#125;
+
+	<span class="hljs-comment">// 逐个检查</span>
+	<span class="hljs-keyword">for</span> _, td := <span class="hljs-keyword">range</span> testData &#123;
+		t.Run(td.name, <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(t *testing.T)</span></span> &#123;
+			got := ToUpperCase(td.input)
+			<span class="hljs-keyword">if</span> got != td.want &#123;
+				t.Errorf(<span class="hljs-string">&quot;输入 %q 时出错, 得到 %q, 期望 %q&quot;</span>, td.input, got, td.want)
+			&#125;
+		&#125;)
+	&#125;
+&#125;</code></pre></div>
+
+<p>这个时候我运行同样的命令，猜猜会发生什么？</p>
+<div class="code-wrapper"><pre><code class="hljs shell">➜  Blog-demo go test -v blog/util/ -run=ToUpperCase -count=1
+=== RUN   TestToUpperCase
+=== RUN   TestToUpperCase/英文小写转大写
+hello
+=== RUN   TestToUpperCase/中文不变
+你好
+=== RUN   TestToUpperCase/空字符串
+
+=== RUN   TestToUpperCase/带特殊符号
+a!b@c#
+--- PASS: TestToUpperCase (0.00s)
+    --- PASS: TestToUpperCase/英文小写转大写 (0.00s)
+    --- PASS: TestToUpperCase/中文不变 (0.00s)
+    --- PASS: TestToUpperCase/空字符串 (0.00s)
+    --- PASS: TestToUpperCase/带特殊符号 (0.00s)
+=== RUN   TestToUpperCase2
+=== RUN   TestToUpperCase2/英文小写转大写
+hello
+=== RUN   TestToUpperCase2/中文不变
+你好
+=== RUN   TestToUpperCase2/空字符串
+
+=== RUN   TestToUpperCase2/带特殊符号
+a!b@c#
+--- PASS: TestToUpperCase2 (0.00s)
+    --- PASS: TestToUpperCase2/英文小写转大写 (0.00s)
+    --- PASS: TestToUpperCase2/中文不变 (0.00s)
+    --- PASS: TestToUpperCase2/空字符串 (0.00s)
+    --- PASS: TestToUpperCase2/带特殊符号 (0.00s)
+PASS
+ok      blog/util       0.440s</code></pre></div>
+
+<p>没错，如你所料，包含<code>TestToUpperCase</code>的两个测试函数都会启动。当然，他们的结果完全一样。</p>
+<h5 id="blog-util"><a href="#blog-util" class="headerlink" title="blog&#x2F;util"></a>blog&#x2F;util</h5><blockquote>
+<p><code>-run=ToUpperCase</code>就意味着启动测试时，go会运行**范围内（后面会说什么范围）**所有名字中有<code>ToUpperCase</code>的测试函数</p>
+</blockquote>
+<p>我们前面留了一个问题，就是所谓的范围到底是什么？这部分参数就是用来规定范围。不难理解，指的是在哪个文件夹下运行测试。当我带着<code>blog/util</code>这个参数运行测试时，go的测试程序会检索<code>blog/util</code>文件夹下的所有符合条件的测试函数。为了更好的理解，我在<code>float64.go</code>中新建一个函数。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> util
+
+<span class="hljs-keyword">import</span> <span class="hljs-string">&quot;fmt&quot;</span>
+
+<span class="hljs-comment">// 将浮点数转为字符串(暂不考虑精度问题，只是用于单元测试的展示用例)</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">Float64ToString</span><span class="hljs-params">(f <span class="hljs-type">float64</span>)</span></span> <span class="hljs-type">string</span> &#123;
+	<span class="hljs-keyword">return</span> fmt.Sprintf(<span class="hljs-string">&quot;%g&quot;</span>, f)
+&#125;</code></pre></div>
+
+<p>同时，在<code>float64_test.go</code>中创建对应的测试函数。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> util
+
+<span class="hljs-keyword">import</span> <span class="hljs-string">&quot;testing&quot;</span>
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">TestFloat64ToString</span><span class="hljs-params">(t *testing.T)</span></span> &#123;
+	testData := []<span class="hljs-keyword">struct</span> &#123;
+		name   <span class="hljs-type">string</span>
+		input  <span class="hljs-type">float64</span>
+		output <span class="hljs-type">string</span>
+	&#125;&#123;
+		&#123;
+			name:   <span class="hljs-string">&quot;zero&quot;</span>,
+			input:  <span class="hljs-number">0</span>,
+			output: <span class="hljs-string">&quot;0&quot;</span>,
+		&#125;,
+		&#123;
+			name:   <span class="hljs-string">&quot;one&quot;</span>,
+			input:  <span class="hljs-number">1</span>,
+			output: <span class="hljs-string">&quot;1&quot;</span>,
+		&#125;,
+		&#123;
+			name:   <span class="hljs-string">&quot;minus one&quot;</span>,
+			input:  <span class="hljs-number">-1</span>,
+			output: <span class="hljs-string">&quot;-1&quot;</span>,
+		&#125;,
+		&#123;
+			name:   <span class="hljs-string">&quot;float&quot;</span>,
+			input:  <span class="hljs-number">0.1</span>,
+			output: <span class="hljs-string">&quot;0.1&quot;</span>,
+		&#125;,
+	&#125;
+
+	<span class="hljs-keyword">for</span> _, td := <span class="hljs-keyword">range</span> testData &#123;
+		t.Run(td.name, <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(t *testing.T)</span></span> &#123;
+			<span class="hljs-keyword">if</span> output := Float64ToString(td.input); output != td.output &#123;
+				t.Errorf(<span class="hljs-string">&quot;expected %s, got %s&quot;</span>, td.output, output)
+			&#125;
+		&#125;)
+	&#125;
+&#125;</code></pre></div>
+
+<p>现在我运行如下命令，</p>
+<div class="code-wrapper"><pre><code class="hljs shell">go test -v blog/util -count=1</code></pre></div>
+
+<p>注意这里我没有使用<code>-run</code>参数，也就是全匹配。结果如下</p>
+<div class="code-wrapper"><pre><code class="hljs shell">➜  util go test -v blog/util -count=1
+=== RUN   TestFloat64ToString
+=== RUN   TestFloat64ToString/zero
+=== RUN   TestFloat64ToString/one
+=== RUN   TestFloat64ToString/minus_one
+=== RUN   TestFloat64ToString/float
+--- PASS: TestFloat64ToString (0.00s)
+    --- PASS: TestFloat64ToString/zero (0.00s)
+    --- PASS: TestFloat64ToString/one (0.00s)
+    --- PASS: TestFloat64ToString/minus_one (0.00s)
+    --- PASS: TestFloat64ToString/float (0.00s)
+=== RUN   TestToUpperCase
+=== RUN   TestToUpperCase/英文小写转大写
+hello
+=== RUN   TestToUpperCase/中文不变
+你好
+=== RUN   TestToUpperCase/空字符串
+
+=== RUN   TestToUpperCase/带特殊符号
+a!b@c#
+--- PASS: TestToUpperCase (0.00s)
+    --- PASS: TestToUpperCase/英文小写转大写 (0.00s)
+    --- PASS: TestToUpperCase/中文不变 (0.00s)
+    --- PASS: TestToUpperCase/空字符串 (0.00s)
+    --- PASS: TestToUpperCase/带特殊符号 (0.00s)
+=== RUN   TestToUpperCase2
+=== RUN   TestToUpperCase2/英文小写转大写
+hello
+=== RUN   TestToUpperCase2/中文不变
+你好
+=== RUN   TestToUpperCase2/空字符串
+
+=== RUN   TestToUpperCase2/带特殊符号
+a!b@c#
+--- PASS: TestToUpperCase2 (0.00s)
+    --- PASS: TestToUpperCase2/英文小写转大写 (0.00s)
+    --- PASS: TestToUpperCase2/中文不变 (0.00s)
+    --- PASS: TestToUpperCase2/空字符串 (0.00s)
+    --- PASS: TestToUpperCase2/带特殊符号 (0.00s)
+PASS
+ok      blog/util       0.540s</code></pre></div>
+
+<p>正如我们所预期的，两个文件中的所有测试函数都运行了。那么当我在这个文件夹外创建一个测试函数呢？我新建一个<code>config</code>文件夹，并在其中新建一个文件<code>config.go</code>，其中包含一个初始化函数。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> config
+
+<span class="hljs-keyword">type</span> Config <span class="hljs-keyword">struct</span> &#123;
+	Name <span class="hljs-type">string</span>
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">InitConfig</span><span class="hljs-params">(name <span class="hljs-type">string</span>)</span></span> *Config &#123;
+	<span class="hljs-keyword">return</span> &amp;Config&#123;
+		Name: name,
+	&#125;
+&#125;</code></pre></div>
+
+<p>当然会包含一个配套的单元测试文件<code>config_test.go</code>，其中有一个单元测试文件。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> config
+
+<span class="hljs-keyword">import</span> <span class="hljs-string">&quot;testing&quot;</span>
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">TestInitConfig</span><span class="hljs-params">(t *testing.T)</span></span> &#123;
+	testData := []<span class="hljs-keyword">struct</span> &#123;
+		name <span class="hljs-type">string</span>
+		want <span class="hljs-type">string</span>
+	&#125;&#123;
+		&#123;
+			name: <span class="hljs-string">&quot;test&quot;</span>,
+			want: <span class="hljs-string">&quot;test&quot;</span>,
+		&#125;,
+		&#123;
+			name: <span class="hljs-string">&quot;test2&quot;</span>,
+			want: <span class="hljs-string">&quot;test2&quot;</span>,
+		&#125;,
+		&#123;
+			name: <span class="hljs-string">&quot;test3&quot;</span>,
+			want: <span class="hljs-string">&quot;test3&quot;</span>,
+		&#125;,
+	&#125;
+
+	<span class="hljs-keyword">for</span> _, tt := <span class="hljs-keyword">range</span> testData &#123;
+		t.Run(tt.name, <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(t *testing.T)</span></span> &#123;
+			<span class="hljs-keyword">if</span> got := InitConfig(tt.name); got.Name != tt.want &#123;
+				t.Errorf(<span class="hljs-string">&quot;InitConfig() = %v, want %v&quot;</span>, got, tt.want)
+			&#125;
+		&#125;)
+	&#125;
+&#125;</code></pre></div>
+
+<p>现在我的文件目录变成了下面这样。</p>
+<div class="code-wrapper"><pre><code class="hljs maxima">Blog
+├── config
+│   ├── config.<span class="hljs-built_in">go</span>
+│   └── config_test.<span class="hljs-built_in">go</span>
+├── util
+│   ├── <span class="hljs-built_in">string</span>.<span class="hljs-built_in">go</span>
+│   ├── string_test.<span class="hljs-built_in">go</span>
+│   ├── <span class="hljs-built_in">float</span>.<span class="hljs-built_in">go</span>
+│   └── float_test.<span class="hljs-built_in">go</span>
+├── <span class="hljs-built_in">go</span>.<span class="hljs-built_in">mod</span>
+└── <span class="hljs-built_in">go</span>.<span class="hljs-built_in">sum</span></code></pre></div>
+
+<p>这个时候如果我再运行上面的命令，你会发现<code>config_test.go</code>中的测试正如我们所料，没有运行。</p>
+<div class="code-wrapper"><pre><code class="hljs go">➜  config <span class="hljs-keyword">go</span> test -v blog/util/ -count=<span class="hljs-number">1</span>
+=== RUN   TestFloat64ToString
+=== RUN   TestFloat64ToString/zero
+=== RUN   TestFloat64ToString/one
+=== RUN   TestFloat64ToString/minus_one
+=== RUN   TestFloat64ToString/float
+--- PASS: TestFloat64ToString (<span class="hljs-number">0.00</span>s)
+    --- PASS: TestFloat64ToString/zero (<span class="hljs-number">0.00</span>s)
+    --- PASS: TestFloat64ToString/one (<span class="hljs-number">0.00</span>s)
+    --- PASS: TestFloat64ToString/minus_one (<span class="hljs-number">0.00</span>s)
+    --- PASS: TestFloat64ToString/float (<span class="hljs-number">0.00</span>s)
+=== RUN   TestToUpperCase
+=== RUN   TestToUpperCase/英文小写转大写
+hello
+=== RUN   TestToUpperCase/中文不变
+你好
+=== RUN   TestToUpperCase/空字符串
+
+=== RUN   TestToUpperCase/带特殊符号
+a!b@c#
+--- PASS: TestToUpperCase (<span class="hljs-number">0.00</span>s)
+    --- PASS: TestToUpperCase/英文小写转大写 (<span class="hljs-number">0.00</span>s)
+    --- PASS: TestToUpperCase/中文不变 (<span class="hljs-number">0.00</span>s)
+    --- PASS: TestToUpperCase/空字符串 (<span class="hljs-number">0.00</span>s)
+    --- PASS: TestToUpperCase/带特殊符号 (<span class="hljs-number">0.00</span>s)
+=== RUN   TestToUpperCase2
+=== RUN   TestToUpperCase2/英文小写转大写
+hello
+=== RUN   TestToUpperCase2/中文不变
+你好
+=== RUN   TestToUpperCase2/空字符串
+
+=== RUN   TestToUpperCase2/带特殊符号
+a!b@c#
+--- PASS: TestToUpperCase2 (<span class="hljs-number">0.00</span>s)
+    --- PASS: TestToUpperCase2/英文小写转大写 (<span class="hljs-number">0.00</span>s)
+    --- PASS: TestToUpperCase2/中文不变 (<span class="hljs-number">0.00</span>s)
+    --- PASS: TestToUpperCase2/空字符串 (<span class="hljs-number">0.00</span>s)
+    --- PASS: TestToUpperCase2/带特殊符号 (<span class="hljs-number">0.00</span>s)
+PASS
+ok      blog/util       <span class="hljs-number">0.406</span>s</code></pre></div>
+
+<p>而当我们运行如下命令的时候，<code>config</code>中的测试又会运行了。</p>
+<div class="code-wrapper"><pre><code class="hljs shell">➜  config go test -v blog/config/ -count=1
+=== RUN   TestInitConfig
+=== RUN   TestInitConfig/test
+=== RUN   TestInitConfig/test2
+=== RUN   TestInitConfig/test3
+--- PASS: TestInitConfig (0.00s)
+    --- PASS: TestInitConfig/test (0.00s)
+    --- PASS: TestInitConfig/test2 (0.00s)
+    --- PASS: TestInitConfig/test3 (0.00s)
+PASS
+ok      blog/config     0.197s</code></pre></div>
+
+<blockquote>
+<p>[!NOTE] </p>
+<p>需要注意两点，可以自行尝试</p>
+<ul>
+<li>blog&#x2F;util&#x2F; 中的<code>blog</code>并不是目录的名字，而是go module中module的名字。</li>
+<li>这个参数也可以使用相对路径，是相对于当前目录。</li>
+<li>如果省略这个参数，那么go test 会检索当前目录下的所有测试。</li>
+</ul>
+</blockquote>
+<h5 id="count-1"><a href="#count-1" class="headerlink" title="- count &#x3D; 1"></a>- count &#x3D; 1</h5><p><code>-count=1</code>参数在Go测试中主要作用是强行执行测试而不是使用缓存的结果。</p>
+<p>具体来说，默认情况下，Go会缓存成功的测试结果，如果测试文件和相关代码文件没有改变，再次运行相同的测试会直接使用缓存的结果，而不是真正的执行测试。</p>
+<p>如果使用了<code>-count = 1</code>参数，可以实现：</p>
+<ul>
+<li>强制执行测试，忽略缓存</li>
+<li>确保每次都是真实地运行测试代码</li>
+<li>适合测试结果可能会变化的场景（比如依赖外部服务或者对时间的测试）</li>
+</ul>
+<h4 id="失败时终止测试"><a href="#失败时终止测试" class="headerlink" title="失败时终止测试"></a>失败时终止测试</h4><p>前面的几个测试用例中，我们都是使用<code>t.Errorf()</code>返回错误，但当遇到某些错误的时候，可能是因为我们的程序有问题，需要立即终止测试程序，这时候你可以使用<code>t.Fatal()</code>。例如，我们在配置环境的时候，如果环境错误，剩下的就无法进行了。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">TestImportant</span><span class="hljs-params">(t *testing.T)</span></span> &#123;
+    setup := prepareTest()
+    <span class="hljs-keyword">if</span> setup.err != <span class="hljs-literal">nil</span> &#123;
+        t.Fatal(<span class="hljs-string">&quot;设置失败:&quot;</span>, setup.err)  <span class="hljs-comment">// 立即终止测试</span>
+    &#125;
+    <span class="hljs-comment">// 继续测试...</span>
+&#125;</code></pre></div>
+
+
+
+<h4 id="并行测试"><a href="#并行测试" class="headerlink" title="并行测试"></a>并行测试</h4><blockquote>
+<p>[!TIP]</p>
+<p>先记录一下，没怎么深入研究，研究完了再来补充</p>
+</blockquote>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">TestParallel</span><span class="hljs-params">(t *testing.T)</span></span> &#123;
+    tests := []<span class="hljs-keyword">struct</span>&#123;
+        name <span class="hljs-type">string</span>
+        input <span class="hljs-type">int</span>
+    &#125;&#123;
+        &#123;<span class="hljs-string">&quot;case1&quot;</span>, <span class="hljs-number">1</span>&#125;,
+        &#123;<span class="hljs-string">&quot;case2&quot;</span>, <span class="hljs-number">2</span>&#125;,
+    &#125;
+    
+    <span class="hljs-keyword">for</span> _, tt := <span class="hljs-keyword">range</span> tests &#123;
+        tt := tt  <span class="hljs-comment">// 捕获循环变量</span>
+        t.Run(tt.name, <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(t *testing.T)</span></span> &#123;
+            t.Parallel()  <span class="hljs-comment">// 标记并行执行</span>
+            <span class="hljs-comment">// 测试代码...</span>
+        &#125;)
+    &#125;
+&#125;</code></pre></div>
+
+<h4 id="测试覆盖率"><a href="#测试覆盖率" class="headerlink" title="测试覆盖率"></a>测试覆盖率</h4><blockquote>
+<p>[!TIP]</p>
+<p>这个后面有时间单独写一篇来介绍</p>
+</blockquote>
+<h4 id="常用的基础单元测试命令"><a href="#常用的基础单元测试命令" class="headerlink" title="常用的基础单元测试命令"></a>常用的基础单元测试命令</h4><h5 id="基础命令格式"><a href="#基础命令格式" class="headerlink" title="基础命令格式"></a>基础命令格式</h5><div class="code-wrapper"><pre><code class="hljs css">bash
+
+Copy
+
+go test <span class="hljs-selector-attr">[构建/测试标志]</span> <span class="hljs-selector-attr">[包列表]</span> <span class="hljs-selector-attr">[包测试]</span></code></pre></div>
+
+<h5 id="常用命令示例"><a href="#常用命令示例" class="headerlink" title="常用命令示例"></a>常用命令示例</h5><h6 id="1-基本测试命令"><a href="#1-基本测试命令" class="headerlink" title="1. 基本测试命令"></a>1. 基本测试命令</h6><div class="code-wrapper"><pre><code class="hljs bash"><span class="hljs-comment"># 测试当前目录</span>
+go <span class="hljs-built_in">test</span>
+
+<span class="hljs-comment"># 测试当前目录及其子目录</span>
+go <span class="hljs-built_in">test</span> ./...
+
+<span class="hljs-comment"># 测试指定包</span>
+go <span class="hljs-built_in">test</span> example.com/myproject/pkg/util
+
+<span class="hljs-comment"># 测试多个包</span>
+go <span class="hljs-built_in">test</span> pkg1 pkg2
+
+<span class="hljs-comment"># 测试指定文件</span>
+go <span class="hljs-built_in">test</span> file_test.go file.go</code></pre></div>
+
+<h6 id="2-详细程度控制"><a href="#2-详细程度控制" class="headerlink" title="2. 详细程度控制"></a>2. 详细程度控制</h6><div class="code-wrapper"><pre><code class="hljs bash"><span class="hljs-comment"># 显示详细测试信息</span>
+go <span class="hljs-built_in">test</span> -v
+
+<span class="hljs-comment"># 显示更详细的输出（包括测试日志）</span>
+go <span class="hljs-built_in">test</span> -v -args -test.v
+
+<span class="hljs-comment"># 仅显示失败的测试</span>
+go <span class="hljs-built_in">test</span> -short</code></pre></div>
+
+<h6 id="3-测试筛选"><a href="#3-测试筛选" class="headerlink" title="3. 测试筛选"></a>3. 测试筛选</h6><div class="code-wrapper"><pre><code class="hljs bash"><span class="hljs-comment"># 运行指定的测试函数（支持正则表达式）</span>
+go <span class="hljs-built_in">test</span> -run TestXxx
+
+<span class="hljs-comment"># 运行名称中包含 &quot;String&quot; 的测试</span>
+go <span class="hljs-built_in">test</span> -run String
+
+<span class="hljs-comment"># 运行特定测试和子测试</span>
+go <span class="hljs-built_in">test</span> -run TestXxx/SubTest
+
+<span class="hljs-comment"># 运行所有基准测试</span>
+go <span class="hljs-built_in">test</span> -run=^$ -bench=.
+
+<span class="hljs-comment"># 运行指定的基准测试</span>
+go <span class="hljs-built_in">test</span> -run=^$ -bench=BenchmarkXxx</code></pre></div>
+
+<h6 id="4-测试覆盖率"><a href="#4-测试覆盖率" class="headerlink" title="4. 测试覆盖率"></a>4. 测试覆盖率</h6><div class="code-wrapper"><pre><code class="hljs bash"><span class="hljs-comment"># 显示测试覆盖率</span>
+go <span class="hljs-built_in">test</span> -cover
+
+<span class="hljs-comment"># 生成测试覆盖率概要文件</span>
+go <span class="hljs-built_in">test</span> -coverprofile=coverage.out
+
+<span class="hljs-comment"># 在浏览器中查看覆盖率报告</span>
+go tool cover -html=coverage.out
+
+<span class="hljs-comment"># 显示每个函数的覆盖率</span>
+go <span class="hljs-built_in">test</span> -coverprofile=coverage.out -covermode=count
+
+<span class="hljs-comment"># 设置覆盖率目标</span>
+go <span class="hljs-built_in">test</span> -cover -covermode=atomic -coverpkg=./...</code></pre></div>
+
+<h4 id="推荐阅读"><a href="#推荐阅读" class="headerlink" title="推荐阅读"></a>推荐阅读</h4><p>其他还有不少内容这里没有提到，文中这些内容目前对我的工作来说已经够用了。感兴趣的同学可以继续学习：</p>
+<ul>
+<li><p><a target="_blank" rel="noopener" href="https://golang.org/pkg/testing/">Go官方测试文档</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://dave.cheney.net/2019/05/07/prefer-table-driven-tests">Go测试最佳实践</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://blog.golang.org/subtests">Go高级测试模式</a></p>
+</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E5%BF%83%E5%BE%97/" class="category-chain-item">学习心得</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Golang/" class="print-no-link">#Golang</a>
+      
+        <a href="/tags/%E7%BC%96%E7%A0%81%E8%A7%84%E8%8C%83/" class="print-no-link">#编码规范</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>单元测试</div>
+      <div>https://zoekyhein.github.io/单元测试/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>ZoeKyHein</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年1月22日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/%E5%B8%B8%E7%94%A8%E6%AD%A3%E5%88%99/" title="常用正则">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">常用正则</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/%E3%80%90GolangBot%E3%80%9137-%E5%86%99%E6%96%87%E4%BB%B6/" title="【GolangBot】37-写文件">
+                        <span class="hidden-mobile">【GolangBot】37-写文件</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

@@ -1,0 +1,902 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/icon.png">
+  <link rel="icon" href="/img/icon.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#ac9343">
+  <meta name="author" content="ZoeKyHein">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="这是Golang系列教程的第10篇。 什么是switch语句？Switch是一种条件语句，它会评估一个表达式，将其与一系列可能的匹配项进行比较，并执行相应的代码块。它可以被视为代替复杂的if else语句的一种简洁方式。 示例一例胜千言。让我们以一个简单的例子开始。这个例子接收一个手指数作为输入，并且输出这个手指的名字:)。比如，1是拇指，2是食指，以此类推。 package main  impo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【GolangBot】10-switch语句">
+<meta property="og:url" content="https://zoekyhein.github.io/%E3%80%90GolangBot%E3%80%9110-switch%E8%AF%AD%E5%8F%A5/index.html">
+<meta property="og:site_name" content="传火祭祀场">
+<meta property="og:description" content="这是Golang系列教程的第10篇。 什么是switch语句？Switch是一种条件语句，它会评估一个表达式，将其与一系列可能的匹配项进行比较，并执行相应的代码块。它可以被视为代替复杂的if else语句的一种简洁方式。 示例一例胜千言。让我们以一个简单的例子开始。这个例子接收一个手指数作为输入，并且输出这个手指的名字:)。比如，1是拇指，2是食指，以此类推。 package main  impo">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-12-23T08:49:05.000Z">
+<meta property="article:modified_time" content="2025-01-23T07:44:45.567Z">
+<meta property="article:author" content="ZoeKyHein">
+<meta property="article:tag" content="Golang">
+<meta property="article:tag" content="教程">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>【GolangBot】10-switch语句 - 传火祭祀场</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"zoekyhein.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"💥","loop":false,"scope":["home"]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>传火祭祀场</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/golangbot" target="_self">
+                <i class="iconfont icon-book"></i>
+                <span>Go教程</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/sunKnight.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">【GolangBot】10-switch语句</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-12-23 08:49" pubdate>
+          2024年12月23日 早上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          17 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">【GolangBot】10-switch语句</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>这是<a href="../golangbot/">Golang系列教程</a>的第10篇。</p>
+<h3 id="什么是switch语句？"><a href="#什么是switch语句？" class="headerlink" title="什么是switch语句？"></a>什么是switch语句？</h3><p><strong>Switch是一种条件语句，它会评估一个表达式，将其与一系列可能的匹配项进行比较，并执行相应的代码块。它可以被视为代替复杂的<code>if else</code>语句的一种简洁方式。</strong></p>
+<h3 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h3><p>一例胜千言。让我们以一个简单的例子开始。这个例子接收一个手指数作为输入，并且输出这个手指的名字:)。比如，1是拇指，2是食指，以此类推。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;fmt&quot;</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	finger := <span class="hljs-number">4</span>
+	fmt.Printf(<span class="hljs-string">&quot;Finger %d is &quot;</span>, finger)
+	<span class="hljs-keyword">switch</span> finger &#123;
+	<span class="hljs-keyword">case</span> <span class="hljs-number">1</span>:
+		fmt.Println(<span class="hljs-string">&quot;Thumb&quot;</span>)
+	<span class="hljs-keyword">case</span> <span class="hljs-number">2</span>:
+		fmt.Println(<span class="hljs-string">&quot;Index&quot;</span>)
+	<span class="hljs-keyword">case</span> <span class="hljs-number">3</span>:
+		fmt.Println(<span class="hljs-string">&quot;Middle&quot;</span>)
+	<span class="hljs-keyword">case</span> <span class="hljs-number">4</span>:
+		fmt.Println(<span class="hljs-string">&quot;Ring&quot;</span>)
+	<span class="hljs-keyword">case</span> <span class="hljs-number">5</span>:
+		fmt.Println(<span class="hljs-string">&quot;Pinky&quot;</span>)
+
+	&#125;
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://go.dev/play/p/94ktmJWlUom">Run in playground</a></p>
+<p>在上面的程序中的第十行<code>switch finger</code>，将<code>finger</code>的值与每一个<code>case</code>语句进行比较。Case们从上往下执行，第一个匹配表达式的case会执行。在这个例子中，<code>finger</code>的值是<code>4</code>因此打印如下。</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">Finger 4 is Ring</code></pre></div>
+
+<h3 id="重复的case是不允许的"><a href="#重复的case是不允许的" class="headerlink" title="重复的case是不允许的"></a>重复的case是不允许的</h3><p>拥有相同常量值的重复case是不允许的。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;fmt&quot;</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	finger := <span class="hljs-number">4</span>
+	fmt.Printf(<span class="hljs-string">&quot;Finger %d is &quot;</span>, finger)
+	<span class="hljs-keyword">switch</span> finger &#123;
+	<span class="hljs-keyword">case</span> <span class="hljs-number">1</span>:
+		fmt.Println(<span class="hljs-string">&quot;Thumb&quot;</span>)
+	<span class="hljs-keyword">case</span> <span class="hljs-number">2</span>:
+		fmt.Println(<span class="hljs-string">&quot;Index&quot;</span>)
+	<span class="hljs-keyword">case</span> <span class="hljs-number">3</span>:
+		fmt.Println(<span class="hljs-string">&quot;Middle&quot;</span>)
+	<span class="hljs-keyword">case</span> <span class="hljs-number">4</span>:
+		fmt.Println(<span class="hljs-string">&quot;Ring&quot;</span>)
+	<span class="hljs-keyword">case</span> <span class="hljs-number">4</span>: <span class="hljs-comment">//duplicate case</span>
+		fmt.Println(<span class="hljs-string">&quot;Another Ring&quot;</span>)
+	<span class="hljs-keyword">case</span> <span class="hljs-number">5</span>:
+		fmt.Println(<span class="hljs-string">&quot;Pinky&quot;</span>)
+
+	&#125;
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://go.dev/play/p/7qrmR0hdvHH">Run in playground</a></p>
+<p>运行上面的程序将会得到如下的编译错误</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">./prog.go:19:7: duplicate case 4 (constant of type int) in expression switch
+./prog.go:17:7: previous case</code></pre></div>
+
+<h3 id="默认case"><a href="#默认case" class="headerlink" title="默认case"></a>默认case</h3><p>我们受伤只有5根手指。如果输入了错误的手指数会发生什么呢？这就是默认case该登场的时候了。默认case将会在其它case都不匹配的情况下运行。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;fmt&quot;</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	<span class="hljs-keyword">switch</span> finger := <span class="hljs-number">8</span>; finger &#123;
+	<span class="hljs-keyword">case</span> <span class="hljs-number">1</span>:
+		fmt.Println(<span class="hljs-string">&quot;Thumb&quot;</span>)
+	<span class="hljs-keyword">case</span> <span class="hljs-number">2</span>:
+		fmt.Println(<span class="hljs-string">&quot;Index&quot;</span>)
+	<span class="hljs-keyword">case</span> <span class="hljs-number">3</span>:
+		fmt.Println(<span class="hljs-string">&quot;Middle&quot;</span>)
+	<span class="hljs-keyword">case</span> <span class="hljs-number">4</span>:
+		fmt.Println(<span class="hljs-string">&quot;Ring&quot;</span>)
+	<span class="hljs-keyword">case</span> <span class="hljs-number">5</span>:
+		fmt.Println(<span class="hljs-string">&quot;Pinky&quot;</span>)
+	<span class="hljs-keyword">default</span>: <span class="hljs-comment">//default case</span>
+		fmt.Println(<span class="hljs-string">&quot;incorrect finger number&quot;</span>)
+	&#125;
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://go.dev/play/p/P3zBv7zHITF">Run in playground</a></p>
+<p>在上面的程序中，<code>finfer</code>是<code>8</code>，并且他不匹配任何case。因此在默认case中的<code>incorrct finger number</code>被打印。<code>default</code>并不一定要放在switch语句的最后一个case。它可以出现在switch语句中的任何地方。</p>
+<p>你也许注意到了<code>finger</code>定义的小改动。它在switch自身中被定义。Switch可以包含一个可选语句，这个语句在表达式执行之前被执行。在第8行，<code>finger</code>是首先被定义，然后在表达式中被使用。在这个例子中<code>finger</code>的作用域仅限于switch代码块。</p>
+<h3 id="case中的多表达式"><a href="#case中的多表达式" class="headerlink" title="case中的多表达式"></a>case中的多表达式</h3><p>在一个case中，包含多个用逗号分隔的表达式也是可以的。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;fmt&quot;</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	letter := <span class="hljs-string">&quot;i&quot;</span>
+	<span class="hljs-keyword">switch</span> letter &#123;
+	<span class="hljs-keyword">case</span> <span class="hljs-string">&quot;a&quot;</span>, <span class="hljs-string">&quot;e&quot;</span>, <span class="hljs-string">&quot;i&quot;</span>, <span class="hljs-string">&quot;o&quot;</span>, <span class="hljs-string">&quot;u&quot;</span>: <span class="hljs-comment">//multiple expressions in case</span>
+		fmt.Printf(<span class="hljs-string">&quot;%s is a vowel&quot;</span>, letter)
+	<span class="hljs-keyword">default</span>:
+		fmt.Printf(<span class="hljs-string">&quot;%s is not a vowel&quot;</span>, letter)
+	&#125;
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://go.dev/play/p/fYI-vbKNGfc">Run in playground</a></p>
+<p>上面的程序检测<code>letter</code>是不是元音字母。第10行的代码<code>case &quot;a&quot;, &quot;e&quot;, &quot;i&quot;, &quot;o&quot;, &quot;u&quot;:</code>匹配所有的元音字母。因为<code>i</code>是原因，这个程序将会打印</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">i is a vowel</code></pre></div>
+
+<h3 id="无表达式switch"><a href="#无表达式switch" class="headerlink" title="无表达式switch"></a>无表达式switch</h3><p>“switch 语句中的表达式是可选的，可以省略。如果省略了表达式，switch 会被视为 <code>switch true</code>，每个 <code>case</code> 表达式都会被求值判断其真假，并执行相应的代码块。”</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;fmt&quot;</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	hour := <span class="hljs-number">15</span> <span class="hljs-comment">// hour in 24 hour format</span>
+	<span class="hljs-comment">// Using switch to determine the work shift</span>
+	<span class="hljs-keyword">switch</span> &#123;
+	<span class="hljs-keyword">case</span> hour &gt;= <span class="hljs-number">6</span> &amp;&amp; hour &lt; <span class="hljs-number">12</span>:
+		fmt.Println(<span class="hljs-string">&quot;It&#x27;s the morning shift.&quot;</span>)
+	<span class="hljs-keyword">case</span> hour &gt;= <span class="hljs-number">12</span> &amp;&amp; hour &lt; <span class="hljs-number">17</span>:
+		fmt.Println(<span class="hljs-string">&quot;It&#x27;s the afternoon shift.&quot;</span>)
+	<span class="hljs-keyword">case</span> hour &gt;= <span class="hljs-number">17</span> &amp;&amp; hour &lt; <span class="hljs-number">21</span>:
+		fmt.Println(<span class="hljs-string">&quot;It&#x27;s the evening shift.&quot;</span>)
+	<span class="hljs-keyword">case</span> (hour &gt;= <span class="hljs-number">21</span> &amp;&amp; hour &lt;= <span class="hljs-number">24</span>) || (hour &gt;= <span class="hljs-number">0</span> &amp;&amp; hour &lt; <span class="hljs-number">6</span>):
+		fmt.Println(<span class="hljs-string">&quot;It&#x27;s the night shift.&quot;</span>)
+	<span class="hljs-keyword">default</span>:
+		fmt.Println(<span class="hljs-string">&quot;Invalid hour.&quot;</span>)
+	&#125;
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://go.dev/play/p/Bso-wGY040c">Run in playground</a></p>
+<p>在上面的程序中，switch中没有表达式，因此他被认为是true并且每个case都执行。13行的<code>hour &gt;= 12 &amp;&amp; hour &lt; 17</code>是<code>true</code>并且程序打印</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">It&#x27;s the afternoon shift.</code></pre></div>
+
+<p>这种类型的switch可以被看作多个<code>if else</code>语句的替代方案。</p>
+<h3 id="Fallthrough"><a href="#Fallthrough" class="headerlink" title="Fallthrough"></a>Fallthrough</h3><p>“在 Go 语言中，执行完一个 case 后，控制流会立即跳出 switch 语句。<code>fallthrough</code> 语句用于将控制转移到刚执行完的 case 之后的下一个 case 的第一条语句。</p>
+<p>让我们编写一个程序来理解 fallthrough。我们的程序将检查输入的数字是否小于 50、100 或 200。例如，如果我们输入 75，程序将打印出 75 小于 100 和 200。我们将使用 <code>fallthrough</code> 来实现这个功能。”</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;fmt&quot;</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">number</span><span class="hljs-params">()</span></span> <span class="hljs-type">int</span> &#123;
+	num := <span class="hljs-number">15</span> * <span class="hljs-number">5</span>
+	<span class="hljs-keyword">return</span> num
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	<span class="hljs-keyword">switch</span> num := number(); &#123; <span class="hljs-comment">//num is not a constant</span>
+	<span class="hljs-keyword">case</span> num &lt; <span class="hljs-number">50</span>:
+		fmt.Printf(<span class="hljs-string">&quot;%d is lesser than 50\n&quot;</span>, num)
+		<span class="hljs-keyword">fallthrough</span>
+	<span class="hljs-keyword">case</span> num &lt; <span class="hljs-number">100</span>:
+		fmt.Printf(<span class="hljs-string">&quot;%d is lesser than 100\n&quot;</span>, num)
+		<span class="hljs-keyword">fallthrough</span>
+	<span class="hljs-keyword">case</span> num &lt; <span class="hljs-number">200</span>:
+		fmt.Printf(<span class="hljs-string">&quot;%d is lesser than 200&quot;</span>, num)
+	&#125;
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://go.dev/play/p/yt3kMvYlzLR">Run in playground</a></p>
+<p>switch 和 case 表达式不一定要是常量，它们也可以在运行时求值。在上面的程序中，<code>num</code> 在第 13 行被初始化为函数 <code>number()</code> 的返回值。控制流进入 switch 后开始求值各个 case。第 17 行的 <code>case num &lt; 100:</code> 判断为真，程序打印出 <code>75 小于 100</code>。下一条语句是 <code>fallthrough</code>。当遇到 <code>fallthrough</code> 时，控制流会移动到下一个 case 的第一条语句，因此也会打印出 <code>75 小于 200</code>。程序的输出结果是</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">75 is lesser than 100
+75 is lesser than 200</code></pre></div>
+
+<p><em><code>fallthrough</code> 必须是 <code>case</code> 中的最后一条语句。如果它出现在中间位置，编译器会报错：<code>fallthrough statement out of place</code>（fallthrough 语句位置不正确）</em></p>
+<h3 id="即使case为false，fallthrough也会运行"><a href="#即使case为false，fallthrough也会运行" class="headerlink" title="即使case为false，fallthrough也会运行"></a>即使case为false，fallthrough也会运行</h3><p><code>fallthrough</code> 使用时有一个需要特别注意的细节：即使 case 的条件判断为 false，fallthrough 也会执行。 让我们看看下面这个程序。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;fmt&quot;</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	<span class="hljs-keyword">switch</span> num := <span class="hljs-number">25</span>; &#123; 
+	<span class="hljs-keyword">case</span> num &lt; <span class="hljs-number">50</span>:
+		fmt.Printf(<span class="hljs-string">&quot;%d is lesser than 50\n&quot;</span>, num)
+		<span class="hljs-keyword">fallthrough</span>
+	<span class="hljs-keyword">case</span> num &gt; <span class="hljs-number">100</span>:
+		fmt.Printf(<span class="hljs-string">&quot;%d is greater than 100\n&quot;</span>, num)		
+	&#125;
+
+&#125;</code></pre></div>
+
+<p>go</p>
+<p><a target="_blank" rel="noopener" href="https://go.dev/play/p/u2AN8LhYYMM">Run in playground</a></p>
+<p>在上面的程序中，<code>num</code>是25，它小于50，因此第9行的case是<code>true</code>。<code>fallthrough</code>出现在第11行。下一个<code>casecase num &gt; 100:</code>在第12行，因为num &lt; 100所以它是false。但是fallthrough不考虑这个。即便case是false，fallthrough也会运行。</p>
+<p>上面的程序将会打印</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">25 is lesser than 50
+25 is greater than 100</code></pre></div>
+
+<p>所以使用fallthrough的时候，确保你知道你在干什么。</p>
+<p>还有一点要注意，<code>fallthrough</code> 不能用在 switch 的最后一个 case 中，因为后面没有更多的 case 可以执行。如果在最后一个 case 中使用 <code>fallthrough</code>，会导致编译错误：<code>cannot fallthrough final case in switch</code>（不能在 switch 的最后一个 case 中使用 fallthrough）。</p>
+<p>One more thing is <code>fallthrough</code> cannot be used in the last case of a switch since there are no more cases to fallthrough. If <code>fallthrough</code> is present in the last case, it will result in the following compilation error <code>cannot fallthrough final case in switch</code></p>
+<h3 id="中断switch"><a href="#中断switch" class="headerlink" title="中断switch"></a>中断switch</h3><p><code>break</code> 语句可以用来提前终止 switch 的执行。让我们修改上面的例子，创建一个简单的示例来理解 break 是如何工作的。 让我们添加一个条件：如果 <code>num</code> 小于 0，则终止 switch 的执行。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;fmt&quot;</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	<span class="hljs-keyword">switch</span> num := <span class="hljs-number">-5</span>; &#123;
+	<span class="hljs-keyword">case</span> num &lt; <span class="hljs-number">50</span>:
+		<span class="hljs-keyword">if</span> num &lt; <span class="hljs-number">0</span> &#123;
+			<span class="hljs-keyword">break</span>
+		&#125;
+		fmt.Printf(<span class="hljs-string">&quot;%d is lesser than 50\n&quot;</span>, num)
+		<span class="hljs-keyword">fallthrough</span>
+	<span class="hljs-keyword">case</span> num &lt; <span class="hljs-number">100</span>:
+		fmt.Printf(<span class="hljs-string">&quot;%d is lesser than 100\n&quot;</span>, num)
+		<span class="hljs-keyword">fallthrough</span>
+	<span class="hljs-keyword">case</span> num &lt; <span class="hljs-number">200</span>:
+		fmt.Printf(<span class="hljs-string">&quot;%d is lesser than 200&quot;</span>, num)
+	&#125;
+
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://go.dev/play/p/UHwBXPYLv1B">Run in playground</a></p>
+<p>在上面的程序中，<code>num</code> 的值是 <code>-5</code>。当控制流到达第 10 行的 <a href="../%E3%80%90GolangBot%E3%80%918-if-else%E8%AF%AD%E5%8F%A5">if 语句</a> 时，由于 <code>num &lt; 0</code> 这个条件成立。break 语句会在 switch 完成之前终止它的执行，因此程序不会打印任何内容 :)。</p>
+<h3 id="Breaking-the-outer-for-loop中断外层for循环"><a href="#Breaking-the-outer-for-loop中断外层for循环" class="headerlink" title="Breaking the outer for loop中断外层for循环"></a>Breaking the outer for loop中断外层for循环</h3><p>当switch在一个<a href="../%E3%80%90GolangBot%E3%80%919-%E5%BE%AA%E7%8E%AF">for循环</a>中时，可能需要提前中断for循环。这可以通过给for循环打标签，使用switch语句中的标签来中断for循环。我们来看一个例子。</p>
+<p>让我们写一个程序生成一个随机奇数。</p>
+<p>我们会创建一个死循环，使用switch case来断定生成的随机数是不是奇数。如果是奇数，生成数被打印，for循环使用它的标签中止。<code>rand</code><a href="">包</a><code>中的Intn</code>函数用来生成非负伪随机数。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;fmt&quot;</span>
+	<span class="hljs-string">&quot;math/rand&quot;</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+randloop:
+	<span class="hljs-keyword">for</span> &#123;
+		<span class="hljs-keyword">switch</span> i := rand.Intn(<span class="hljs-number">100</span>); &#123;
+		<span class="hljs-keyword">case</span> i%<span class="hljs-number">2</span> == <span class="hljs-number">0</span>:
+			fmt.Printf(<span class="hljs-string">&quot;Generated even number %d&quot;</span>, i)
+			<span class="hljs-keyword">break</span> randloop
+		&#125;
+	&#125;
+
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://go.dev/play/p/0bLYOgs2TUk">Run in playground</a></p>
+<p>在上面的程序中，第9行的for循环被打了标签<code>randloop</code>。第11行使用<code>Intn</code>函数生成了一个0到99的随机数(100不包含在内)。如果生成数是奇数，循环将在14行使用标签中断。</p>
+<p>这个程序打印，</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">Generated even number 18</code></pre></div>
+
+<p><strong>请注意，如果break语句没有和标签一起使用，仅仅只会有switch语句被中断，而循环还会继续。所以要中断外层循环，为循环打标签，并用它在switch语句里它中断循环是必要的。</strong></p>
+<p><strong>下一篇教程 - <a href="../%E3%80%90GolangBot%E3%80%9111-%E6%95%B0%E7%BB%84%E5%92%8C%E5%88%87%E7%89%87">数组和切片</a></strong></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E5%BF%83%E5%BE%97/" class="category-chain-item">学习心得</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E5%BF%83%E5%BE%97/GolangBot/" class="category-chain-item">GolangBot</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Golang/" class="print-no-link">#Golang</a>
+      
+        <a href="/tags/%E6%95%99%E7%A8%8B/" class="print-no-link">#教程</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>【GolangBot】10-switch语句</div>
+      <div>https://zoekyhein.github.io/【GolangBot】10-switch语句/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>ZoeKyHein</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年12月23日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/%E3%80%90GolangBot%E3%80%9111-%E6%95%B0%E7%BB%84%E5%92%8C%E5%88%87%E7%89%87/" title="【GolangBot】11-数组和切片">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">【GolangBot】11-数组和切片</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/%E3%80%90GolangBot%E3%80%919-%E5%BE%AA%E7%8E%AF/" title="【GolangBot】9-循环">
+                        <span class="hidden-mobile">【GolangBot】9-循环</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

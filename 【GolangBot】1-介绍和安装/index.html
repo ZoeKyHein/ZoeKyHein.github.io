@@ -1,0 +1,687 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/icon.png">
+  <link rel="icon" href="/img/icon.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#ac9343">
+  <meta name="author" content="ZoeKyHein">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="发现了一个不错的英文Golang初级教程，内容比较容易理解，开个新坑，翻译一下。一来能够巩固一下Golang基础，二来可以提高一下英文水平，如果纰漏还请指出。那我们开始吧！  原文地址  这是我们Golang系列教程的第一篇。这篇文章提供了对于Go的介绍，也讨论了在其他众多编程语言中，选择Go的优点。我们也会学习如何在MacOS、Windows和Linux上安装MacOS。 介绍Go，也被称为Go">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【GolangBot】1-介绍和安装">
+<meta property="og:url" content="https://zoekyhein.github.io/%E3%80%90GolangBot%E3%80%911-%E4%BB%8B%E7%BB%8D%E5%92%8C%E5%AE%89%E8%A3%85/index.html">
+<meta property="og:site_name" content="传火祭祀场">
+<meta property="og:description" content="发现了一个不错的英文Golang初级教程，内容比较容易理解，开个新坑，翻译一下。一来能够巩固一下Golang基础，二来可以提高一下英文水平，如果纰漏还请指出。那我们开始吧！  原文地址  这是我们Golang系列教程的第一篇。这篇文章提供了对于Go的介绍，也讨论了在其他众多编程语言中，选择Go的优点。我们也会学习如何在MacOS、Windows和Linux上安装MacOS。 介绍Go，也被称为Go">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-12-16T18:31:00.000Z">
+<meta property="article:modified_time" content="2025-01-23T07:44:45.567Z">
+<meta property="article:author" content="ZoeKyHein">
+<meta property="article:tag" content="Golang">
+<meta property="article:tag" content="教程">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>【GolangBot】1-介绍和安装 - 传火祭祀场</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"zoekyhein.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"💥","loop":false,"scope":["home"]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>传火祭祀场</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/golangbot" target="_self">
+                <i class="iconfont icon-book"></i>
+                <span>Go教程</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/sunKnight.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">【GolangBot】1-介绍和安装</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-12-16 18:31" pubdate>
+          2024年12月16日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          10 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">【GolangBot】1-介绍和安装</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>发现了一个不错的英文Golang初级教程，内容比较容易理解，开个新坑，翻译一下。一来能够巩固一下Golang基础，二来可以提高一下英文水平，如果纰漏还请指出。那我们开始吧！</p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://golangbot.com/learn-golang-series/">原文地址</a></p>
+</blockquote>
+<p>这是我们<a href="../golangbot/">Golang系列教程</a>的第一篇。这篇文章提供了对于Go的介绍，也讨论了在其他众多编程语言中，选择Go的优点。我们也会学习如何在MacOS、Windows和Linux上安装MacOS。</p>
+<h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p>Go，也被称为Golang，是由Google开发的开源、编译型、静态类型编程语言。Go创立背后的关键人物是<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/Rob_Pike">Rob Pike</a>、<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/Ken_Thompson">Ken Thompson</a>和Robert Griesemer。Go于2009年11月公开发布。</p>
+<p>Go是一种语法简单的通用语言，并且有强大的标准库支持。Go的主要优势之一是创建高度可用且扩展的Web应用。Go也可以用来创建命令行应用、桌面应用，甚至是移动应用。</p>
+<h3 id="Go的优势"><a href="#Go的优势" class="headerlink" title="Go的优势"></a>Go的优势</h3><p>既然有Python、Ruby、NodeJS等大量其他语言可以完成相同的工作，为什么还要选择Go来作为你的服务端编程语言呢？</p>
+<p>以下是我在选择Go时发现的一些优点。</p>
+<h4 id="简单的语法"><a href="#简单的语法" class="headerlink" title="简单的语法"></a>简单的语法</h4><p>Go的语法简洁明了，没有多余的功能。这使得编写可读性和可维护性良好的代码变得容易。</p>
+<h4 id="容易编写并发程序"><a href="#容易编写并发程序" class="headerlink" title="容易编写并发程序"></a>容易编写并发程序</h4><p><a href="../%E3%80%90GolangBot%E3%80%9120-%E5%B9%B6%E5%8F%91%E4%BB%8B%E7%BB%8D/">并发性</a>是Go语言的固有部分。因此，对于Go来说，编写多线程程序是小菜一碟。这是通过<a href="../%E3%80%90GolangBot%E3%80%9121-Goroutines/">Goroutines</a>和<a href="../%E3%80%90GolangBot%E3%80%9122-Channels/">Channels</a>实现的，我们将在接下来的教程讨论他们。</p>
+<h4 id="编译型语言"><a href="#编译型语言" class="headerlink" title="编译型语言"></a>编译型语言</h4><p>Go是一种编译型语言。源代码被编译成原生二进制文件。这种特性是诸如nodejs所使用的Javascript这类解释型语言所没有的。</p>
+<h4 id="静态链接"><a href="#静态链接" class="headerlink" title="静态链接"></a>静态链接</h4><p>Go编译器支持静态链接。整个Go工程都可以静态链接刀一个非常大的二进制文件中，并且可以很容易地部署在云服务器上，而且不需要为各种依赖所困扰。</p>
+<h4 id="Go工具链"><a href="#Go工具链" class="headerlink" title="Go工具链"></a>Go工具链</h4><p>Go的工具链特别值得提一下。Go附送了一套强大的工具，可以帮助开发者编写更好的代码。一些常用的工具有：</p>
+<ul>
+<li>gofmt - <a target="_blank" rel="noopener" href="https://pkg.go.dev/cmd/gofmt">gofmt</a>用于自动格式化Go的源代码。他使用制表符进行锁紧，使用空格进行对齐。</li>
+<li>vet - <a target="_blank" rel="noopener" href="https://pkg.go.dev/cmd/vet">vet</a>分析go的源代码，并且报告可疑的代码。vet报告的不是真正的问题，而是编译器不能捕获的错误。比如使用<a target="_blank" rel="noopener" href="https://pkg.go.dev/fmt#Printf">Printf</a>时使用了错误的格式指定符。</li>
+<li>staticcheck - <a target="_blank" rel="noopener" href="https://staticcheck.dev/">staticcheck</a>用来强制执行代码中的样式问题。</li>
+</ul>
+<h4 id="垃圾收集"><a href="#垃圾收集" class="headerlink" title="垃圾收集"></a>垃圾收集</h4><p>Go使用垃圾收集机制，因此内存管理基本是自动完成的，开发者不需要担心内存管理。这也有助于轻松编写并发程序。</p>
+<h4 id="简单的语言规范"><a href="#简单的语言规范" class="headerlink" title="简单的语言规范"></a>简单的语言规范</h4><p>语言规范十分简单。<a href="go.dev/ref/spec">整个规范</a>都有详细的记录，你甚至可以用它来编写自己的编译器:)。</p>
+<h4 id="开源"><a href="#开源" class="headerlink" title="开源"></a>开源</h4><p>最后，同样重要的是，Go是一个开雨啊项目。你可以参与<a target="_blank" rel="noopener" href="https://go.dev/doc/contribute">Go项目</a>并为其作出贡献。</p>
+<h3 id="使用Go构建的热门产品"><a href="#使用Go构建的热门产品" class="headerlink" title="使用Go构建的热门产品"></a>使用Go构建的热门产品</h3><p>下面是一些使用Go构建的热门产品。</p>
+<ul>
+<li>谷歌使用Go开发了Kubernetes。</li>
+<li>Docker，世界闻名的容器化平台是用Go开发的。</li>
+<li>Dropbox一讲起性能关键组件从Python移植到了Go。</li>
+<li>Infoblox’s 的下一代网络产品时使用Go开发的。</li>
+</ul>
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>Go可以安装在所有的三种平台上：Mac、Windows和Linux。你可以从 <a target="_blank" rel="noopener" href="https://go.dev/dl/">https://go.dev/dl/</a> 下载对应平台的二进制文件。</p>
+<h4 id="Mac-OS"><a href="#Mac-OS" class="headerlink" title="Mac OS"></a>Mac OS</h4><p>从 <a target="_blank" rel="noopener" href="https://go.dev/dl/">https://go.dev/dl/</a> 下载Mac OS安装器。双击开始安装。根据提示操作，Golang将会安装在<code>/usr/local/go</code>并且会把 <code>/usr/local/go/bin</code>这个文件夹添加到你的PATH环境变量中。</p>
+<h4 id="Windows"><a href="#Windows" class="headerlink" title="Windows"></a>Windows</h4><p>从 <a target="_blank" rel="noopener" href="https://go.dev/dl/">https://go.dev/dl/</a> 下载MSI安装器。双击开始安装，并根据提示进行操作。这将会把Go安装在<code>c:\Go</code>，并且会把目录 <code>c:\Go\bin</code>添加到path环境变量。</p>
+<h4 id="Linux"><a href="#Linux" class="headerlink" title="Linux"></a>Linux</h4><p>从 <a target="_blank" rel="noopener" href="https://go.dev/dl/">https://go.dev/dl/</a> 下载tar文件并且解压至<code>/usr/local</code>。添加<code>/usr/local/go/bin</code>到PATH环境变量。这将在Linux中安装Go。</p>
+<h3 id="验证安装"><a href="#验证安装" class="headerlink" title="验证安装"></a>验证安装</h3><p>To verify that Go installed successfully, type the command <code>go version</code> in the terminal and it will output the installed Go version. Here is the output in my terminal.</p>
+<p>要验证Go是否安装成功，在终端输入<code>go version</code>命令，它会输出安装好的Go版本。这是我的终端输出的内容。</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">$ go version
+go version go1.19.2 linux/amd64</code></pre></div>
+
+<p><code>1.19.2</code>是在写这篇教程时最新的版本。这证实Go确实安装成功了。在下一篇教程中，我们将会用Go写我们的第一个<a href="../%E3%80%90GolangBot%E3%80%912-Hello-World/">Hello World程序</a>。</p>
+<p><strong>下一篇教程 - <a href="../%E3%80%90GolangBot%E3%80%912-Hello-World/">Hello World</a></strong></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E5%BF%83%E5%BE%97/" class="category-chain-item">学习心得</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E5%BF%83%E5%BE%97/GolangBot/" class="category-chain-item">GolangBot</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Golang/" class="print-no-link">#Golang</a>
+      
+        <a href="/tags/%E6%95%99%E7%A8%8B/" class="print-no-link">#教程</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>【GolangBot】1-介绍和安装</div>
+      <div>https://zoekyhein.github.io/【GolangBot】1-介绍和安装/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>ZoeKyHein</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年12月16日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/%E3%80%90GolangBot%E3%80%912-Hello-World/" title="【GolangBot】2-Hello World">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">【GolangBot】2-Hello World</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/GitHub-PicGo-%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%9B%BE%E5%BA%8A/" title="GitHub + PicGo 搭建个人图床">
+                        <span class="hidden-mobile">GitHub + PicGo 搭建个人图床</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

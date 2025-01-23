@@ -1,0 +1,920 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/icon.png">
+  <link rel="icon" href="/img/icon.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#ac9343">
+  <meta name="author" content="ZoeKyHein">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="欢迎来到Golang系列教程的第七篇。 什么是包？我们为什么要用它？到目前为止，我们已经看过了只有一个文件的Go程序，这个文件中有一个main函数和一些其他的函数。在实际的场景中，把所有的源码都写在一个文件中是不可扩展的。这样编写的代码不太可能复用和维护。这时候包就派上用场了。 包被用于管理源代码，使其有更好的复用性和可读性。包是所有处于同一目录中文件的集合。包提供了代码分隔功能，因此可以轻松的维">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【GolangBot】7-包">
+<meta property="og:url" content="https://zoekyhein.github.io/%E3%80%90GolangBot%E3%80%917-%E5%8C%85/index.html">
+<meta property="og:site_name" content="传火祭祀场">
+<meta property="og:description" content="欢迎来到Golang系列教程的第七篇。 什么是包？我们为什么要用它？到目前为止，我们已经看过了只有一个文件的Go程序，这个文件中有一个main函数和一些其他的函数。在实际的场景中，把所有的源码都写在一个文件中是不可扩展的。这样编写的代码不太可能复用和维护。这时候包就派上用场了。 包被用于管理源代码，使其有更好的复用性和可读性。包是所有处于同一目录中文件的集合。包提供了代码分隔功能，因此可以轻松的维">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-12-18T16:48:29.000Z">
+<meta property="article:modified_time" content="2025-01-23T07:44:45.571Z">
+<meta property="article:author" content="ZoeKyHein">
+<meta property="article:tag" content="Golang">
+<meta property="article:tag" content="教程">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>【GolangBot】7-包 - 传火祭祀场</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"zoekyhein.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"💥","loop":false,"scope":["home"]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>传火祭祀场</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/golangbot" target="_self">
+                <i class="iconfont icon-book"></i>
+                <span>Go教程</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/sunKnight.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">【GolangBot】7-包</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-12-18 16:48" pubdate>
+          2024年12月18日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.5k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          30 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">【GolangBot】7-包</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>欢迎来到<a href="../golangbot/">Golang系列教程</a>的第七篇。</p>
+<h3 id="什么是包？我们为什么要用它？"><a href="#什么是包？我们为什么要用它？" class="headerlink" title="什么是包？我们为什么要用它？"></a>什么是包？我们为什么要用它？</h3><p>到目前为止，我们已经看过了只有一个文件的Go程序，这个文件中有一个main<a href="../%E3%80%90GolangBot%E3%80%916-%E5%87%BD%E6%95%B0/">函数</a>和一些其他的函数。在实际的场景中，把所有的源码都写在一个文件中是不可扩展的。这样编写的代码不太可能复用和维护。这时候包就派上用场了。</p>
+<p><strong>包被用于管理源代码，使其有更好的复用性和可读性。包是所有处于同一目录中文件的集合。包提供了代码分隔功能，因此可以轻松的维护Go项目。</strong></p>
+<p>例如，加入我们正在用Go编写一个金融科技应用，其中一些功能包括单利计算、复利计算和贷款偿还计算。管理这个应用的一个简单的方式是通过功能划分。我们可以创建包<code>simpleinterest</code>, <code>compoundinterest</code> 和 <code>loanrepayment</code>。如果<code>loanrepayment</code>包需要计算单利，它可以直接导入<code>simpleinterest</code>包来完成。这样代码就实现了复用。</p>
+<p>我们将通过创建一个简单的应用来学习包，在给定本金、利率和以年为单位的时间期限的情况下确定单利。</p>
+<h3 id="Go-Modules"><a href="#Go-Modules" class="headerlink" title="Go Modules"></a>Go Modules</h3><p>我们将以这样的方式来组织代码，所有和单利相关的功能都放在<code>simpleinterest</code>包。为了实现目的，我们需要创建一个自定义包<code>simpleinterest</code>，在这里包含了计算单利的函数。在创建自定义包之前，我们需要先理解Go Modules，因为<strong>Go Modules</strong>被用于创建自定义包。</p>
+<p><strong>Go Module只是Go软件包的集合。<strong>现在你可能想到了一个问题，我们为什么需要Go Modules来创建自定义包？答案是</strong>我们创建的自定义包的导入路径来自Go Modules的名字</strong>。除此之外，所有的第三方包(例如来自github的源码)及其版本都由<code>go.mod</code>文件管理。<code>go.mod</code>文件是我们在创建新模块时创建的。你会在下一节更好地理解它。</p>
+<h3 id="创建一个Go-module"><a href="#创建一个Go-module" class="headerlink" title="创建一个Go module"></a>创建一个Go module</h3><p>运行下面的命令，在当前用户的文档目录下创建一个名为learnpackage的目录。</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">mkdir ~/Documents/learnpackage/</code></pre></div>
+
+<p>通过输入<code>cd !/Documents/learnpackage</code>命令确保你在目录<code>learnpackage</code>当中。在这个目录中运行下面的命令，创建一个名为<em>learnpackage</em>的go module。</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">go mod init learnpackage</code></pre></div>
+
+<p>上述命令会创建一个名为<code>go.mod</code>的文件。下面是文件中将会出现的内容。</p>
+<div class="code-wrapper"><pre><code class="hljs v"><span class="hljs-keyword">module</span> learnpackage
+
+go <span class="hljs-number">1</span><span class="hljs-variable">.21</span><span class="hljs-variable">.0</span></code></pre></div>
+
+<p><code>module learnpackage</code>表明模块的名称是<code>learnpackage</code>。正如我们前面提到的，<code>learnpackage</code>将是导入任何在这个模块中创建的包的基础路径。<code>go 1.21.0</code>指定这个模组中的文件使用的go版本是<code>1.21.0</code>。</p>
+<h3 id="创建一个简单的单利自定义包"><a href="#创建一个简单的单利自定义包" class="headerlink" title="创建一个简单的单利自定义包"></a>创建一个简单的单利自定义包</h3><p><strong>属于同一个包的所有Go文件应该被放在它们所属的单独的文件夹内。Go的惯例是将该文件夹命名为与包相同的名称。</strong></p>
+<p>让我们在<code>learnpackage</code>文件夹中创建一个名为<code>simpleinterest</code>的文件夹，<code>mkdir simpleinterest</code>命令将会为我们创建这个文件夹。</p>
+<p>**<code>package packagename</code>指定某个特定的.go文件属于<code>packagename</code>包。这应该在每个源文件的第一行。*<em>因此所有</em>simpleinterest*文件夹中的文件都应该以这行代码开始，因为它们都属于<code>simpleinterest</code>包。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> simpleinterest</code></pre></div>
+
+<p>在 <em>simpleinterest</em>包中创建一个<code>simpleinterest.go</code>文件。</p>
+<p>下面是我们应用的目录结构。</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">learnpackage/
+├── go.mod
+└── simpleinterest
+    └── simpleinterest.go</code></pre></div>
+
+<p>在<code>simpleinterest.go</code>文件中添加如下代码。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-number">1</span><span class="hljs-keyword">package</span> simpleinterest
+<span class="hljs-number">2</span>
+<span class="hljs-number">3</span><span class="hljs-comment">//Calculate calculates and returns the simple interest for a principal p, rate of interest r for time duration t years</span>
+<span class="hljs-number">4</span><span class="hljs-keyword">func</span> Calculate(p <span class="hljs-type">float64</span>, r <span class="hljs-type">float64</span>, t <span class="hljs-type">float64</span>) <span class="hljs-type">float64</span> &#123;
+<span class="hljs-number">5</span>	interest := p * (r / <span class="hljs-number">100</span>) * t
+<span class="hljs-number">6</span>	<span class="hljs-keyword">return</span> interest
+<span class="hljs-number">7</span>&#125;</code></pre></div>
+
+<p>在上面的代码中，我们已经创建了<code>Calculate</code>函数，它能够计算并返回单利。这个函数的作用不言自明。</p>
+<p><em>请注意，函数名称Calculate以大写字母开头。这一点很重要，我们很快就会解释为什么需要这么做。</em></p>
+<h3 id="main包和main函数"><a href="#main包和main函数" class="headerlink" title="main包和main函数"></a>main包和main函数</h3><p>教程的下一步是导入我们刚刚创建的<code>simpleinterest</code>包并且使用它。我们将从<code>main</code>包中导入simpleinterest包。让我们首先来理解一下<code>main</code>函数和<code>main</code>包。</p>
+<p>每个可执行的Go应用都应该包含<code>main</code>函数。这个函数是执行的入口点。<code>main</code>函数应该位于<code>main</code>包中。</p>
+<p>让我们通过为我们的应用创建<code>main</code>函数和<code>main</code>包来开始。</p>
+<p>在我们的<code>learnpackage</code>目录下创建一个名为<code>main.go</code>的文件，其中有以下内容。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main 
+
+<span class="hljs-keyword">import</span> <span class="hljs-string">&quot;fmt&quot;</span>
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123; 
+	fmt.Println(<span class="hljs-string">&quot;Simple interest calculation&quot;</span>)
+&#125;</code></pre></div>
+
+<p><code>package main</code>指定这个文件属于main包。<code>import packagename</code>语句用来导入一个已经存在的包。<code>packagename.FunctionName()</code>是调用包中函数的语法。</p>
+<p>在第3行，我们导入了<code>fmt</code>包来使用<code>Println</code>函数。<code>fmt</code>是一个标准包，作为Go标准库的一部分提供。然后是打印<code>Simple interest calculation</code>的<code>main</code>函数。</p>
+<p>使用如下命令移动到<code>learnpackage</code>目录</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">cd ~/Documents/learnpackage/</code></pre></div>
+
+<p>用下面的命令，编译上面的程序</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">go build</code></pre></div>
+
+<p>如果一切正常，我们的二进制文件将会被编译出来，而且准备好运行。在终端中输入<code>./learnpackage</code>命令，你会看到下面的输出。</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">Simple interest calculation</code></pre></div>
+
+<p>如果你不理解<code>go build</code>是如何工作的，请前往<a href="../%E3%80%90GolangBot%E3%80%912-Hello-World/">Hello World教程</a>了解详情。</p>
+<h3 id="在main包中印入simpleinterest包"><a href="#在main包中印入simpleinterest包" class="headerlink" title="在main包中印入simpleinterest包"></a>在main包中印入simpleinterest包</h3><p>为了使用自定义包，我们必须先导入它。导入路径是由包所在目录和包名称连接的go module的名称。</p>
+<p>在我们的示例中，go module的名称是<code>learnpackage</code>，<code>simpleinterest</code>包在<code>learnpackage</code>正下方的<code>simpleinterest</code>文件夹中。</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">├── learnpackage
+│   └── simpleinterest</code></pre></div>
+
+<p>所以<code>import &quot;learnpackage/simpleinterest&quot;</code>这一行会引入<em>simpleinterest</em>包。</p>
+<p>在这种情况下，我们的目录结构是这样的。</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">learnpackage
+│   └── finance
+│       └── simpleinterest</code></pre></div>
+
+<p>导入语句就是<code>import &quot;learnpackage/finance/simpleinterest&quot;</code>。</p>
+<p>添加如下代码到<code>main.go</code>。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;fmt&quot;</span>
+	<span class="hljs-string">&quot;learnpackage/simpleinterest&quot;</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	fmt.Println(<span class="hljs-string">&quot;Simple interest calculation&quot;</span>)
+	p := <span class="hljs-number">5000.0</span>
+	r := <span class="hljs-number">10.0</span>
+	t := <span class="hljs-number">1.0</span>
+	si := simpleinterest.Calculate(p, r, t)
+	fmt.Println(<span class="hljs-string">&quot;Simple interest is&quot;</span>, si)
+&#125;</code></pre></div>
+
+<p>上面的代码引入了<code>simpleinterest</code>包并且使用了<code>Calculate</code>函数求单利。标准库中的包不需要使用模块名作为前缀，因此<code>fmt</code>不需要模组前缀就可以工作。当程序运行时，输出将会是</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">Simple interest calculation
+Simple interest is 500</code></pre></div>
+
+<h3 id="关于go-build的更多内容"><a href="#关于go-build的更多内容" class="headerlink" title="关于go build的更多内容"></a>关于go build的更多内容</h3><p>现在我们理解了包如何工作，是时候聊一下<code>go build</code>了。像<code>go build</code>的Go工具在当前目录的上下文中工作。我们来理解一下这是什么意思。到目前为止，我们一直在<code>~/Documents/learnpackage</code>中运行<code>go build</code>。如果我们尝试在其他目录中运行，它就会报错。</p>
+<p>试着用<code>cd ~/Documents/</code>进入<code>~/Documents/</code>，然后运行<code>go build learnpackage</code>。它会报下面的错误。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> learnpackage is not in std (/usr/local/<span class="hljs-keyword">go</span>/src/learnpackage)</code></pre></div>
+
+<p>我们来理解一下错误背后的原因。<code>go build</code>用一个可选的报名作为参数(在我们的例子中包名是<code>learnpackage</code>)，如果运行时的当前目录、它的父级目录或者父级目录的父级目录，以此类推……存在包，他就会尝试编译main函数。</p>
+<p>我们在<code>Documents</code>目录中，这里没有<code>go.mod</code>文件，因此<code>go build</code>抱怨它找不到<code>learnpackage</code>包。</p>
+<p>当我们移动到<code>~/Documents/learnpackage</code>,这里有<code>go.mod</code>文件，并且在那个<code>go.mode</code>文件中，我们的模组名就是<code>learnpackage</code>。</p>
+<p>所以<code>go build learnpackage</code>在<code>~/Documents/learnpackage/</code>目录中就会奏效。</p>
+<p>但是到目前为止，我们只是使用了<code>go build</code>但并没有指定一个包名。如果没有包名被指定，<code>go build</code>会默认使用当前工作目录下的模块名称。这就是为什么在<code>~/Documents/learnpackage/</code>中不带包名运行<code>go build</code>正常的原因。所以当我们在<code>~/Documents/learnpackage/</code>中运行时，以下3种命令都是同样的。</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">go build
+
+go build .
+
+go build learnpackage</code></pre></div>
+
+<p>我也提到了<code>go build</code>能够递归搜索父目录的go.mod文件。让我们看下这是否有效。</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">cd ~/Documents/learnpackage/simpleinterest/</code></pre></div>
+
+<p>上面的命令让我们进入<code>simpleinterest</code>目录。在这个目录运行</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">go build learnpackage</code></pre></div>
+
+<p><code>go build</code>将会从定义了<code>learnpackage</code>模组的<code>learnpackage</code>目录成功找到<code>go.mod</code>文件，因此它正常运行:)。</p>
+<p>还可以使用<code>go build</code>更改输出二进制文件的位置。移至<code>~/Documents/learnpackage</code>并键入</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">1go build -o fintechapp</code></pre></div>
+
+<p><code>-o</code>参数用于指定输出的二进制文件的名称。在示例中，一个名为<code>fintechapp</code>的二进制文件将会被创建。运行<code>./fintechapp</code>，二进制文件将会成功运行。</p>
+<h3 id="导出的名称"><a href="#导出的名称" class="headerlink" title="导出的名称"></a>导出的名称</h3><p>我们在计算单利包中大写了<code>Calculate</code>函数。这在Go中有特殊意义。在go中任意大写字母开头的<a href="../%E3%80%90GolangBot%E3%80%913-%E5%8F%98%E9%87%8F/">变量</a>或者函数都是可导出的名称。只有可导出函数和变量才在其他包中可用。在我们的示例中，我们想要在main包中使用<code>Calculate</code>函数。因此这是大写。</p>
+<p>如果在<code>simpleinterest.go</code>中，函数名称从<code>Calculate</code>改为<code>calculete</code>，如果我们尝试在main.go中使用<code>simpleinterest.calculate(p, r, t)</code>，编译会出错。</p>
+<div class="code-wrapper"><pre><code class="hljs fallback"># learnpackage
+./main.go:13:8: undefined: simpleinterest.calculate</code></pre></div>
+
+<p>因此如果你想在包外使用函数，它就应该被大写。</p>
+<h3 id="init函数"><a href="#init函数" class="headerlink" title="init函数"></a>init函数</h3><p>Go的每一个包都可以有一个<code>init</code>函数。<code>init</code>函数必须不含邮任何返回类型，也不能有任何参数。init函数不能在我们的源码中被显式调用。当包被初始化的时候它会被自动调用。init函数有如下格式	</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">func init() &#123;
+&#125;</code></pre></div>
+
+<p><code>init</code>函数可被用于执行初始化任务，也可以用来在执行开始前验证程序的正确性。</p>
+<p>一个包的初始化顺序如下：</p>
+<ol>
+<li>包等级变量首先被初始化</li>
+<li>init函数接着被调用。一个包可以有多个init函数(可以在单个文件中，也可以分布在多个文件当中)，并且它们依照出现在编译器的顺序被依次调用。</li>
+</ol>
+<p>如果一个包引入了其他包，被引入的包首先初始化。</p>
+<p>如果一个包被多个包引用，它只会初始化一次。</p>
+<p>让我们在我们的应用上做些修改，来理解<code>init</code>函数。</p>
+<p>首先，我们在<code>simpleinterest.go</code>文件添加一个<code>init</code>函数。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> simpleinterest
+
+<span class="hljs-keyword">import</span> <span class="hljs-string">&quot;fmt&quot;</span>
+
+<span class="hljs-comment">/*</span>
+<span class="hljs-comment"> * init function added</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">init</span><span class="hljs-params">()</span></span> &#123;
+	fmt.Println(<span class="hljs-string">&quot;Simple interest package initialized&quot;</span>)
+&#125;
+
+<span class="hljs-comment">//Calculate calculates and returns the simple interest for principal p, rate of interest r for time duration t years</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">Calculate</span><span class="hljs-params">(p <span class="hljs-type">float64</span>, r <span class="hljs-type">float64</span>, t <span class="hljs-type">float64</span>)</span></span> <span class="hljs-type">float64</span> &#123;
+	interest := p * (r / <span class="hljs-number">100</span>) * t
+	<span class="hljs-keyword">return</span> interest
+&#125;</code></pre></div>
+
+<p>我们已经添加了一个简单的init函数，它只打印<code>Simple interest package initialised</code>。</p>
+<p>现在让我们修改main包。我们知道，但计算单利的时候，本金、利率和时间期限应该比0大。我们会在<code>main.go</code>文件中使用init函数和包级别变量定义一个检查。</p>
+<p>按如下修改<code>main.go</code>。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main 
+
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;fmt&quot;</span>
+	<span class="hljs-string">&quot;learnpackage/simpleinterest&quot;</span> <span class="hljs-comment">//importing custom package</span>
+	<span class="hljs-string">&quot;log&quot;</span>
+)
+
+<span class="hljs-keyword">var</span> p, r, t = <span class="hljs-number">5000.0</span>, <span class="hljs-number">10.0</span>, <span class="hljs-number">1.0</span>
+
+<span class="hljs-comment">/*</span>
+<span class="hljs-comment">* init function to check if p, r and t are greater than zero</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">init</span><span class="hljs-params">()</span></span> &#123;
+	fmt.Println(<span class="hljs-string">&quot;Main package initialized&quot;</span>)
+	<span class="hljs-keyword">if</span> p &lt; <span class="hljs-number">0</span> &#123;
+		log.Fatal(<span class="hljs-string">&quot;Principal is less than zero&quot;</span>)
+	&#125;
+	<span class="hljs-keyword">if</span> r &lt; <span class="hljs-number">0</span> &#123;
+		log.Fatal(<span class="hljs-string">&quot;Rate of interest is less than zero&quot;</span>)
+	&#125;
+	<span class="hljs-keyword">if</span> t &lt; <span class="hljs-number">0</span> &#123;
+		log.Fatal(<span class="hljs-string">&quot;Duration is less than zero&quot;</span>)
+	&#125;
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	fmt.Println(<span class="hljs-string">&quot;Simple interest calculation&quot;</span>)
+	si := simpleinterest.Calculate(p, r, t)
+	fmt.Println(<span class="hljs-string">&quot;Simple interest is&quot;</span>, si)
+&#125;</code></pre></div>
+
+<p>下面是对<code>main.go</code>文件所做的修改</p>
+<ol>
+<li><strong>p</strong>, <strong>r</strong> 和 <strong>t</strong> 从main函数级别移到了package级别。</li>
+<li>添加了一个init函数。<em>init</em>函数打印一条日志，并通过<strong>log.Fatal</strong>在本金、利率或时间期限小于0时终止程序的运行。</li>
+</ol>
+<p>初始化的顺序如下，</p>
+<ol>
+<li>首先初始化导入的包。因此<strong>simpleinterest</strong>包首先被初始化，init方法被调用。</li>
+<li>package级别变量<strong>p</strong>, <strong>r</strong> 和 <strong>t</strong>被初始化。</li>
+<li>main包中的<strong>init</strong>函数被调用。</li>
+<li><strong>main</strong>函数最后被调用。</li>
+</ol>
+<p>如果你运行程序，你会得到如下的输出。</p>
+<div class="code-wrapper"><pre><code class="hljs go">Simple interest <span class="hljs-keyword">package</span> initialized
+Main <span class="hljs-keyword">package</span> initialized
+Simple interest calculation
+Simple interest is <span class="hljs-number">500</span></code></pre></div>
+
+<p>正如我们所预期的，<code>simpleinterest</code>包首先被调用，接下来是package级别的变量<code>p</code>, <code>r</code> 和 <code>t</code>被初始化。main包中的init函数接着被调用，它检查<code>p</code>, <code>r</code> 和 <code>t</code>是否小于0，在条件为true的时候终止程序。我们将会在<a href="../%E3%80%90GolangBot%E3%80%918-if-else%E8%AF%AD%E5%8F%A5/">单独的教程</a>中详细学习<code>if</code>语句。到目前为止，可以假设。<code>if p &lt; 0</code>会检查<code>p</code>是否小于0，如果它确实小于0，程序将被终止。我们已经为<code>r</code>和<code>t</code>写了类似的条件。在这个例子中，所有这些条件都是false，程序执行会继续。最后，main函数被调用。</p>
+<p>让我们微调一下程序，学习init函数的使用。</p>
+<p>在<code>main.go</code>中找到这一行，</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">var p, r, t = 5000.0, 10.0, 1.0</code></pre></div>
+
+<p>修改为</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">var p, r, t = -5000.0, 10.0, 1.0</code></pre></div>
+
+<p>我们已经把<code>p</code>初始化成了负数。</p>
+<p>现在如果你运行程序，你会看到</p>
+<div class="code-wrapper"><pre><code class="hljs go">Simple interest <span class="hljs-keyword">package</span> initialized
+Main <span class="hljs-keyword">package</span> initialized
+<span class="hljs-number">2024</span>/<span class="hljs-number">04</span>/<span class="hljs-number">01</span> <span class="hljs-number">02</span>:<span class="hljs-number">58</span>:<span class="hljs-number">32</span> Principal is less than zero</code></pre></div>
+
+<p><em>p</em>是负数。因此当init函数运行时，程序会在打印<code>Principal is less than zero</code>后终止。</p>
+<h3 id="空白标识符的使用"><a href="#空白标识符的使用" class="headerlink" title="空白标识符的使用"></a>空白标识符的使用</h3><p>在Go中，引入一个包但是不使用它是不合法的。如果你这么做，编译器会抱怨。原因是避免为使用的包膨胀，浙江显著增加编译时间。把<code>main.go</code>中的代码替换为如下所示</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+  
+<span class="hljs-keyword">import</span> (
+        <span class="hljs-string">&quot;learnpackage/simpleinterest&quot;</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+
+&#125;</code></pre></div>
+
+<p>上面的程序将会报错</p>
+<div class="code-wrapper"><pre><code class="hljs fallback"># learnpackage
+./main.go:4:2: imported and not used: &quot;learnpackage/simpleinterest&quot;</code></pre></div>
+
+<p>但是，当程序正在处于开发活跃状态时，导入包并稍后(如果不是现在)在代码中的某个位置使用它们是很常见的。在这些情况下，<code>_</code>空白标识符可以拯救我们。</p>
+<p>上面的程序的错误可以被下面的代码改动所消除。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+  
+<span class="hljs-keyword">import</span> (
+        <span class="hljs-string">&quot;learnpackage/simpleinterest&quot;</span>
+)
+
+<span class="hljs-keyword">var</span> _ = simpleinterest.Calculate
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+
+&#125;</code></pre></div>
+
+<p>这一行，<code>var _ = simpleinterest.Calculate</code>,屏蔽了错误。我们应该跟踪这些类型的错误消音器，并在应用程序开发结束时移除它们，包括导入的包(如果不使用的话)。因此，建议在导入语句后在package级别编写错误消音器。</p>
+<p>有时候，我们需要导入一个包只是为了确保该包的初始化过程得以执行，即使我们并不需要在代码中使用该包的任何函数或变量。例如，我们可能需要确保 <code>simpleinterest</code> 包中的 <code>init</code> 函数被调用，即使我们并不打算在代码的任何地方使用这个包。在这种情况下，也可以使用<strong>空白标识符</strong> _ 来实现，如下所示。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (
+	_ <span class="hljs-string">&quot;learnpackage/simpleinterest&quot;</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+
+&#125;</code></pre></div>
+
+<p>运行上述代码，程序会输出<code>Simple interest package initialized</code>。我们已经成功初始化了<code>simpleinterest</code>包，即使它没有在任何地方使用。</p>
+<p><strong>下一篇教程 - <a href="../%E3%80%90GolangBot%E3%80%918-if-else%E8%AF%AD%E5%8F%A5/">if else 语句</a></strong></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E5%BF%83%E5%BE%97/" class="category-chain-item">学习心得</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E5%BF%83%E5%BE%97/GolangBot/" class="category-chain-item">GolangBot</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Golang/" class="print-no-link">#Golang</a>
+      
+        <a href="/tags/%E6%95%99%E7%A8%8B/" class="print-no-link">#教程</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>【GolangBot】7-包</div>
+      <div>https://zoekyhein.github.io/【GolangBot】7-包/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>ZoeKyHein</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年12月18日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/%E3%80%90GolangBot%E3%80%918-if-else%E8%AF%AD%E5%8F%A5/" title="【GolangBot】8-if else语句">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">【GolangBot】8-if else语句</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/%E3%80%90GolangBot%E3%80%916-%E5%87%BD%E6%95%B0/" title="【GolangBot】6-函数">
+                        <span class="hidden-mobile">【GolangBot】6-函数</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

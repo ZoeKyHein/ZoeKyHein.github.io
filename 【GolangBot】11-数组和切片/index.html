@@ -1,0 +1,1166 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/icon.png">
+  <link rel="icon" href="/img/icon.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#ac9343">
+  <meta name="author" content="ZoeKyHein">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="欢迎来到Golang系列教程的第11篇。我们将学习Go中的数组和切片。 数组数组是一组属于同一类型的元素的集合。例如，整数集合 5、8、9、79、76 构成一个数组。在 Go 语言中，不允许混合不同类型的值，例如一个同时包含字符串和整数的数组是非法的。 声明数组属于类型 [n]T。其中，n 表示数组中的元素数量，T 表示每个元素的类型。元素数量 n 也是类型的一部分（我们稍后会对此进行更详细的讨论">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【GolangBot】11-数组和切片">
+<meta property="og:url" content="https://zoekyhein.github.io/%E3%80%90GolangBot%E3%80%9111-%E6%95%B0%E7%BB%84%E5%92%8C%E5%88%87%E7%89%87/index.html">
+<meta property="og:site_name" content="传火祭祀场">
+<meta property="og:description" content="欢迎来到Golang系列教程的第11篇。我们将学习Go中的数组和切片。 数组数组是一组属于同一类型的元素的集合。例如，整数集合 5、8、9、79、76 构成一个数组。在 Go 语言中，不允许混合不同类型的值，例如一个同时包含字符串和整数的数组是非法的。 声明数组属于类型 [n]T。其中，n 表示数组中的元素数量，T 表示每个元素的类型。元素数量 n 也是类型的一部分（我们稍后会对此进行更详细的讨论">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-12-23T10:49:39.000Z">
+<meta property="article:modified_time" content="2025-01-23T07:44:45.567Z">
+<meta property="article:author" content="ZoeKyHein">
+<meta property="article:tag" content="Golang">
+<meta property="article:tag" content="教程">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>【GolangBot】11-数组和切片 - 传火祭祀场</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"zoekyhein.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"💥","loop":false,"scope":["home"]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>传火祭祀场</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/golangbot" target="_self">
+                <i class="iconfont icon-book"></i>
+                <span>Go教程</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/sunKnight.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">【GolangBot】11-数组和切片</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-12-23 10:49" pubdate>
+          2024年12月23日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.1k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          35 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">【GolangBot】11-数组和切片</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>欢迎来到<a href="../golangbot/">Golang系列教程</a>的第11篇。我们将学习Go中的数组和切片。</p>
+<h3 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h3><p>数组是一组属于同一类型的元素的集合。例如，整数集合 5、8、9、79、76 构成一个数组。在 Go 语言中，不允许混合不同类型的值，例如一个同时包含字符串和整数的数组是非法的。</p>
+<h5 id="声明"><a href="#声明" class="headerlink" title="声明"></a>声明</h5><p>数组属于类型 <code>[n]T</code>。其中，<code>n</code> 表示数组中的元素数量，<code>T</code> 表示每个元素的类型。元素数量 <code>n</code> 也是类型的一部分（我们稍后会对此进行更详细的讨论）。</p>
+<p>声明数组有多种方式，让我们逐一来看。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;fmt&quot;</span>
+)
+
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	<span class="hljs-keyword">var</span> a [<span class="hljs-number">3</span>]<span class="hljs-type">int</span> <span class="hljs-comment">//int array with length 3</span>
+	fmt.Println(a)
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/Zvgh82u0ej">Run in playground</a></p>
+<p><strong><code>var a [3]int</code></strong> 声明了一个长度为 3 的整数数组。<strong>数组中的所有元素会自动赋值为该数组类型的零值</strong>。在这个例子中，<code>a</code> 是一个整数数组，因此 <code>a</code> 的所有元素都被赋值为 <code>0</code>，即整数类型的零值。运行上述程序将会打印</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">[0 0 0]</code></pre></div>
+
+<p>数组的索引从 <code>0</code> 开始，到 <code>length - 1</code> 结束。让我们为上述数组分配一些值。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;fmt&quot;</span>
+)
+
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	<span class="hljs-keyword">var</span> a [<span class="hljs-number">3</span>]<span class="hljs-type">int</span> <span class="hljs-comment">//int array with length 3</span>
+	a[<span class="hljs-number">0</span>] = <span class="hljs-number">12</span> <span class="hljs-comment">// array index starts at 0</span>
+	a[<span class="hljs-number">1</span>] = <span class="hljs-number">78</span>
+	a[<span class="hljs-number">2</span>] = <span class="hljs-number">50</span>
+	fmt.Println(a)
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/WF0Uj8sv39">Run in playground</a></p>
+<p><code>a[0]</code> 为数组的第一个元素赋值。运行程序将会打印：</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">[12 78 50]</code></pre></div>
+
+<p>让我们使用<strong>简写声明</strong>创建相同的数组。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main 
+
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;fmt&quot;</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	a := [<span class="hljs-number">3</span>]<span class="hljs-type">int</span>&#123;<span class="hljs-number">12</span>, <span class="hljs-number">78</span>, <span class="hljs-number">50</span>&#125; <span class="hljs-comment">// short hand declaration to create array</span>
+	fmt.Println(a)
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/NKOV04zgI6">Run in playground</a></p>
+<p>上面的程序将打印相同的输出。</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">[12 78 50]</code></pre></div>
+
+<p>在使用简写声明时，并不一定需要为数组中的所有元素都赋值。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;fmt&quot;</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	a := [<span class="hljs-number">3</span>]<span class="hljs-type">int</span>&#123;<span class="hljs-number">12</span>&#125; 
+	fmt.Println(a)
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/AdPH0kXRly">Run in playground</a></p>
+<p>在上面的程序中，第 8 行 <code>a := [3]int&#123;12&#125;</code> 声明了一个长度为 3 的数组，但只提供了一个值 <code>12</code>。剩余的 2 个元素会自动赋值为 <code>0</code>。该程序将打印：</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">[12 0 0]</code></pre></div>
+
+<p>你甚至可以在声明中忽略数组的长度，并用 <code>...</code> 替代，让编译器自动推导数组的长度。以下程序就是这样做的：</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;fmt&quot;</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	a := [...]<span class="hljs-type">int</span>&#123;<span class="hljs-number">12</span>, <span class="hljs-number">78</span>, <span class="hljs-number">50</span>&#125; <span class="hljs-comment">// ... makes the compiler determine the length</span>
+	fmt.Println(a)
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/_fVmr6KGDh">Run in playground</a></p>
+<p><strong>数组的大小是类型的一部分。</strong> 因此，<code>[5]int</code> 和 <code>[25]int</code> 是不同的类型。由于这个原因，数组的大小不能被修改。不要担心这个限制，因为存在 <code>切片</code>（slices）来解决这个问题。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	a := [<span class="hljs-number">3</span>]<span class="hljs-type">int</span>&#123;<span class="hljs-number">5</span>, <span class="hljs-number">78</span>, <span class="hljs-number">8</span>&#125;
+	<span class="hljs-keyword">var</span> b [<span class="hljs-number">5</span>]<span class="hljs-type">int</span>
+	b = a <span class="hljs-comment">//not possible since [3]int and [5]int are distinct types</span>
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/kBdot3pXSB">Run in playground</a></p>
+<p>在上面程序的第 6 行，我们尝试将一个类型为 <code>[3]int</code> 的变量赋值给一个类型为 <code>[5]int</code> 的变量，这是不允许的，因此编译器会打印以下错误：</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">./prog.go:6:7: cannot use a (type [3]int) as type [5]int in assignment</code></pre></div>
+
+<h5 id="数组是值类型。"><a href="#数组是值类型。" class="headerlink" title="数组是值类型。"></a>数组是值类型。</h5><p>Go 中的数组是值类型，而不是引用类型。这意味着当数组被赋值给一个新变量时，会将原数组的副本赋值给新变量。如果对新变量进行更改，原数组不会受到影响。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> <span class="hljs-string">&quot;fmt&quot;</span>
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	a := [...]<span class="hljs-type">string</span>&#123;<span class="hljs-string">&quot;USA&quot;</span>, <span class="hljs-string">&quot;China&quot;</span>, <span class="hljs-string">&quot;India&quot;</span>, <span class="hljs-string">&quot;Germany&quot;</span>, <span class="hljs-string">&quot;France&quot;</span>&#125;
+	b := a <span class="hljs-comment">// a copy of a is assigned to b</span>
+	b[<span class="hljs-number">0</span>] = <span class="hljs-string">&quot;Singapore&quot;</span>
+	fmt.Println(<span class="hljs-string">&quot;a is &quot;</span>, a)
+	fmt.Println(<span class="hljs-string">&quot;b is &quot;</span>, b)	
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/-ncGk1mqPd">Run in playground</a></p>
+<p>在上面的程序中，第 7 行将 <code>a</code> 的副本赋值给 <code>b</code>。在第 8 行，<code>b</code> 的第一个元素被更改为 <code>Singapore</code>。由于数组是值类型，这一更改不会影响原始数组 <code>a</code>。程序将打印：</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">a is [USA China India Germany France]
+b is [Singapore China India Germany France]</code></pre></div>
+
+<p>同样，当数组作为参数传递给函数时，它们是按值传递的，原始数组不会被改变。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> <span class="hljs-string">&quot;fmt&quot;</span>
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">changeLocal</span><span class="hljs-params">(num [5]<span class="hljs-type">int</span>)</span></span> &#123;
+	num[<span class="hljs-number">0</span>] = <span class="hljs-number">55</span>
+	fmt.Println(<span class="hljs-string">&quot;inside function &quot;</span>, num)
+
+&#125;
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	num := [...]<span class="hljs-type">int</span>&#123;<span class="hljs-number">5</span>, <span class="hljs-number">6</span>, <span class="hljs-number">7</span>, <span class="hljs-number">8</span>, <span class="hljs-number">8</span>&#125;
+	fmt.Println(<span class="hljs-string">&quot;before passing to function &quot;</span>, num)
+	changeLocal(num) <span class="hljs-comment">//num is passed by value</span>
+	fmt.Println(<span class="hljs-string">&quot;after passing to function &quot;</span>, num)
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/e3U75Q8eUZ">Run in playground</a></p>
+<p>在上面的程序中，第 13 行，数组 <code>num</code> 实际上是按值传递给函数 <code>changeLocal</code> 的，因此由于函数调用，数组 <code>num</code> 不会被更改。程序将打印：</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">before passing to function  [5 6 7 8 8]
+inside function  [55 6 7 8 8]
+after passing to function  [5 6 7 8 8]</code></pre></div>
+
+<h5 id="数组的长度"><a href="#数组的长度" class="headerlink" title="数组的长度"></a>数组的长度</h5><p>数组的长度可以通过将数组作为参数传递给 <code>len</code> 函数来获得。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> <span class="hljs-string">&quot;fmt&quot;</span>
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	a := [...]<span class="hljs-type">float64</span>&#123;<span class="hljs-number">67.7</span>, <span class="hljs-number">89.8</span>, <span class="hljs-number">21</span>, <span class="hljs-number">78</span>&#125;
+	fmt.Println(<span class="hljs-string">&quot;length of a is&quot;</span>,<span class="hljs-built_in">len</span>(a))
+	
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/UrIeNlS0RN">Run in playground</a></p>
+<p>上面程序的输出是：</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">length of a is 4</code></pre></div>
+
+<h5 id="使用-range-遍历数组"><a href="#使用-range-遍历数组" class="headerlink" title="使用 range 遍历数组"></a>使用 <code>range</code> 遍历数组</h5><p>可以使用 <code>for</code> 循环遍历数组的元素。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> <span class="hljs-string">&quot;fmt&quot;</span>
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	a := [...]<span class="hljs-type">float64</span>&#123;<span class="hljs-number">67.7</span>, <span class="hljs-number">89.8</span>, <span class="hljs-number">21</span>, <span class="hljs-number">78</span>&#125;
+	<span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; <span class="hljs-built_in">len</span>(a); i++ &#123; <span class="hljs-comment">//looping from 0 to the length of the array</span>
+		fmt.Printf(<span class="hljs-string">&quot;%d th element of a is %.2f\n&quot;</span>, i, a[i])
+	&#125;
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/80ejSTACO6">Run in playground</a></p>
+<p>上述程序使用 <code>for</code> 循环遍历数组的元素，从索引 <code>0</code> 开始，到数组的长度减一为止。这个程序能够正常运行，并将打印：</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">0 th element of a is 67.70
+1 th element of a is 89.80
+2 th element of a is 21.00
+3 th element of a is 78.00</code></pre></div>
+
+<p>Go 提供了一种更简洁的方式来遍历数组，即使用 <code>for</code> 循环的 <strong>range</strong> 形式。<code>range</code> 会返回数组元素的索引和值。让我们使用 <code>range</code> 重写上述代码，并计算数组所有元素的和。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> <span class="hljs-string">&quot;fmt&quot;</span>
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	a := [...]<span class="hljs-type">float64</span>&#123;<span class="hljs-number">67.7</span>, <span class="hljs-number">89.8</span>, <span class="hljs-number">21</span>, <span class="hljs-number">78</span>&#125;
+	sum := <span class="hljs-type">float64</span>(<span class="hljs-number">0</span>)
+	<span class="hljs-keyword">for</span> i, v := <span class="hljs-keyword">range</span> a &#123;<span class="hljs-comment">//range returns both the index and value</span>
+		fmt.Printf(<span class="hljs-string">&quot;%d the element of a is %.2f\n&quot;</span>, i, v)
+		sum += v
+	&#125;
+	fmt.Println(<span class="hljs-string">&quot;\nsum of all elements of a&quot;</span>,sum)
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/Ji6FRon36m">Run in playground</a></p>
+<p>第 8 行 <code>for i, v := range a</code> 是上述程序中 <code>for</code> 循环的 range 形式。它将返回数组 <code>a</code> 中每个元素的索引和该索引处的值。我们打印这些值，并计算数组 <code>a</code> 中所有元素的和。该程序的 <strong>输出</strong> 是：</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">the element of a is 67.70
+the element of a is 89.80
+the element of a is 21.00
+the element of a is 78.00
+
+sum of all elements of a 256.5</code></pre></div>
+
+<p>如果你只需要值并且想忽略索引，可以通过将索引替换为 <code>_</code> 空白标识符来实现。</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">for _, v := range a &#123; //ignores index
+&#125;</code></pre></div>
+
+<p>上述 <code>for</code> 循环忽略了索引。同样，值也可以被忽略。</p>
+<h5 id="多维数组"><a href="#多维数组" class="headerlink" title="多维数组"></a>多维数组</h5><p>到目前为止，我们创建的数组都是一维数组。实际上，可以创建多维数组。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;fmt&quot;</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">printarray</span><span class="hljs-params">(a [3][2]<span class="hljs-type">string</span>)</span></span> &#123;
+	<span class="hljs-keyword">for</span> _, v1 := <span class="hljs-keyword">range</span> a &#123;
+		<span class="hljs-keyword">for</span> _, v2 := <span class="hljs-keyword">range</span> v1 &#123;
+			fmt.Printf(<span class="hljs-string">&quot;%s &quot;</span>, v2)
+		&#125;
+		fmt.Printf(<span class="hljs-string">&quot;\n&quot;</span>)
+	&#125;
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	a := [<span class="hljs-number">3</span>][<span class="hljs-number">2</span>]<span class="hljs-type">string</span>&#123;
+		&#123;<span class="hljs-string">&quot;lion&quot;</span>, <span class="hljs-string">&quot;tiger&quot;</span>&#125;,
+		&#123;<span class="hljs-string">&quot;cat&quot;</span>, <span class="hljs-string">&quot;dog&quot;</span>&#125;,
+		&#123;<span class="hljs-string">&quot;pigeon&quot;</span>, <span class="hljs-string">&quot;peacock&quot;</span>&#125;, <span class="hljs-comment">//this comma is necessary. The compiler will complain if you omit this comma</span>
+	&#125;
+	printarray(a)
+	<span class="hljs-keyword">var</span> b [<span class="hljs-number">3</span>][<span class="hljs-number">2</span>]<span class="hljs-type">string</span>
+	b[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>] = <span class="hljs-string">&quot;apple&quot;</span>
+	b[<span class="hljs-number">0</span>][<span class="hljs-number">1</span>] = <span class="hljs-string">&quot;samsung&quot;</span>
+	b[<span class="hljs-number">1</span>][<span class="hljs-number">0</span>] = <span class="hljs-string">&quot;microsoft&quot;</span>
+	b[<span class="hljs-number">1</span>][<span class="hljs-number">1</span>] = <span class="hljs-string">&quot;google&quot;</span>
+	b[<span class="hljs-number">2</span>][<span class="hljs-number">0</span>] = <span class="hljs-string">&quot;AT&amp;T&quot;</span>
+	b[<span class="hljs-number">2</span>][<span class="hljs-number">1</span>] = <span class="hljs-string">&quot;T-Mobile&quot;</span>
+	fmt.Printf(<span class="hljs-string">&quot;\n&quot;</span>)
+	printarray(b)
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/InchXI4yY8">Run in playground</a></p>
+<p>在上面的程序中，第 17 行使用简写语法声明了一个二维字符串数组 <code>a</code>。第 20 行末尾的逗号是必须的。这是因为词法分析器（lexer）会根据简单的规则自动插入分号。如果你有兴趣了解更多关于为什么需要分号的原因，可以阅读 <a target="_blank" rel="noopener" href="https://golang.org/doc/effective_go.html#semicolons">Effective Go</a>。</p>
+<p>在第 23 行声明了另一个二维数组 <code>b</code>，并逐个为每个索引添加字符串。这是初始化二维数组的另一种方式。</p>
+<p>第 7 行的 <code>printarray</code> 函数使用了两个 <code>for range</code> 循环来打印二维数组的内容。上述程序将打印：</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">lion tiger 
+cat dog 
+pigeon peacock 
+
+apple samsung 
+microsoft google 
+AT&amp;T T-Mobile</code></pre></div>
+
+<p>数组的内容就到这里。虽然数组看起来足够灵活，但它们有一个限制，即长度是固定的。无法增加数组的长度。在这里，<strong>切片</strong>（slices）发挥了作用。事实上，在 Go 中，切片比传统的数组更常见。</p>
+<h3 id="切片"><a href="#切片" class="headerlink" title="切片"></a>切片</h3><p>切片是数组之上的一种方便、灵活且强大的封装。切片本身并不拥有任何数据，它们只是对现有数组的引用。</p>
+<h5 id="创建切片"><a href="#创建切片" class="headerlink" title="创建切片"></a>创建切片</h5><p>元素类型为 T 的切片表示为 <code>[]T</code>。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;fmt&quot;</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	a := [<span class="hljs-number">5</span>]<span class="hljs-type">int</span>&#123;<span class="hljs-number">76</span>, <span class="hljs-number">77</span>, <span class="hljs-number">78</span>, <span class="hljs-number">79</span>, <span class="hljs-number">80</span>&#125;
+	<span class="hljs-keyword">var</span> b []<span class="hljs-type">int</span> = a[<span class="hljs-number">1</span>:<span class="hljs-number">4</span>] <span class="hljs-comment">//creates a slice from a[1] to a[3]</span>
+	fmt.Println(b)
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/Za6w5eubBB">Run in playground</a></p>
+<p>语法 <code>a[start:end]</code> 创建一个从数组 <code>a</code> 中索引 <code>start</code> 到索引 <code>end - 1</code> 的切片。所以在上述程序的第 9 行，<code>a[1:4]</code> 创建了数组 <code>a</code> 从索引 1 到索引 3 的切片表示。因此，切片 <code>b</code> 的值是 <code>[77 78 79]</code>。</p>
+<p>让我们看看另一种创建切片的方式。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;fmt&quot;</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	c := []<span class="hljs-type">int</span>&#123;<span class="hljs-number">6</span>, <span class="hljs-number">7</span>, <span class="hljs-number">8</span>&#125; <span class="hljs-comment">//creates an array and returns a slice reference</span>
+	fmt.Println(c)
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://go.dev/play/p/anQIndv7Sm6">Run in playground</a></p>
+<p>在上述程序的第 8 行，<code>c := []int&#123;6, 7, 8&#125;</code> 创建了一个包含 3 个整数的数组，并返回一个切片引用，该引用存储在 <code>c</code> 中。</p>
+<h5 id="修改切片"><a href="#修改切片" class="headerlink" title="修改切片"></a>修改切片</h5><p>切片本身不拥有任何数据，它只是对底层数组的一个表示。对切片所做的任何修改都会反映在底层数组中。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (  
+    <span class="hljs-string">&quot;fmt&quot;</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;  
+    darr := [...]<span class="hljs-type">int</span>&#123;<span class="hljs-number">57</span>, <span class="hljs-number">89</span>, <span class="hljs-number">90</span>, <span class="hljs-number">82</span>, <span class="hljs-number">100</span>, <span class="hljs-number">78</span>, <span class="hljs-number">67</span>, <span class="hljs-number">69</span>, <span class="hljs-number">59</span>&#125;
+    dslice := darr[<span class="hljs-number">2</span>:<span class="hljs-number">5</span>]
+    fmt.Println(<span class="hljs-string">&quot;array before&quot;</span>,darr)
+    <span class="hljs-keyword">for</span> i := <span class="hljs-keyword">range</span> dslice &#123;
+        dslice[i]++
+    &#125;
+    fmt.Println(<span class="hljs-string">&quot;array after&quot;</span>,darr) 
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/6FinudNf1k">Run in playground</a></p>
+<p>在上述程序的第 9 行，我们从数组的索引 2、3、4 创建了 <code>dslice</code>。<code>for</code> 循环将这些索引中的值增加了 1。当我们在 <code>for</code> 循环后打印数组时，可以看到切片的更改反映在了数组中。程序的输出是：</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">array before [57 89 90 82 100 78 67 69 59]
+array after [57 89 91 83 101 78 67 69 59]</code></pre></div>
+
+<p>当多个切片共享相同的底层数组时，每个切片所做的更改都会反映在该数组中。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;fmt&quot;</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	numa := [<span class="hljs-number">3</span>]<span class="hljs-type">int</span>&#123;<span class="hljs-number">78</span>, <span class="hljs-number">79</span> ,<span class="hljs-number">80</span>&#125;
+	nums1 := numa[:] <span class="hljs-comment">//creates a slice which contains all elements of the array</span>
+	nums2 := numa[:]
+	fmt.Println(<span class="hljs-string">&quot;array before change 1&quot;</span>,numa)
+	nums1[<span class="hljs-number">0</span>] = <span class="hljs-number">100</span>
+	fmt.Println(<span class="hljs-string">&quot;array after modification to slice nums1&quot;</span>, numa)
+	nums2[<span class="hljs-number">1</span>] = <span class="hljs-number">101</span>
+	fmt.Println(<span class="hljs-string">&quot;array after modification to slice nums2&quot;</span>, numa)
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/mdNi4cs854">Run in playground</a></p>
+<p>在第 9 行，<code>numa[:]</code> 中缺少起始值和结束值。默认情况下，起始值为 <code>0</code>，结束值为 <code>len(numa)</code>。因此，两个切片 <code>nums1</code> 和 <code>nums2</code> 共享相同的数组。程序的输出是：</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">array before change 1 [78 79 80]
+array after modification to slice nums1 [100 79 80]
+array after modification to slice nums2 [100 101 80]</code></pre></div>
+
+<p>从输出可以看出，当切片共享相同的数组时，对切片所做的修改会反映在数组中。</p>
+<h5 id="切片的长度和容量"><a href="#切片的长度和容量" class="headerlink" title="切片的长度和容量"></a>切片的长度和容量</h5><p>切片的长度是切片中元素的数量。<strong>切片的容量是从切片创建的索引开始，底层数组中元素的数量。</strong></p>
+<p>让我们编写一些代码来更好地理解这一点。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;fmt&quot;</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	fruitarray := [...]<span class="hljs-type">string</span>&#123;<span class="hljs-string">&quot;apple&quot;</span>, <span class="hljs-string">&quot;orange&quot;</span>, <span class="hljs-string">&quot;grape&quot;</span>, <span class="hljs-string">&quot;mango&quot;</span>, <span class="hljs-string">&quot;water melon&quot;</span>, <span class="hljs-string">&quot;pine apple&quot;</span>, <span class="hljs-string">&quot;chikoo&quot;</span>&#125;
+	fruitslice := fruitarray[<span class="hljs-number">1</span>:<span class="hljs-number">3</span>]
+	fmt.Printf(<span class="hljs-string">&quot;length of slice %d capacity %d&quot;</span>, <span class="hljs-built_in">len</span>(fruitslice), <span class="hljs-built_in">cap</span>(fruitslice)) <span class="hljs-comment">//length of fruitslice is 2 and capacity is 6</span>
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/a1WOcdv827">Run in playground</a></p>
+<p>在上述程序中，<code>fruitslice</code> 是从 <code>fruitarray</code> 的索引 1 和 2 创建的。因此，<code>fruitslice</code> 的长度是 2。</p>
+<p><code>fruitarray</code> 的长度是 7，<code>fruitslice</code> 是从 <code>fruitarray</code> 的索引 1 创建的。因此，<code>fruitslice</code> 的容量是从索引 1 开始的 <code>fruitarray</code> 中的元素数量，即从 <code>orange</code> 开始，容量为 6。因此，<code>fruitslice</code> 的容量是 6。该程序（<a target="_blank" rel="noopener" href="https://play.golang.org/p/a1WOcdv827">程序链接</a>）打印出 <strong>slice 的长度 2 容量 6</strong>。</p>
+<p>切片可以重新切片，直到其容量为止。超出此范围将导致程序抛出运行时错误。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (  
+    <span class="hljs-string">&quot;fmt&quot;</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;  
+    fruitarray := [...]<span class="hljs-type">string</span>&#123;<span class="hljs-string">&quot;apple&quot;</span>, <span class="hljs-string">&quot;orange&quot;</span>, <span class="hljs-string">&quot;grape&quot;</span>, <span class="hljs-string">&quot;mango&quot;</span>, <span class="hljs-string">&quot;water melon&quot;</span>, <span class="hljs-string">&quot;pine apple&quot;</span>, <span class="hljs-string">&quot;chikoo&quot;</span>&#125;
+    fruitslice := fruitarray[<span class="hljs-number">1</span>:<span class="hljs-number">3</span>]
+    fmt.Printf(<span class="hljs-string">&quot;length of slice %d capacity %d\n&quot;</span>, <span class="hljs-built_in">len</span>(fruitslice), <span class="hljs-built_in">cap</span>(fruitslice)) <span class="hljs-comment">//length of is 2 and capacity is 6</span>
+    fruitslice = fruitslice[:<span class="hljs-built_in">cap</span>(fruitslice)] <span class="hljs-comment">//re-slicing fruitslice till its capacity</span>
+    fmt.Println(<span class="hljs-string">&quot;After re-slicing length is&quot;</span>,<span class="hljs-built_in">len</span>(fruitslice), <span class="hljs-string">&quot;and capacity is&quot;</span>,<span class="hljs-built_in">cap</span>(fruitslice))
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://go.dev/play/p/GI1gkZReeya">Run in playground</a></p>
+<p>在上述程序的第 11 行，<code>fruitslice</code> 被重新切片，直到其容量为止。该程序的输出是：</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">length of slice 2 capacity 6
+After re-slicing length is 6 and capacity is 6</code></pre></div>
+
+<h5 id="使用-make-创建切片"><a href="#使用-make-创建切片" class="headerlink" title="使用 make 创建切片"></a>使用 <code>make</code> 创建切片</h5><p><code>func make([]T, len, cap) []T</code> 可以通过传递类型、长度和容量来创建一个切片。容量参数是可选的，默认为长度。<code>make</code> 函数创建一个数组并返回一个切片引用。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;fmt&quot;</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	i := <span class="hljs-built_in">make</span>([]<span class="hljs-type">int</span>, <span class="hljs-number">5</span>, <span class="hljs-number">5</span>)
+	fmt.Println(i)
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/M4OqxzerxN">Run in playground</a></p>
+<p>当使用 <code>make</code> 创建切片时，默认情况下切片中的值会被初始化为零。上述程序的输出将是 <code>[0 0 0 0 0]</code>。</p>
+<h5 id="向切片追加元素"><a href="#向切片追加元素" class="headerlink" title="向切片追加元素"></a>向切片追加元素</h5><p>正如我们所知道的，数组的长度是固定的，不能增加。而切片是动态的，可以使用 <code>append</code> 函数向切片中追加新元素。<code>append</code> 函数的定义是 <code>func append(s []T, x ...T) []T</code>。</p>
+<p><strong>x …T</strong> 在函数定义中表示该函数接受可变数量的参数。这样的函数被称为 <a href="../%E3%80%90GolangBot%E3%80%9112-%E5%8F%AF%E5%8F%98%E5%8F%82%E6%95%B0%E5%87%BD%E6%95%B0">变参函数</a>。</p>
+<p>不过，有一个问题可能困扰你。如果切片是由数组支持的，而数组本身是固定长度的，那么切片是如何具有动态长度的呢？实际上，发生的情况是，当向切片中追加新元素时，首先会创建一个新的数组。现有数组的元素会被复制到这个新数组中，并且返回一个指向新数组的切片引用。新切片的容量将是旧切片容量的两倍。很酷，对吧？下面的程序将使这一点更加清晰。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;fmt&quot;</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	cars := []<span class="hljs-type">string</span>&#123;<span class="hljs-string">&quot;Ferrari&quot;</span>, <span class="hljs-string">&quot;Honda&quot;</span>, <span class="hljs-string">&quot;Ford&quot;</span>&#125;
+	fmt.Println(<span class="hljs-string">&quot;cars:&quot;</span>, cars, <span class="hljs-string">&quot;has old length&quot;</span>, <span class="hljs-built_in">len</span>(cars), <span class="hljs-string">&quot;and capacity&quot;</span>, <span class="hljs-built_in">cap</span>(cars)) <span class="hljs-comment">//capacity of cars is 3</span>
+	cars = <span class="hljs-built_in">append</span>(cars, <span class="hljs-string">&quot;Toyota&quot;</span>)
+	fmt.Println(<span class="hljs-string">&quot;cars:&quot;</span>, cars, <span class="hljs-string">&quot;has new length&quot;</span>, <span class="hljs-built_in">len</span>(cars), <span class="hljs-string">&quot;and capacity&quot;</span>, <span class="hljs-built_in">cap</span>(cars)) <span class="hljs-comment">//capacity of cars is doubled to 6</span>
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/VUSXCOs1CF">Run in playground</a></p>
+<p>在上述程序中，<code>cars</code> 的初始容量为 3。在第 10 行，我们向 <code>cars</code> 中追加了一个新元素，并将 <code>append(cars, &quot;Toyota&quot;)</code> 返回的切片重新赋值给 <code>cars</code>。现在，<code>cars</code> 的容量翻倍，变成了 6。该程序的输出是：</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">cars: [Ferrari Honda Ford] has old length 3 and capacity 3
+cars: [Ferrari Honda Ford Toyota] has new length 4 and capacity 6</code></pre></div>
+
+<p>切片类型的零值是 <code>nil</code>。一个 <code>nil</code> 切片的长度和容量都是 0。可以使用 <code>append</code> 函数向一个 <code>nil</code> 切片追加值。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;fmt&quot;</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	<span class="hljs-keyword">var</span> names []<span class="hljs-type">string</span> <span class="hljs-comment">//zero value of a slice is nil</span>
+	<span class="hljs-keyword">if</span> names == <span class="hljs-literal">nil</span> &#123;
+		fmt.Println(<span class="hljs-string">&quot;slice is nil going to append&quot;</span>)
+		names = <span class="hljs-built_in">append</span>(names, <span class="hljs-string">&quot;John&quot;</span>, <span class="hljs-string">&quot;Sebastian&quot;</span>, <span class="hljs-string">&quot;Vinay&quot;</span>)
+		fmt.Println(<span class="hljs-string">&quot;names contents:&quot;</span>,names)
+	&#125;
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/x_-4XAJHbM">Run in playground</a></p>
+<p>在上述程序中，<code>names</code> 是 <code>nil</code>，我们向 <code>names</code> 中追加了 3 个字符串。该程序的输出是：</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">slice is nil going to append
+names contents: [John Sebastian Vinay]</code></pre></div>
+
+<p>也可以使用 <code>...</code> 操作符将一个切片追加到另一个切片。你可以在 <a href="../%E3%80%90GolangBot%E3%80%9112-%E5%8F%AF%E5%8F%98%E5%8F%82%E6%95%B0%E5%87%BD%E6%95%B0">变参函数</a> 教程中了解更多关于这个操作符的信息。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;fmt&quot;</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	veggies := []<span class="hljs-type">string</span>&#123;<span class="hljs-string">&quot;potatoes&quot;</span>,<span class="hljs-string">&quot;tomatoes&quot;</span>,<span class="hljs-string">&quot;brinjal&quot;</span>&#125;
+	fruits := []<span class="hljs-type">string</span>&#123;<span class="hljs-string">&quot;oranges&quot;</span>,<span class="hljs-string">&quot;apples&quot;</span>&#125;
+	food := <span class="hljs-built_in">append</span>(veggies, fruits...)
+	fmt.Println(<span class="hljs-string">&quot;food:&quot;</span>,food)
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/UnHOH_u6HS">Run in playground</a></p>
+<p>在上述程序的第 10 行，<code>food</code> 是通过将 <code>fruits</code> 追加到 <code>veggies</code> 上创建的。程序的输出是 <code>food: [potatoes tomatoes brinjal oranges apples]</code>。</p>
+<h5 id="将切片传递给函数"><a href="#将切片传递给函数" class="headerlink" title="将切片传递给函数"></a>将切片传递给函数</h5><p>切片可以被认为是通过一个结构类型在内部表示的。它的结构如下所示：</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">type slice struct &#123;
+    Length        int
+    Capacity      int
+    ZerothElement *byte
+&#125;</code></pre></div>
+
+<p>一个切片包含长度、容量以及指向数组第零元素的指针。当切片传递给函数时，尽管是按值传递，但指针变量仍然指向相同的底层数组。因此，当切片作为参数传递给函数时，函数内部所做的更改在函数外部也可见。让我们编写一个程序来验证这一点。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;fmt&quot;</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">subtactOne</span><span class="hljs-params">(numbers []<span class="hljs-type">int</span>)</span></span> &#123;
+	<span class="hljs-keyword">for</span> i := <span class="hljs-keyword">range</span> numbers &#123;
+		numbers[i] -= <span class="hljs-number">2</span>
+	&#125;
+
+&#125;
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	nos := []<span class="hljs-type">int</span>&#123;<span class="hljs-number">8</span>, <span class="hljs-number">7</span>, <span class="hljs-number">6</span>&#125;
+	fmt.Println(<span class="hljs-string">&quot;slice before function call&quot;</span>, nos)
+	subtactOne(nos)                               <span class="hljs-comment">//function modifies the slice</span>
+	fmt.Println(<span class="hljs-string">&quot;slice after function call&quot;</span>, nos) <span class="hljs-comment">//modifications are visible outside</span>
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/IzqDihNifq">Run in playground</a></p>
+<p>在上述程序的第 17 行，函数调用将切片的每个元素都减少了 2。当函数调用之后打印切片时，这些更改是可见的。如果你还记得，这与数组不同，因为数组在函数内部所做的更改在函数外部是不可见的。该<a target="_blank" rel="noopener" href="https://play.golang.org/p/bWUb6R-1bS">程序</a>的输出是：</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">slice before function call [8 7 6]
+slice after function call [6 5 4]</code></pre></div>
+
+<h5 id="多维切片"><a href="#多维切片" class="headerlink" title="多维切片"></a>多维切片</h5><p>与数组类似，切片也可以具有多个维度。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;fmt&quot;</span>
+)
+
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+ 	pls := [][]<span class="hljs-type">string</span> &#123;
+			&#123;<span class="hljs-string">&quot;C&quot;</span>, <span class="hljs-string">&quot;C++&quot;</span>&#125;,
+			&#123;<span class="hljs-string">&quot;JavaScript&quot;</span>&#125;,
+			&#123;<span class="hljs-string">&quot;Go&quot;</span>, <span class="hljs-string">&quot;Rust&quot;</span>&#125;,
+			&#125;
+	<span class="hljs-keyword">for</span> _, v1 := <span class="hljs-keyword">range</span> pls &#123;
+		<span class="hljs-keyword">for</span> _, v2 := <span class="hljs-keyword">range</span> v1 &#123;
+			fmt.Printf(<span class="hljs-string">&quot;%s &quot;</span>, v2)
+		&#125;
+		fmt.Printf(<span class="hljs-string">&quot;\n&quot;</span>)
+	&#125;
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/--p1AvNGwN">Run in playground</a></p>
+<p>程序的输出是，</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">C C++ 
+JavaScript 
+Go Rust</code></pre></div>
+
+<h5 id="内存优化"><a href="#内存优化" class="headerlink" title="内存优化"></a>内存优化</h5><p>切片持有对底层数组的引用。只要切片存在于内存中，数组就无法被垃圾回收。当涉及到内存管理时，这可能会成为一个问题。假设我们有一个非常大的数组，并且只关心处理其中的一小部分。接下来，我们从该数组创建一个切片并开始处理该切片。这里需要注意的一个重要问题是，由于切片引用了数组，数组仍然会保留在内存中。</p>
+<p>解决这个问题的一种方法是使用 <a target="_blank" rel="noopener" href="https://golang.org/pkg/builtin/#copy">copy</a> 函数 <code>func copy(dst, src []T) int</code> 来创建该切片的副本。通过这种方式，我们可以使用新的切片，并且原始数组可以被垃圾回收。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;fmt&quot;</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">countries</span><span class="hljs-params">()</span></span> []<span class="hljs-type">string</span> &#123; 
+    countries := []<span class="hljs-type">string</span>&#123;<span class="hljs-string">&quot;USA&quot;</span>, <span class="hljs-string">&quot;Singapore&quot;</span>, <span class="hljs-string">&quot;Germany&quot;</span>, <span class="hljs-string">&quot;India&quot;</span>, <span class="hljs-string">&quot;Australia&quot;</span>&#125;
+	neededCountries := countries[:<span class="hljs-built_in">len</span>(countries)<span class="hljs-number">-2</span>]
+	countriesCpy := <span class="hljs-built_in">make</span>([]<span class="hljs-type">string</span>, <span class="hljs-built_in">len</span>(neededCountries))
+	<span class="hljs-built_in">copy</span>(countriesCpy, neededCountries) <span class="hljs-comment">//copies neededCountries to countriesCpy</span>
+	<span class="hljs-keyword">return</span> countriesCpy
+&#125;
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	countriesNeeded := countries()
+	fmt.Println(countriesNeeded)
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/35ayYBhcDE">Run in playground</a></p>
+<p>在上述程序的第 9 行，<code>neededCountries := countries[:len(countries)-2]</code> 创建了一个切片，去除了 <code>countries</code> 的最后两个元素。第 11 行将 <code>neededCountries</code> 复制到 <code>countriesCpy</code> 中，并在下一行将其返回。现在，<code>countries</code> 数组可以被垃圾回收，因为 <code>neededCountries</code> 不再被引用。</p>
+<p>我已经将我们讨论过的所有概念汇总到一个程序中。你可以从 <a target="_blank" rel="noopener" href="https://github.com/golangbot/arraysandslices">GitHub</a> 下载它。</p>
+<p><strong>下一篇教程 - <a href="../%E3%80%90GolangBot%E3%80%9112-%E5%8F%AF%E5%8F%98%E5%8F%82%E6%95%B0%E5%87%BD%E6%95%B0">变参函数</a></strong></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E5%BF%83%E5%BE%97/" class="category-chain-item">学习心得</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E5%BF%83%E5%BE%97/GolangBot/" class="category-chain-item">GolangBot</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Golang/" class="print-no-link">#Golang</a>
+      
+        <a href="/tags/%E6%95%99%E7%A8%8B/" class="print-no-link">#教程</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>【GolangBot】11-数组和切片</div>
+      <div>https://zoekyhein.github.io/【GolangBot】11-数组和切片/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>ZoeKyHein</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年12月23日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/%E3%80%90GolangBot%E3%80%9112-%E5%8F%AF%E5%8F%98%E5%8F%82%E6%95%B0%E5%87%BD%E6%95%B0/" title="【GolangBot】12-可变参数函数">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">【GolangBot】12-可变参数函数</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/%E3%80%90GolangBot%E3%80%9110-switch%E8%AF%AD%E5%8F%A5/" title="【GolangBot】10-switch语句">
+                        <span class="hidden-mobile">【GolangBot】10-switch语句</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

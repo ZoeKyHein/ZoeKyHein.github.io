@@ -1,0 +1,821 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/icon.png">
+  <link rel="icon" href="/img/icon.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#ac9343">
+  <meta name="author" content="ZoeKyHein">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="欢迎来到 Golang 教程系列 的第 26 个教程。 Go 是面向对象的吗？Go 不是纯粹的面向对象编程语言。以下摘录自 Go 的 FAQ，回答了 Go 是否是面向对象的问题。 Yes and no. Although Go has types and methods and allows an object-oriented style of programming,  there is no">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【GolangBot】26-结构体代替类">
+<meta property="og:url" content="https://zoekyhein.github.io/%E3%80%90GolangBot%E3%80%9126-%E7%BB%93%E6%9E%84%E4%BD%93%E4%BB%A3%E6%9B%BF%E7%B1%BB/index.html">
+<meta property="og:site_name" content="传火祭祀场">
+<meta property="og:description" content="欢迎来到 Golang 教程系列 的第 26 个教程。 Go 是面向对象的吗？Go 不是纯粹的面向对象编程语言。以下摘录自 Go 的 FAQ，回答了 Go 是否是面向对象的问题。 Yes and no. Although Go has types and methods and allows an object-oriented style of programming,  there is no">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-12-26T09:16:42.000Z">
+<meta property="article:modified_time" content="2025-01-23T07:44:45.569Z">
+<meta property="article:author" content="ZoeKyHein">
+<meta property="article:tag" content="Golang">
+<meta property="article:tag" content="教程">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>【GolangBot】26-结构体代替类 - 传火祭祀场</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"zoekyhein.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"💥","loop":false,"scope":["home"]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>传火祭祀场</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/golangbot" target="_self">
+                <i class="iconfont icon-book"></i>
+                <span>Go教程</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/sunKnight.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">【GolangBot】26-结构体代替类</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-12-26 09:16" pubdate>
+          2024年12月26日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.9k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          16 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">【GolangBot】26-结构体代替类</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>欢迎来到 <a href="../golangbot/">Golang 教程系列</a> 的第 26 个教程。</p>
+<h3 id="Go-是面向对象的吗？"><a href="#Go-是面向对象的吗？" class="headerlink" title="Go 是面向对象的吗？"></a>Go 是面向对象的吗？</h3><p>Go 不是纯粹的面向对象编程语言。以下摘录自 Go 的 <a target="_blank" rel="noopener" href="https://go.dev/doc/faq#Is_Go_an_object-oriented_language">FAQ</a>，回答了 Go 是否是面向对象的问题。</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">Yes and no. Although Go has types and methods and allows an object-oriented style of programming, 
+there is no type hierarchy. The concept of “interface” in Go provides a different approach that we 
+believe is easy to use and in some ways more general. There are also ways to embed types in other 
+types to provide something analogous—but not identical—to subclassing. Moreover, methods in Go are 
+more general than in C++ or Java: they can be defined for any sort of data, even built-in types 
+such as plain, &quot;unboxed&quot; integers. They are not restricted to structs (classes).
+
+是，也不是。尽管 Go 具有类型和方法，并支持面向对象的编程风格，但它没有类型层次结构。Go 中的“接口”概念提供了一种不同的方式，我们认为这种方式易于使用，并且在某些方面更加通用。Go 还可以通过将一种类型嵌入到另一种类型中，提供类似（但不完全相同于）子类化的功能。此外，Go 中的方法比 C++ 或 Java 更加通用：它们可以为任何类型的数据定义，甚至包括内置类型，例如普通的“非装箱”整数。它们并不限于 struct（类）。</code></pre></div>
+
+<p>在接下来的教程中，我们将讨论如何使用 Go 实现面向对象编程的概念。其中一些实现与其他面向对象语言（如 Java）相比有很大的不同。</p>
+<h3 id="使用结构体代替类"><a href="#使用结构体代替类" class="headerlink" title="使用结构体代替类"></a>使用结构体代替类</h3><p>Go 不提供类，但它提供 <a href="../%E3%80%90GolangBot%E3%80%9116-%E7%BB%93%E6%9E%84%E4%BD%93">结构体</a>。可以在结构体上添加 <a href="../%E3%80%90GolangBot%E3%80%9117-%E6%96%B9%E6%B3%95">方法</a>。这提供了将数据和方法捆绑在一起的行为，类似于类。</p>
+<p>为了更好地理解，让我们直接从一个例子开始。</p>
+<p>在这个例子中，我们将创建一个自定义的 <a href="../GolangBot%E3%80%917-%E5%8C%85">包</a>，因为它有助于更好地理解结构体如何有效地替代类。</p>
+<p>在 <code>~/Documents/</code> 中创建一个子文件夹，并将其命名为 <code>oop</code>。</p>
+<p>让我们初始化一个名为 <code>oop</code> 的 Go 模块。在 <code>oop</code> 目录中键入以下命令以创建一个名为 <code>oop</code> 的 go mod。</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">go mod init oop</code></pre></div>
+
+<p>在 <code>oop</code> 中创建一个子文件夹 <code>employee</code>。在 <code>employee</code> 文件夹中，创建一个名为 <code>employee.go</code> 的文件。</p>
+<p>文件夹结构如下：</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">├── Documents
+│   └── oop
+│       ├── employee
+│       │   └── employee.go
+│       └── go.mod</code></pre></div>
+
+<p>请将 <code>employee.go</code> 的内容替换为以下内容：</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> employee
+
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;fmt&quot;</span>
+)
+
+<span class="hljs-keyword">type</span> Employee <span class="hljs-keyword">struct</span> &#123;  
+    FirstName   <span class="hljs-type">string</span>
+    LastName    <span class="hljs-type">string</span>
+    TotalLeaves <span class="hljs-type">int</span>
+    LeavesTaken <span class="hljs-type">int</span>
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(e Employee)</span></span> LeavesRemaining() &#123;  
+    fmt.Printf(<span class="hljs-string">&quot;%s %s has %d leaves remaining\n&quot;</span>, e.FirstName, e.LastName, (e.TotalLeaves - e.LeavesTaken))
+&#125;</code></pre></div>
+
+<p>在上面的程序中，第 1 行指定此文件属于 <code>employee</code> 包。第 7 行声明了一个 <code>Employee</code> 结构体。第 14 行向 <code>Employee</code> 结构体添加了一个名为 <code>LeavesRemaining</code> 的方法。该方法计算并显示员工剩余的假期天数。现在我们有了一个结构体和一个操作结构体的方法，类似于类。</p>
+<p>在 <code>oop</code> 文件夹中创建一个名为 <code>main.go</code> 的文件。</p>
+<p>现在文件夹结构如下：</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">├── Documents
+│   └── oop
+│       ├── employee
+│       │   └── employee.go
+│       ├── go.mod
+│       └── main.go</code></pre></div>
+
+<p><code>main.go</code> 的内容如下：</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> <span class="hljs-string">&quot;oop/employee&quot;</span>
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	e := employee.Employee &#123;
+		FirstName: <span class="hljs-string">&quot;Sam&quot;</span>,
+		LastName: <span class="hljs-string">&quot;Adolf&quot;</span>,
+		TotalLeaves: <span class="hljs-number">30</span>,
+		LeavesTaken: <span class="hljs-number">20</span>,
+	&#125;
+	e.LeavesRemaining()
+&#125;</code></pre></div>
+
+<p>我们在第 3 行导入了 <code>employee</code> 包。第 12 行在 <code>main()</code> 中调用了 <code>Employee</code> 结构体的 <code>LeavesRemaining()</code> 方法。</p>
+<p>由于此程序包含自定义包，因此无法在 playground 上运行。如果您在本地运行此程序，通过执行 <code>go install</code> 命令，然后执行 <code>oop</code>，程序将输出：</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">Sam Adolf has 10 leaves remaining</code></pre></div>
+
+<p>如果您不确定如何运行此程序，请访问 <a href="../%E3%80%90GolangBot%E3%80%912-Hello-World">&#x2F;hello-world-gomod&#x2F;</a> 了解更多信息。</p>
+<h3 id="使用-New-函数代替构造函数"><a href="#使用-New-函数代替构造函数" class="headerlink" title="使用 New() 函数代替构造函数"></a>使用 New() 函数代替构造函数</h3><p>我们上面编写的程序看起来不错，但其中存在一个微妙的问题。让我们看看当我们用零值定义 employee 结构体时会发生什么。将 <code>main.go</code> 的内容替换为以下代码：</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> <span class="hljs-string">&quot;oop/employee&quot;</span>
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	<span class="hljs-keyword">var</span> e employee.Employee
+	e.LeavesRemaining()
+&#125;</code></pre></div>
+
+<p>我们唯一做的更改是在第 6 行创建了一个零值的 <code>Employee</code>。此程序将输出：</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">has 0 leaves remaining</code></pre></div>
+
+<p>如您所见，使用 <code>Employee</code> 的零值创建的变量是不可用的。它没有有效的名字、姓氏，也没有有效的假期详细信息。</p>
+<p>在其他 OOP 语言（如 Java）中，可以通过使用构造函数来解决此问题。可以通过使用参数化构造函数来创建有效的对象。</p>
+<p>Go 不支持构造函数。如果类型的零值不可用，程序员的工作是取消导出该类型以防止从其他包访问，并提供一个名为 <code>NewT(parameters)</code> 的 <a href="../%E3%80%90GolangBot%E3%80%916-%E5%87%BD%E6%95%B0">函数</a>，该函数使用所需的值初始化类型 <code>T</code>。在 Go 中，命名一个创建类型 <code>T</code> 的值的函数为 <code>NewT(parameters)</code> 是一种约定。这将充当构造函数。如果包只定义了一个类型，那么在 Go 中约定将此函数命名为 <code>New(parameters)</code> 而不是 <code>NewT(parameters)</code>。</p>
+<p>让我们对我们编写的程序进行更改，以便每次创建 employee 时，它都是可用的。</p>
+<p>第一步是取消导出 <code>Employee</code> 结构体并创建一个 <code>New()</code> 函数，该函数将创建一个新的 <code>Employee</code>。将 <code>employee.go</code> 中的代码替换为以下内容：</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> employee
+
+<span class="hljs-keyword">import</span> (  
+    <span class="hljs-string">&quot;fmt&quot;</span>
+)
+
+<span class="hljs-keyword">type</span> employee <span class="hljs-keyword">struct</span> &#123;  
+    firstName   <span class="hljs-type">string</span>
+    lastName    <span class="hljs-type">string</span>
+    totalLeaves <span class="hljs-type">int</span>
+    leavesTaken <span class="hljs-type">int</span>
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">New</span><span class="hljs-params">(firstName <span class="hljs-type">string</span>, lastName <span class="hljs-type">string</span>, totalLeave <span class="hljs-type">int</span>, leavesTaken <span class="hljs-type">int</span>)</span></span> employee &#123;
+	e := employee &#123;firstName, lastName, totalLeave, leavesTaken&#125;
+	<span class="hljs-keyword">return</span> e
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(e employee)</span></span> LeavesRemaining() &#123;  
+    fmt.Printf(<span class="hljs-string">&quot;%s %s has %d leaves remaining\n&quot;</span>, e.firstName, e.lastName, (e.totalLeaves - e.leavesTaken))
+&#125;</code></pre></div>
+
+<p>我们在这里做了一些重要的更改。我们将第 7 行的 <code>Employee</code> 结构体的首字母 <code>e</code> 改为小写，即将 <code>type Employee struct</code> 更改为 <code>type employee struct</code>。通过这样做，我们成功地取消了 <code>employee</code> 结构体的导出，并防止了其他包的访问。除非有特定的需要导出字段，否则最好将所有未导出结构体的字段也取消导出。由于我们不需要在 <code>employee</code> 包之外的任何地方访问 <code>employee</code> 结构体的字段，因此我们也取消了所有字段的导出。</p>
+<p>我们在 <code>LeavesRemaining()</code> 方法中相应地更改了字段名称。</p>
+<p>现在，由于 <code>employee</code> 是未导出的，因此无法从其他包创建类型为 <code>Employee</code> 的值。因此，我们在第 14 行提供了一个导出的 <code>New</code> 函数，该函数接受所需的参数作为输入并返回一个新创建的 employee。</p>
+<p>此程序仍然需要进行更改才能使其工作，但让我们运行此程序以了解到目前为止更改的效果。如果运行此程序，它将失败并出现以下编译错误：</p>
+<div class="code-wrapper"><pre><code class="hljs fallback"># oop
+./main.go:6:8: undefined: employee.Employee</code></pre></div>
+
+<p>这是因为我们在 <code>employee</code> 包中有一个未导出的 <code>employee</code>，并且无法从 <code>main</code> 包访问它。因此，编译器会抛出错误，指出此类型在 <code>main.go</code> 中未定义。完美。这正是我们想要的。现在，其他包将无法创建零值的 <code>employee</code>。我们成功地防止了创建不可用的 employee 结构体值。现在创建 employee 的唯一方法是使用 <code>New</code> 函数。</p>
+<p>将 <code>main.go</code> 的内容替换为以下内容：</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main  
+
+<span class="hljs-keyword">import</span> <span class="hljs-string">&quot;oop/employee&quot;</span>
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;  
+    e := employee.New(<span class="hljs-string">&quot;Sam&quot;</span>, <span class="hljs-string">&quot;Adolf&quot;</span>, <span class="hljs-number">30</span>, <span class="hljs-number">20</span>)
+    e.LeavesRemaining()
+&#125;</code></pre></div>
+
+<p>此文件的唯一更改是在第 6 行。我们通过将所需的参数传递给 <code>New</code> 函数来创建一个新的 employee。</p>
+<p>以下是进行所需更改后两个文件的内容。</p>
+<p>employee.go</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> employee
+
+<span class="hljs-keyword">import</span> (  
+    <span class="hljs-string">&quot;fmt&quot;</span>
+)
+
+<span class="hljs-keyword">type</span> employee <span class="hljs-keyword">struct</span> &#123;  
+    firstName   <span class="hljs-type">string</span>
+    lastName    <span class="hljs-type">string</span>
+    totalLeaves <span class="hljs-type">int</span>
+    leavesTaken <span class="hljs-type">int</span>
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">New</span><span class="hljs-params">(firstName <span class="hljs-type">string</span>, lastName <span class="hljs-type">string</span>, totalLeave <span class="hljs-type">int</span>, leavesTaken <span class="hljs-type">int</span>)</span></span> employee &#123;  
+    e := employee &#123;firstName, lastName, totalLeave, leavesTaken&#125;
+    <span class="hljs-keyword">return</span> e
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(e employee)</span></span> LeavesRemaining() &#123;  
+    fmt.Printf(<span class="hljs-string">&quot;%s %s has %d leaves remaining\n&quot;</span>, e.firstName, e.lastName, (e.totalLeaves - e.leavesTaken))
+&#125;</code></pre></div>
+
+<p>main.go</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main  
+
+<span class="hljs-keyword">import</span> <span class="hljs-string">&quot;oop/employee&quot;</span>
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;  
+    e := employee.New(<span class="hljs-string">&quot;Sam&quot;</span>, <span class="hljs-string">&quot;Adolf&quot;</span>, <span class="hljs-number">30</span>, <span class="hljs-number">20</span>)
+    e.LeavesRemaining()
+&#125;</code></pre></div>
+
+<p>运行此程序将输出：</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">Sam Adolf has 10 leaves remaining</code></pre></div>
+
+<p>因此，您可以理解，尽管 Go 不支持类，但结构体可以有效地替代类，并且签名 <code>New(parameters)</code> 的方法可以替代构造函数。</p>
+<p>这就是 Go 中的类和构造函数。</p>
+<p><strong>下一个教程 - <a href="../%E3%80%90GolangBot%E3%80%9127-%E7%BB%84%E5%90%88%E8%80%8C%E4%B8%8D%E6%98%AF%E7%BB%A7%E6%89%BF.md">组合代替继承</a></strong></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E5%BF%83%E5%BE%97/" class="category-chain-item">学习心得</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E5%BF%83%E5%BE%97/GolangBot/" class="category-chain-item">GolangBot</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Golang/" class="print-no-link">#Golang</a>
+      
+        <a href="/tags/%E6%95%99%E7%A8%8B/" class="print-no-link">#教程</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>【GolangBot】26-结构体代替类</div>
+      <div>https://zoekyhein.github.io/【GolangBot】26-结构体代替类/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>ZoeKyHein</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年12月26日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/%E3%80%90GolangBot%E3%80%9127-%E7%BB%84%E5%90%88%E8%80%8C%E4%B8%8D%E6%98%AF%E7%BB%A7%E6%89%BF/" title="【GolangBot】27-组合而不是继承">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">【GolangBot】27-组合而不是继承</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/%E3%80%90GolangBot%E3%80%9125-%E4%BA%92%E6%96%A5%E9%94%81/" title="【GolangBot】25-互斥锁">
+                        <span class="hidden-mobile">【GolangBot】25-互斥锁</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

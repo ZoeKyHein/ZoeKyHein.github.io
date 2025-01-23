@@ -1,0 +1,1032 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/icon.png">
+  <link rel="icon" href="/img/icon.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#ac9343">
+  <meta name="author" content="ZoeKyHein">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="欢迎来到我们的 Golang 教程系列的第17篇教程。 简介方法实际上就是一个带有特殊接收者类型的函数，这个接收者类型位于func关键字和方法名之间。接收者可以是结构体类型或非结构体类型。 方法声明的语法如下所示： func (t Type) methodName(parameter list) &#123; &#125;  上面的代码片段创建了一个名为methodName的方法，其接收者类型为T">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【GolangBot】17-方法">
+<meta property="og:url" content="https://zoekyhein.github.io/%E3%80%90GolangBot%E3%80%9117-%E6%96%B9%E6%B3%95/index.html">
+<meta property="og:site_name" content="传火祭祀场">
+<meta property="og:description" content="欢迎来到我们的 Golang 教程系列的第17篇教程。 简介方法实际上就是一个带有特殊接收者类型的函数，这个接收者类型位于func关键字和方法名之间。接收者可以是结构体类型或非结构体类型。 方法声明的语法如下所示： func (t Type) methodName(parameter list) &#123; &#125;  上面的代码片段创建了一个名为methodName的方法，其接收者类型为T">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-12-24T12:52:41.000Z">
+<meta property="article:modified_time" content="2025-01-23T07:44:45.568Z">
+<meta property="article:author" content="ZoeKyHein">
+<meta property="article:tag" content="Golang">
+<meta property="article:tag" content="教程">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>【GolangBot】17-方法 - 传火祭祀场</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"zoekyhein.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"💥","loop":false,"scope":["home"]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>传火祭祀场</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/golangbot" target="_self">
+                <i class="iconfont icon-book"></i>
+                <span>Go教程</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/sunKnight.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">【GolangBot】17-方法</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-12-24 12:52" pubdate>
+          2024年12月24日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.8k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          24 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">【GolangBot】17-方法</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>欢迎来到我们的 <a href="../golangbot/">Golang 教程系列</a>的第17篇教程。</p>
+<h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>方法实际上就是一个带有特殊接收者类型的函数，这个接收者类型位于<code>func</code>关键字和方法名之间。接收者可以是结构体类型或非结构体类型。</p>
+<p>方法声明的语法如下所示：</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(t Type)</span></span> methodName(parameter list) &#123;
+&#125;</code></pre></div>
+
+<p>上面的代码片段创建了一个名为<code>methodName</code>的方法，其接收者类型为<code>Type</code>。<code>t</code>被称为接收者，可以在方法内部访问它。</p>
+<h3 id="方法示例"><a href="#方法示例" class="headerlink" title="方法示例"></a>方法示例</h3><p>让我们编写一个简单的程序，在结构体类型上创建一个方法并调用它。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (
+    <span class="hljs-string">&quot;fmt&quot;</span>
+)
+
+<span class="hljs-keyword">type</span> Employee <span class="hljs-keyword">struct</span> &#123;
+    name     <span class="hljs-type">string</span>
+    salary   <span class="hljs-type">int</span>
+    currency <span class="hljs-type">string</span>
+&#125;
+
+<span class="hljs-comment">/*</span>
+<span class="hljs-comment"> displaySalary() method has Employee as the receiver type</span>
+<span class="hljs-comment">*/</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(e Employee)</span></span> displaySalary() &#123;
+    fmt.Printf(<span class="hljs-string">&quot;Salary of %s is %s%d&quot;</span>, e.name, e.currency, e.salary)
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+    emp1 := Employee &#123;
+        name:     <span class="hljs-string">&quot;Sam Adolf&quot;</span>,
+        salary:   <span class="hljs-number">5000</span>,
+        currency: <span class="hljs-string">&quot;$&quot;</span>,
+    &#125;
+    emp1.displaySalary() <span class="hljs-comment">//Calling displaySalary() method of Employee type</span>
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/rRsI_sWAOZ">Run program in playground</a></p>
+<p>在上面程序的第16行中，我们在<code>Employee</code>结构体类型上创建了一个方法<code>displaySalary</code>。<code>displaySalary()</code>方法在其内部可以访问接收者<code>e</code>。在第17行中，我们使用接收者<code>e</code>打印员工的姓名、货币和工资。</p>
+<p>在第26行中，我们使用语法<code>emp1.displaySalary()</code>调用了该方法。</p>
+<p>这个程序打印输出：<code>Salary of Sam Adolf is $5000</code>。</p>
+<h3 id="方法与函数的比较"><a href="#方法与函数的比较" class="headerlink" title="方法与函数的比较"></a>方法与函数的比较</h3><p>上面的程序可以只使用函数而不使用方法重写。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (
+    <span class="hljs-string">&quot;fmt&quot;</span>
+)
+
+<span class="hljs-keyword">type</span> Employee <span class="hljs-keyword">struct</span> &#123;
+    name     <span class="hljs-type">string</span>
+    salary   <span class="hljs-type">int</span>
+    currency <span class="hljs-type">string</span>
+&#125;
+
+<span class="hljs-comment">/*</span>
+<span class="hljs-comment"> displaySalary() method converted to function with Employee as parameter</span>
+<span class="hljs-comment">*/</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">displaySalary</span><span class="hljs-params">(e Employee)</span></span> &#123;
+    fmt.Printf(<span class="hljs-string">&quot;Salary of %s is %s%d&quot;</span>, e.name, e.currency, e.salary)
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+    emp1 := Employee&#123;
+        name:     <span class="hljs-string">&quot;Sam Adolf&quot;</span>,
+        salary:   <span class="hljs-number">5000</span>,
+        currency: <span class="hljs-string">&quot;$&quot;</span>,
+    &#125;
+    displaySalary(emp1)
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/dFwObgCUU0">Run program in playground</a></p>
+<p>在上面的程序中，<code>displaySalary</code>方法被转换为一个函数，并且<code>Employee</code>结构体作为参数传递给它。这个程序也产生完全相同的输出：<code>Salary of Sam Adolf is $5000</code>。</p>
+<p>那么既然我们可以用函数写出相同的程序，为什么还要有方法呢？这里有几个原因。让我们一个一个来看。</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://go.dev/doc/faq#Is_Go_an_object-oriented_language">Go不是一个纯面向对象的编程语言</a>，它不支持类。因此，在类型上定义方法是实现类似类的行为的一种方式。方法允许对与类型相关的行为进行逻辑分组，类似于类。在上面的示例程序中，所有与<code>Employee</code>类型相关的行为都可以通过使用<code>Employee</code>接收者类型创建方法来分组。例如，我们可以添加诸如<code>calculatePension</code>、<code>calculateLeaves</code>等方法。</li>
+<li>可以在不同的类型上定义相同名称的方法，而具有相同名称的函数是不允许的。假设我们有一个<code>Square</code>和<code>Circle</code>结构体。可以在<code>Square</code>和<code>Circle</code>上都定义一个名为<code>Area</code>的方法。这在下面的程序中演示：</li>
+</ul>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (
+    <span class="hljs-string">&quot;fmt&quot;</span>
+    <span class="hljs-string">&quot;math&quot;</span>
+)
+
+<span class="hljs-keyword">type</span> Rectangle <span class="hljs-keyword">struct</span> &#123;
+    length <span class="hljs-type">int</span>
+    width  <span class="hljs-type">int</span>
+&#125;
+
+<span class="hljs-keyword">type</span> Circle <span class="hljs-keyword">struct</span> &#123;
+    radius <span class="hljs-type">float64</span>
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(r Rectangle)</span></span> Area() <span class="hljs-type">int</span> &#123;
+    <span class="hljs-keyword">return</span> r.length * r.width
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(c Circle)</span></span> Area() <span class="hljs-type">float64</span> &#123;
+    <span class="hljs-keyword">return</span> math.Pi * c.radius * c.radius
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+    r := Rectangle&#123;
+        length: <span class="hljs-number">10</span>,
+        width:  <span class="hljs-number">5</span>,
+    &#125;
+    fmt.Printf(<span class="hljs-string">&quot;Area of rectangle %d\n&quot;</span>, r.Area())
+    c := Circle&#123;
+        radius: <span class="hljs-number">12</span>,
+    &#125;
+    fmt.Printf(<span class="hljs-string">&quot;Area of circle %f&quot;</span>, c.Area())
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/0hDM3E3LiP">Run program in playground</a></p>
+<p>这个程序打印输出：</p>
+<div class="code-wrapper"><pre><code class="hljs apache"><span class="hljs-attribute">Area</span> of rectangle <span class="hljs-number">50</span>
+<span class="hljs-attribute">Area</span> of circle <span class="hljs-number">452</span>.<span class="hljs-number">389342</span></code></pre></div>
+
+<p>方法的这个特性用于实现接口。我们将在下一篇介绍<a href="../%E3%80%90GolangBot%E3%80%9118-%E6%8E%A5%E5%8F%A3-I/">接口</a>的教程中详细讨论这一点。</p>
+<h3 id="指针接收者与值接收者"><a href="#指针接收者与值接收者" class="headerlink" title="指针接收者与值接收者"></a>指针接收者与值接收者</h3><p>到目前为止，我们只看到了带有值接收者的方法。创建带有指针接收者的方法也是可能的。值接收者和指针接收者的区别在于，在带有指针接收者的方法内部所做的更改对调用者是可见的，而在值接收者中则不是这样。让我们通过一个程序来理解这一点。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (
+    <span class="hljs-string">&quot;fmt&quot;</span>
+)
+
+<span class="hljs-keyword">type</span> Employee <span class="hljs-keyword">struct</span> &#123;
+    name <span class="hljs-type">string</span>
+    age  <span class="hljs-type">int</span>
+&#125;
+
+<span class="hljs-comment">/*</span>
+<span class="hljs-comment">Method with value receiver</span>
+<span class="hljs-comment">*/</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(e Employee)</span></span> changeName(newName <span class="hljs-type">string</span>) &#123;
+    e.name = newName
+&#125;
+
+<span class="hljs-comment">/*</span>
+<span class="hljs-comment">Method with pointer receiver</span>
+<span class="hljs-comment">*/</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(e *Employee)</span></span> changeAge(newAge <span class="hljs-type">int</span>) &#123;
+    e.age = newAge
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+    e := Employee&#123;
+        name: <span class="hljs-string">&quot;Mark Andrew&quot;</span>,
+        age:  <span class="hljs-number">50</span>,
+    &#125;
+    fmt.Printf(<span class="hljs-string">&quot;Employee name before change: %s&quot;</span>, e.name)
+    e.changeName(<span class="hljs-string">&quot;Michael Andrew&quot;</span>)
+    fmt.Printf(<span class="hljs-string">&quot;\nEmployee name after change: %s&quot;</span>, e.name)
+
+    fmt.Printf(<span class="hljs-string">&quot;\n\nEmployee age before change: %d&quot;</span>, e.age)
+    (&amp;e).changeAge(<span class="hljs-number">51</span>)
+    fmt.Printf(<span class="hljs-string">&quot;\nEmployee age after change: %d&quot;</span>, e.age)
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/tTO100HmUX">Run program in playground</a></p>
+<p>在上面的程序中，<code>changeName</code>方法有一个值接收者<code>(e Employee)</code>，而<code>changeAge</code>方法有一个指针接收者<code>(e *Employee)</code>。在<code>changeName</code>内部对Employee结构体的<code>name</code>字段所做的更改对调用者不可见，因此在调用方法<code>e.changeName(&quot;Michael Andrew&quot;)</code>之前和之后，程序打印相同的名称。由于<code>changeAge</code>方法有一个指针接收者<code>(e *Employee)</code>，在调用方法<code>(&amp;e).changeAge(51)</code>之后对<code>age</code>字段所做的更改对调用者是可见的。这个程序打印输出：</p>
+<div class="code-wrapper"><pre><code class="hljs coq">Employee name <span class="hljs-built_in">before</span> <span class="hljs-built_in">change</span>: Mark Andrew
+Employee name <span class="hljs-built_in">after</span> <span class="hljs-built_in">change</span>: Mark Andrew
+
+Employee age <span class="hljs-built_in">before</span> <span class="hljs-built_in">change</span>: <span class="hljs-number">50</span>
+Employee age <span class="hljs-built_in">after</span> <span class="hljs-built_in">change</span>: <span class="hljs-number">51</span></code></pre></div>
+
+<p>在上面程序的第36行中，我们使用<code>(&amp;e).changeAge(51)</code>来调用<code>changeAge</code>方法。由于<code>changeAge</code>有一个指针接收者，我们使用了<code>(&amp;e)</code>来调用该方法。这其实不是必需的，语言给了我们直接使用<code>e.changeAge(51)</code>的选项。<code>e.changeAge(51)</code>会被语言解释为<code>(&amp;e).changeAge(51)</code>。</p>
+<p>以下程序重写为使用<code>e.changeAge(51)</code>而不是<code>(&amp;e).changeAge(51)</code>，它打印相同的输出：</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (
+    <span class="hljs-string">&quot;fmt&quot;</span>
+)
+
+<span class="hljs-keyword">type</span> Employee <span class="hljs-keyword">struct</span> &#123;
+    name <span class="hljs-type">string</span>
+    age  <span class="hljs-type">int</span>
+&#125;
+
+<span class="hljs-comment">/*</span>
+<span class="hljs-comment">Method with value receiver</span>
+<span class="hljs-comment">*/</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(e Employee)</span></span> changeName(newName <span class="hljs-type">string</span>) &#123;
+    e.name = newName
+&#125;
+
+<span class="hljs-comment">/*</span>
+<span class="hljs-comment">Method with pointer receiver</span>
+<span class="hljs-comment">*/</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(e *Employee)</span></span> changeAge(newAge <span class="hljs-type">int</span>) &#123;
+    e.age = newAge
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+    e := Employee&#123;
+        name: <span class="hljs-string">&quot;Mark Andrew&quot;</span>,
+        age:  <span class="hljs-number">50</span>,
+    &#125;
+    fmt.Printf(<span class="hljs-string">&quot;Employee name before change: %s&quot;</span>, e.name)
+    e.changeName(<span class="hljs-string">&quot;Michael Andrew&quot;</span>)
+    fmt.Printf(<span class="hljs-string">&quot;\nEmployee name after change: %s&quot;</span>, e.name)
+
+    fmt.Printf(<span class="hljs-string">&quot;\n\nEmployee age before change: %d&quot;</span>, e.age)
+    e.changeAge(<span class="hljs-number">51</span>)
+    fmt.Printf(<span class="hljs-string">&quot;\nEmployee age after change: %d&quot;</span>, e.age)
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/nnXBsR3Uc8">Run program in playground</a></p>
+<h3 id="什么时候使用指针接收者，什么时候使用值接收者"><a href="#什么时候使用指针接收者，什么时候使用值接收者" class="headerlink" title="什么时候使用指针接收者，什么时候使用值接收者"></a>什么时候使用指针接收者，什么时候使用值接收者</h3><p>通常，当在方法内部对接收者所做的更改需要对调用者可见时，可以使用指针接收者。</p>
+<p>在复制数据结构代价较高的地方也可以使用指针接收者。考虑一个有很多字段的结构体。在方法中使用这个结构体作为值接收者将需要复制整个结构体，这将是昂贵的。在这种情况下，如果使用指针接收者，结构体将不会被复制，只会在方法中使用指向它的指针。</p>
+<p>在所有其他情况下，可以使用值接收者。</p>
+<h3 id="匿名结构体字段的方法"><a href="#匿名结构体字段的方法" class="headerlink" title="匿名结构体字段的方法"></a>匿名结构体字段的方法</h3><p>属于结构体的匿名字段的方法可以像属于定义匿名字段的结构体一样被调用。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (
+    <span class="hljs-string">&quot;fmt&quot;</span>
+)
+
+<span class="hljs-keyword">type</span> address <span class="hljs-keyword">struct</span> &#123;
+    city  <span class="hljs-type">string</span>
+    state <span class="hljs-type">string</span>
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(a address)</span></span> fullAddress() &#123;
+    fmt.Printf(<span class="hljs-string">&quot;Full address: %s, %s&quot;</span>, a.city, a.state)
+&#125;
+
+<span class="hljs-keyword">type</span> person <span class="hljs-keyword">struct</span> &#123;
+    firstName <span class="hljs-type">string</span>
+    lastName  <span class="hljs-type">string</span>
+    address
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+    p := person&#123;
+        firstName: <span class="hljs-string">&quot;Elon&quot;</span>,
+        lastName:  <span class="hljs-string">&quot;Musk&quot;</span>,
+        address: address &#123;
+            city:  <span class="hljs-string">&quot;Los Angeles&quot;</span>,
+            state: <span class="hljs-string">&quot;California&quot;</span>,
+        &#125;,
+    &#125;
+
+    p.fullAddress() <span class="hljs-comment">//accessing fullAddress method of address struct</span>
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/vURnImw4_9">Run program in playground</a></p>
+<p>在上面程序的第32行中，我们使用<code>p.fullAddress()</code>调用了<code>address</code>结构体的<code>fullAddress()</code>方法。不需要显式的方向<code>p.address.fullAddress()</code>。这个程序打印：</p>
+<div class="code-wrapper"><pre><code class="hljs css">Full <span class="hljs-selector-tag">address</span>: Los Angeles, California</code></pre></div>
+
+<h3 id="方法中的值接收者vs函数中的值参数"><a href="#方法中的值接收者vs函数中的值参数" class="headerlink" title="方法中的值接收者vs函数中的值参数"></a>方法中的值接收者vs函数中的值参数</h3><p>这个主题让很多Go新手感到困惑。我会尽量让它变得清晰 😀。</p>
+<p>当函数有一个值参数时，它只接受值参数。</p>
+<p>当方法有一个值接收者时，它会同时接受指针和值接收者。</p>
+<p>让我们通过一个例子来理解这一点。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (
+    <span class="hljs-string">&quot;fmt&quot;</span>
+)
+
+<span class="hljs-keyword">type</span> rectangle <span class="hljs-keyword">struct</span> &#123;
+    length <span class="hljs-type">int</span>
+    width  <span class="hljs-type">int</span>
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">area</span><span class="hljs-params">(r rectangle)</span></span> &#123;
+    fmt.Printf(<span class="hljs-string">&quot;Area Function result: %d\n&quot;</span>, (r.length * r.width))
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(r rectangle)</span></span> area() &#123;
+    fmt.Printf(<span class="hljs-string">&quot;Area Method result: %d\n&quot;</span>, (r.length * r.width))
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+    r := rectangle&#123;
+        length: <span class="hljs-number">10</span>,
+        width:  <span class="hljs-number">5</span>,
+    &#125;
+    area(r)
+    r.area()
+
+    p := &amp;r
+    <span class="hljs-comment">/*</span>
+<span class="hljs-comment">       compilation error, cannot use p (type *rectangle) as type rectangle </span>
+<span class="hljs-comment">       in argument to area    </span>
+<span class="hljs-comment">    */</span>
+    <span class="hljs-comment">//area(p)</span>
+
+    p.area()<span class="hljs-comment">//calling value receiver with a pointer</span>
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/gLyHMd2iie">Run program in playground</a></p>
+<p>第12行的函数<code>func area(r rectangle)</code>接受一个值参数，第16行的方法<code>func (r rectangle) area()</code>接受一个值接收者。</p>
+<p>在第25行，我们用值参数调用area函数<code>area(r)</code>，这是可以的。类似地，我们使用值接收者调用area方法<code>r.area()</code>，这也是可以的。</p>
+<p>我们在第28行创建了一个指向<code>r</code>的指针<code>p</code>。如果我们试图将这个指针传递给只接受值的area函数，编译器会报错。我在第33行注释了这个操作。如果你取消这行的注释，编译器会抛出错误<strong>compilation error, cannot use p (type *rectangle) as type rectangle in argument to area</strong>。这符合预期的行为。</p>
+<p>现在来看棘手的部分，代码第35行<code>p.area()</code>使用指针接收者<code>p</code>调用只接受值接收者的方法<code>area</code>。这是完全有效的。原因是<code>p.area()</code>这行代码会被Go解释为<code>(*p).area()</code>，因为<code>area</code>有一个值接收者。这是为了方便而做的处理。</p>
+<p>这个程序将输出：</p>
+<div class="code-wrapper"><pre><code class="hljs oxygene">Area <span class="hljs-keyword">Function</span> <span class="hljs-title function_">result</span>: <span class="hljs-number">50</span>
+Area <span class="hljs-keyword">Method</span> <span class="hljs-title function_">result</span>: <span class="hljs-number">50</span>
+Area <span class="hljs-keyword">Method</span> <span class="hljs-title function_">result</span>: <span class="hljs-number">50</span></code></pre></div>
+
+<h3 id="方法中的指针接收者vs函数中的指针参数"><a href="#方法中的指针接收者vs函数中的指针参数" class="headerlink" title="方法中的指针接收者vs函数中的指针参数"></a>方法中的指针接收者vs函数中的指针参数</h3><p>与值参数类似，带有指针参数的函数只接受指针，而带有指针接收者的方法将同时接受指针和值接收者。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;fmt&quot;</span>
+)
+
+<span class="hljs-keyword">type</span> rectangle <span class="hljs-keyword">struct</span> &#123;
+	length <span class="hljs-type">int</span>
+	width  <span class="hljs-type">int</span>
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">perimeter</span><span class="hljs-params">(r *rectangle)</span></span> &#123;
+	fmt.Println(<span class="hljs-string">&quot;perimeter function output:&quot;</span>, <span class="hljs-number">2</span>*(r.length+r.width))
+
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(r *rectangle)</span></span> perimeter() &#123;
+	fmt.Println(<span class="hljs-string">&quot;perimeter method output:&quot;</span>, <span class="hljs-number">2</span>*(r.length+r.width))
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	r := rectangle&#123;
+		length: <span class="hljs-number">10</span>,
+		width:  <span class="hljs-number">5</span>,
+	&#125;
+	p := &amp;r <span class="hljs-comment">//pointer to r</span>
+	perimeter(p)
+	p.perimeter()
+
+	<span class="hljs-comment">/*</span>
+<span class="hljs-comment">		cannot use r (type rectangle) as type *rectangle in argument to perimeter</span>
+<span class="hljs-comment">	*/</span>
+	<span class="hljs-comment">//perimeter(r)</span>
+
+	r.perimeter()<span class="hljs-comment">//calling pointer receiver with a value</span>
+
+&#125;
+</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/Xy5wW9YZMJ">Run program in playground</a></p>
+<p>上面程序的第12行定义了一个接受指针参数的函数<code>perimeter</code>，第17行定义了一个有指针接收者的方法。</p>
+<p>在第27行，我们用指针参数调用perimeter函数，在第28行，我们在指针接收者上调用perimeter方法。这些都是正确的。</p>
+<p>在注释掉的第33行，我们试图用值参数<code>r</code>调用perimeter函数。这是不允许的，因为带有指针参数的函数不接受值参数。如果取消这行的注释并运行程序，编译会失败并显示错误<strong>main.go:33: cannot use r (type rectangle) as type *rectangle in argument to perimeter</strong>。</p>
+<p>在第35行，我们用值接收者<code>r</code>调用指针接收者方法<code>perimeter</code>。这是允许的，代码<code>r.perimeter()</code>会被语言解释为<code>(&amp;r).perimeter()</code>，这是为了方便而做的处理。程序将会输出</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">perimeter function output: 30
+perimeter method output: 30
+perimeter method output: 30</code></pre></div>
+
+<h3 id="非结构体接收者的方法"><a href="#非结构体接收者的方法" class="headerlink" title="非结构体接收者的方法"></a>非结构体接收者的方法</h3><p>到目前为止，我们只在结构体类型上定义了方法。实际上，也可以在非结构体类型上定义方法，但有一个注意事项：<strong>为了在某个类型上定义方法，该类型的定义和方法的定义必须位于同一个包中。</strong> 到目前为止，我们定义的所有结构体和结构体上的方法都位于同一个 <code>main</code> 包中，因此它们都能正常工作。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(a <span class="hljs-type">int</span>)</span></span> add(b <span class="hljs-type">int</span>) &#123;
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/ybXLf5o_lA">Run program in playground</a></p>
+<p>在上面的程序中，第三行我们尝试为内建类型 <code>int</code> 添加一个名为 <code>add</code> 的方法。这是不允许的，因为方法 <code>add</code> 的定义和类型 <code>int</code> 的定义不在同一个包中。这个程序会抛出编译错误 <strong>cannot define new methods on non-local type int</strong>。</p>
+<p>使其正常工作的方式是为内建类型 <code>int</code> 创建一个类型别名，然后使用这个类型别名作为接收者定义方法。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> <span class="hljs-string">&quot;fmt&quot;</span>
+
+<span class="hljs-keyword">type</span> myInt <span class="hljs-type">int</span>
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(a myInt)</span></span> add(b myInt) myInt &#123;
+	<span class="hljs-keyword">return</span> a + b
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	num1 := myInt(<span class="hljs-number">5</span>)
+	num2 := myInt(<span class="hljs-number">10</span>)
+	sum := num1.add(num2)
+	fmt.Println(<span class="hljs-string">&quot;Sum is&quot;</span>, sum)
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/sTe7i1qAng">Run program in playground</a></p>
+<p>在上述程序的第五行，我们为 <code>int</code> 创建了一个类型别名 <code>myInt</code>。在第七行，我们定义了一个方法 <code>add</code>，其接收者是 <code>myInt</code>。</p>
+<p>该程序将输出 <code>Sum is 15</code>。</p>
+<p>我已在 <a target="_blank" rel="noopener" href="https://github.com/golangbot/methods">github</a> 上创建了一个包含我们讨论过的所有概念的程序。</p>
+<p><strong>下一篇教程 - <a href="../%E3%80%90GolangBot%E3%80%9118-%E6%8E%A5%E5%8F%A3-I">接口 - I</a></strong></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E5%BF%83%E5%BE%97/" class="category-chain-item">学习心得</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E5%BF%83%E5%BE%97/GolangBot/" class="category-chain-item">GolangBot</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Golang/" class="print-no-link">#Golang</a>
+      
+        <a href="/tags/%E6%95%99%E7%A8%8B/" class="print-no-link">#教程</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>【GolangBot】17-方法</div>
+      <div>https://zoekyhein.github.io/【GolangBot】17-方法/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>ZoeKyHein</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年12月24日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/%E3%80%90GolangBot%E3%80%9118-%E6%8E%A5%E5%8F%A3-I/" title="【GolangBot】18-接口 I">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">【GolangBot】18-接口 I</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/%E3%80%90GolangBot%E3%80%9116-%E7%BB%93%E6%9E%84%E4%BD%93/" title="【GolangBot】16-结构体">
+                        <span class="hidden-mobile">【GolangBot】16-结构体</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

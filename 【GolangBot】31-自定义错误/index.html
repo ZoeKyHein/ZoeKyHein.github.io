@@ -1,0 +1,956 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/icon.png">
+  <link rel="icon" href="/img/icon.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#ac9343">
+  <meta name="author" content="ZoeKyHein">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="欢迎来到 Golang 教程系列 的第 31 个教程。 在上一个教程中，我们学习了 Go 中错误的表示方式以及如何处理标准库中的错误。我们还学习了如何从错误中提取更多信息。 本教程将介绍如何创建我们自己的自定义错误，以便在我们的函数和包中使用。我们还将使用标准库采用的相同技术来提供有关自定义错误的更多详细信息。 使用 New 函数创建自定义错误创建自定义错误的最简单方法是使用 errors 包的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【GolangBot】31-自定义错误">
+<meta property="og:url" content="https://zoekyhein.github.io/%E3%80%90GolangBot%E3%80%9131-%E8%87%AA%E5%AE%9A%E4%B9%89%E9%94%99%E8%AF%AF/index.html">
+<meta property="og:site_name" content="传火祭祀场">
+<meta property="og:description" content="欢迎来到 Golang 教程系列 的第 31 个教程。 在上一个教程中，我们学习了 Go 中错误的表示方式以及如何处理标准库中的错误。我们还学习了如何从错误中提取更多信息。 本教程将介绍如何创建我们自己的自定义错误，以便在我们的函数和包中使用。我们还将使用标准库采用的相同技术来提供有关自定义错误的更多详细信息。 使用 New 函数创建自定义错误创建自定义错误的最简单方法是使用 errors 包的">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-12-26T11:09:39.000Z">
+<meta property="article:modified_time" content="2025-01-23T07:44:45.570Z">
+<meta property="article:author" content="ZoeKyHein">
+<meta property="article:tag" content="Golang">
+<meta property="article:tag" content="教程">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>【GolangBot】31-自定义错误 - 传火祭祀场</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"zoekyhein.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"💥","loop":false,"scope":["home"]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>传火祭祀场</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/golangbot" target="_self">
+                <i class="iconfont icon-book"></i>
+                <span>Go教程</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/sunKnight.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">【GolangBot】31-自定义错误</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-12-26 11:09" pubdate>
+          2024年12月26日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.7k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          23 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">【GolangBot】31-自定义错误</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>欢迎来到 <a href="../golangbot/">Golang 教程系列</a> 的第 31 个教程。</p>
+<p>在<a href="../%E3%80%90GolangBot%E3%80%9130-%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86">上一个教程</a>中，我们学习了 Go 中错误的表示方式以及如何处理标准库中的错误。我们还学习了如何从错误中提取更多信息。</p>
+<p>本教程将介绍如何创建我们自己的自定义错误，以便在我们的函数和包中使用。我们还将使用标准库采用的相同技术来提供有关自定义错误的更多详细信息。</p>
+<h3 id="使用-New-函数创建自定义错误"><a href="#使用-New-函数创建自定义错误" class="headerlink" title="使用 New 函数创建自定义错误"></a>使用 New 函数创建自定义错误</h3><p>创建自定义错误的最简单方法是使用 <a target="_blank" rel="noopener" href="https://pkg.go.dev/errors">errors</a> 包的 <a target="_blank" rel="noopener" href="https://pkg.go.dev/errors#New">New</a> 函数。</p>
+<p>在我们使用 New <a href="../%E3%80%90GolangBot%E3%80%916-%E5%87%BD%E6%95%B0">函数</a>创建自定义错误之前，让我们先了解它的实现方式。<a target="_blank" rel="noopener" href="https://go.dev/src/errors/errors.go?s=293:320#L58">errors 包</a>中 New 函数的实现如下：</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> errors
+
+<span class="hljs-comment">// New 返回一个将给定文本格式化为错误的错误。</span>
+<span class="hljs-comment">// 即使文本相同，每次调用 New 都会返回一个不同的错误值。</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">New</span><span class="hljs-params">(text <span class="hljs-type">string</span>)</span></span> <span class="hljs-type">error</span> &#123;
+    <span class="hljs-keyword">return</span> &amp;errorString&#123;text&#125;
+&#125;
+
+<span class="hljs-comment">// errorString 是 error 的一个简单实现。</span>
+<span class="hljs-keyword">type</span> errorString <span class="hljs-keyword">struct</span> &#123;
+    s <span class="hljs-type">string</span>
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(e *errorString)</span></span> Error() <span class="hljs-type">string</span> &#123;
+    <span class="hljs-keyword">return</span> e.s
+&#125;</code></pre></div>
+
+<p>实现非常简单。<code>errorString</code> 是一个具有单个字符串字段 <code>s</code> 的<a href="../%E3%80%90GolangBot%E3%80%9116-%E7%BB%93%E6%9E%84%E4%BD%93">结构体</a>类型。<code>error</code> 接口的 <code>Error() string</code> <a href="../%E3%80%90GolangBot%E3%80%9117-%E6%96%B9%E6%B3%95">方法</a>使用 <code>errorString</code> 的<a href="../%E3%80%90GolangBot%E3%80%9117-%E6%96%B9%E6%B3%95/#%E6%8C%87%E9%92%88%E6%8E%A5%E6%94%B6%E8%80%85%E4%B8%8E%E5%80%BC%E6%8E%A5%E6%94%B6%E8%80%85">指针接收者</a>在第 14 行实现。</p>
+<p>第 5 行的 <code>New</code> 函数接受一个 <code>string</code> 参数，使用该参数创建一个 <code>errorString</code> 类型的值，并返回其地址。因此，一个新的错误被创建并返回。</p>
+<p>现在我们知道 <code>New</code> 函数的工作原理了，让我们在自己的程序中使用它来创建一个自定义错误。</p>
+<p>我们将创建一个简单的程序来计算圆的面积，并在半径为负时返回错误。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;errors&quot;</span>
+	<span class="hljs-string">&quot;fmt&quot;</span>
+	<span class="hljs-string">&quot;math&quot;</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">circleArea</span><span class="hljs-params">(radius <span class="hljs-type">float64</span>)</span></span> (<span class="hljs-type">float64</span>, <span class="hljs-type">error</span>) &#123;
+	<span class="hljs-keyword">if</span> radius &lt; <span class="hljs-number">0</span> &#123;
+		<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>, errors.New(<span class="hljs-string">&quot;Area calculation failed, radius is less than zero&quot;</span>)
+	&#125;
+	<span class="hljs-keyword">return</span> math.Pi * radius * radius, <span class="hljs-literal">nil</span>
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	radius := <span class="hljs-number">-20.0</span>
+	area, err := circleArea(radius)
+	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
+		fmt.Println(err)
+		<span class="hljs-keyword">return</span>
+	&#125;
+	fmt.Printf(<span class="hljs-string">&quot;Area of circle %0.2f&quot;</span>, area)
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://go.dev/play/p/_vuf6fgkqm">在 Playground 中运行</a></p>
+<p>在上面的程序中，我们在第 10 行检查半径是否小于零。如果是，我们返回面积为 0 以及相应的错误消息。如果半径大于 0，则计算面积并在第 13 行返回 <code>nil</code> 作为错误。</p>
+<p>在主函数中，我们在第 19 行检查错误是否为 <code>nil</code>。如果不是 <code>nil</code>，我们打印错误并返回，否则打印圆的面积。</p>
+<p>在这个程序中，半径小于零，因此它将打印：</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">Area calculation failed, radius is less than zero</code></pre></div>
+
+<h3 id="使用-Errorf-为错误添加更多信息"><a href="#使用-Errorf-为错误添加更多信息" class="headerlink" title="使用 Errorf 为错误添加更多信息"></a>使用 Errorf 为错误添加更多信息</h3><p>上面的程序运行良好，但如果能打印导致错误的实际半径岂不是更好？这就是 <a target="_blank" rel="noopener" href="https://pkg.go.dev/fmt">fmt</a> 包的 <a target="_blank" rel="noopener" href="https://pkg.go.dev/fmt#Errorf">Errorf</a> 函数的用武之地。该函数根据格式说明符格式化错误，并返回一个满足 <code>error</code> 接口的<a href="../%E3%80%90GolangBot%E3%80%9114-Strings">字符串</a>值。</p>
+<p>让我们使用 <code>Errorf</code> 函数并使程序更好。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;fmt&quot;</span>
+	<span class="hljs-string">&quot;math&quot;</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">circleArea</span><span class="hljs-params">(radius <span class="hljs-type">float64</span>)</span></span> (<span class="hljs-type">float64</span>, <span class="hljs-type">error</span>) &#123;
+	<span class="hljs-keyword">if</span> radius &lt; <span class="hljs-number">0</span> &#123;
+		<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>, fmt.Errorf(<span class="hljs-string">&quot;Area calculation failed, radius %0.2f is less than zero&quot;</span>, radius)
+	&#125;
+	<span class="hljs-keyword">return</span> math.Pi * radius * radius, <span class="hljs-literal">nil</span>
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	radius := <span class="hljs-number">-20.0</span>
+	area, err := circleArea(radius)
+	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
+		fmt.Println(err)
+		<span class="hljs-keyword">return</span>
+	&#125;
+	fmt.Printf(<span class="hljs-string">&quot;Area of circle %0.2f&quot;</span>, area)
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://go.dev/play/p/HQ7bvjT4o2">在 Playground 中运行</a></p>
+<p>在上面的程序中，<code>Errorf</code> 在第 10 行用于打印导致错误的实际半径。运行该程序将输出：</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">Area calculation failed, radius -20.00 is less than zero</code></pre></div>
+
+<h3 id="使用结构体类型和字段为错误提供更多信息"><a href="#使用结构体类型和字段为错误提供更多信息" class="headerlink" title="使用结构体类型和字段为错误提供更多信息"></a>使用结构体类型和字段为错误提供更多信息</h3><p>也可以使用实现 error <a href="../%E3%80%90GolangBot%E3%80%9118-%E6%8E%A5%E5%8F%A3-I">接口</a>的结构体类型作为错误。这为错误处理提供了更大的灵活性。在我们之前的示例中，如果我们想访问导致错误的半径，唯一的方法是解析错误描述 <code>Area calculation failed, radius -20.00 is less than zero</code>。这不是一个合适的方式，因为如果描述发生变化，我们的代码将会崩溃。</p>
+<p>我们将使用上一教程中“<a href="../%E3%80%90GolangBot%E3%80%9130-%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86/#1-%E5%B0%86%E9%94%99%E8%AF%AF%E8%BD%AC%E6%8D%A2%E4%B8%BA%E5%BA%95%E5%B1%82%E7%B1%BB%E5%9E%8B%E5%B9%B6%E4%BB%8E%E7%BB%93%E6%9E%84%E4%BD%93%E5%AD%97%E6%AE%B5%E4%B8%AD%E6%A3%80%E7%B4%A2%E6%9B%B4%E5%A4%9A%E4%BF%A1%E6%81%AF">将错误转换为底层类型并从结构体字段中检索更多信息</a>”部分中描述的策略，并使用结构体字段来提供对导致错误的半径的访问。我们将创建一个实现 error 接口的结构体类型，并使用其字段来提供有关错误的更多信息。</p>
+<p>第一步是创建一个表示错误的结构体类型。错误类型的命名约定是名称应以文本 <code>Error</code> 结尾。因此，我们将我们的结构体类型命名为 <code>areaError</code>。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">type</span> areaError <span class="hljs-keyword">struct</span> &#123;
+	err    <span class="hljs-type">string</span>
+	radius <span class="hljs-type">float64</span>
+&#125;</code></pre></div>
+
+<p>上述结构体类型有一个 <code>radius</code> 字段，用于存储导致错误的半径值，<code>err</code> 字段存储实际的错误消息。</p>
+<p>下一步是实现 error 接口。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(e *areaError)</span></span> Error() <span class="hljs-type">string</span> &#123;  
+    <span class="hljs-keyword">return</span> fmt.Sprintf(<span class="hljs-string">&quot;radius %0.2f: %s&quot;</span>, e.radius, e.err)
+&#125;</code></pre></div>
+
+<p>在上面的代码片段中，我们使用指针接收者 <code>*areaError</code> 实现了 error 接口的 <code>Error() string</code> 方法。此方法打印半径和错误描述。</p>
+<p>让我们通过编写 <code>main</code> 函数和 <code>circleArea</code> 函数来完成程序。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;errors&quot;</span>
+	<span class="hljs-string">&quot;fmt&quot;</span>
+	<span class="hljs-string">&quot;math&quot;</span>
+)
+
+<span class="hljs-keyword">type</span> areaError <span class="hljs-keyword">struct</span> &#123;
+	err    <span class="hljs-type">string</span>
+	radius <span class="hljs-type">float64</span>
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(e *areaError)</span></span> Error() <span class="hljs-type">string</span> &#123;
+	<span class="hljs-keyword">return</span> fmt.Sprintf(<span class="hljs-string">&quot;radius %0.2f: %s&quot;</span>, e.radius, e.err)
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">circleArea</span><span class="hljs-params">(radius <span class="hljs-type">float64</span>)</span></span> (<span class="hljs-type">float64</span>, <span class="hljs-type">error</span>) &#123;
+	<span class="hljs-keyword">if</span> radius &lt; <span class="hljs-number">0</span> &#123;
+		<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>, &amp;areaError&#123;
+			err:    <span class="hljs-string">&quot;radius is negative&quot;</span>,
+			radius: radius,
+		&#125;
+	&#125;
+	<span class="hljs-keyword">return</span> math.Pi * radius * radius, <span class="hljs-literal">nil</span>
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	radius := <span class="hljs-number">-20.0</span>
+	area, err := circleArea(radius)
+	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
+		<span class="hljs-keyword">var</span> areaError *areaError
+		<span class="hljs-keyword">if</span> errors.As(err, &amp;areaError) &#123;
+			fmt.Printf(<span class="hljs-string">&quot;Area calculation failed, radius %0.2f is less than zero&quot;</span>, areaError.radius)
+			<span class="hljs-keyword">return</span>
+		&#125;
+		fmt.Println(err)
+		<span class="hljs-keyword">return</span>
+	&#125;
+	fmt.Printf(<span class="hljs-string">&quot;Area of rectangle %0.2f&quot;</span>, area)
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://go.dev/play/p/X4GvrehVTGA">在 Playground 中运行</a></p>
+<p>在上面的程序中，<code>circleArea</code> 函数在第 18 行用于计算圆的面积。该函数首先检查半径是否小于零，如果是，则使用导致错误的半径和相应的错误消息创建一个 <code>areaError</code> 类型的值，然后在第 20 行返回其地址以及面积为 0。<strong>因此，我们使用自定义错误结构体的字段提供了有关错误的更多信息，在这种情况下是导致错误的半径。</strong></p>
+<p>如果半径不为负，则此函数计算并返回面积，并在第 25 行返回 <code>nil</code> 错误。</p>
+<p>在主函数的第 30 行，我们尝试计算半径为 -20 的圆的面积。由于半径小于零，将返回错误。</p>
+<p>我们在第 31 行检查错误是否为 <code>nil</code>，并在第 33 行尝试将其转换为 <code>*areaError</code> 类型。<strong>如果错误是 <code>*areaError</code> 类型，我们在第 34 行使用 <code>areaError.radius</code> 获取导致错误的半径，打印自定义错误消息并从程序返回。</strong></p>
+<p>如果错误不是 <code>*areaError</code> 类型，我们只需在第 37 行打印错误并返回。如果没有错误，则会在第 40 行打印面积。</p>
+<p>该程序将打印：</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">Area calculation failed, radius -20.00 is less than zero</code></pre></div>
+
+<p>现在让我们使用上一教程中描述的<a href="../%E3%80%90GolangBot%E3%80%9130-%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86/#2-%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95%E6%A3%80%E7%B4%A2%E6%9B%B4%E5%A4%9A%E4%BF%A1%E6%81%AF">第二种策略</a>，并在自定义错误类型上使用方法以提供有关错误的更多信息。</p>
+<h3 id="使用结构体类型上的方法为错误提供更多信息"><a href="#使用结构体类型上的方法为错误提供更多信息" class="headerlink" title="使用结构体类型上的方法为错误提供更多信息"></a>使用结构体类型上的方法为错误提供更多信息</h3><p>在本节中，我们将编写一个计算矩形面积的程序。如果长度或宽度小于零，该程序将打印错误。</p>
+<p>第一步是创建一个表示错误的结构体。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">type</span> areaError <span class="hljs-keyword">struct</span> &#123;
+	err    <span class="hljs-type">string</span> <span class="hljs-comment">//错误描述</span>
+	length <span class="hljs-type">float64</span> <span class="hljs-comment">//导致错误的长度</span>
+	width  <span class="hljs-type">float64</span> <span class="hljs-comment">//导致错误的宽度</span>
+&#125;</code></pre></div>
+
+<p>上述错误结构体类型包含一个错误描述字段以及导致错误的长度和宽度。</p>
+<p>现在我们有了错误类型，让我们实现 error 接口，并在错误类型上添加一些方法以提供有关错误的更多信息。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(e *areaError)</span></span> Error() <span class="hljs-type">string</span> &#123;
+	<span class="hljs-keyword">return</span> e.err
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(e *areaError)</span></span> lengthNegative() <span class="hljs-type">bool</span> &#123;
+	<span class="hljs-keyword">return</span> e.length &lt; <span class="hljs-number">0</span>
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(e *areaError)</span></span> widthNegative() <span class="hljs-type">bool</span> &#123;
+	<span class="hljs-keyword">return</span> e.width &lt; <span class="hljs-number">0</span>
+&#125;</code></pre></div>
+
+<p>在上面的代码片段中，我们从 <code>Error() string</code> 方法返回错误的描述。<code>lengthNegative() bool</code> 方法在长度小于零时返回 true，<code>widthNegative() bool</code> 方法在宽度小于零时返回 true。<strong>这两种方法提供了有关错误的更多信息，在这种情况下，它们表明面积计算失败是由于长度为负还是宽度为负。因此，我们使用了结构体错误类型上的方法来提供有关错误的更多信息。</strong></p>
+<p>下一步是编写面积计算函数。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">rectArea</span><span class="hljs-params">(length, width <span class="hljs-type">float64</span>)</span></span> (<span class="hljs-type">float64</span>, <span class="hljs-type">error</span>) &#123;
+	err := <span class="hljs-string">&quot;&quot;</span>
+	<span class="hljs-keyword">if</span> length &lt; <span class="hljs-number">0</span> &#123;
+		err += <span class="hljs-string">&quot;length is less than zero&quot;</span>
+	&#125;
+	<span class="hljs-keyword">if</span> width &lt; <span class="hljs-number">0</span> &#123;
+		<span class="hljs-keyword">if</span> err == <span class="hljs-string">&quot;&quot;</span> &#123;
+			err = <span class="hljs-string">&quot;width is less than zero&quot;</span>
+		&#125; <span class="hljs-keyword">else</span> &#123;
+			err += <span class="hljs-string">&quot;, width is less than zero&quot;</span>
+		&#125;
+	&#125;
+	<span class="hljs-keyword">if</span> err != <span class="hljs-string">&quot;&quot;</span> &#123;
+		<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>, &amp;areaError&#123;
+			err:    err,
+			length: length,
+			width:  width,
+		&#125;
+	&#125;
+	<span class="hljs-keyword">return</span> length * width, <span class="hljs-literal">nil</span>
+&#125;</code></pre></div>
+
+<p>上面的 <code>rectArea</code> 函数检查长度或宽度是否小于零，如果是，则返回 <code>*areaError</code> 类型的错误，否则返回矩形的面积并将 <code>nil</code> 作为错误。</p>
+<p>让我们通过创建主函数来完成这个程序。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	length, width := <span class="hljs-number">-5.0</span>, <span class="hljs-number">-9.0</span>
+	area, err := rectArea(length, width)
+	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
+		<span class="hljs-keyword">var</span> areaError *areaError
+		<span class="hljs-keyword">if</span> errors.As(err, &amp;areaError) &#123;
+			<span class="hljs-keyword">if</span> areaError.lengthNegative() &#123;
+				fmt.Printf(<span class="hljs-string">&quot;error: length %0.2f is less than zero\n&quot;</span>, areaError.length)
+			&#125;
+			<span class="hljs-keyword">if</span> areaError.widthNegative() &#123;
+				fmt.Printf(<span class="hljs-string">&quot;error: width %0.2f is less than zero\n&quot;</span>, areaError.width)
+			&#125;
+			<span class="hljs-keyword">return</span>
+		&#125;
+		fmt.Println(err)
+		<span class="hljs-keyword">return</span>
+	&#125;
+	fmt.Println(<span class="hljs-string">&quot;area of rect&quot;</span>, area)
+&#125;</code></pre></div>
+
+<p>在主函数中，我们在第 4 行检查错误是否为 <code>nil</code>。如果不是 nil，我们尝试将其转换为 <code>*areaError</code> 类型。然后使用 <code>lengthNegative()</code> 和 <code>widthNegative()</code> 方法，我们检查错误是否是由于长度为负或宽度为负。我们打印相应的错误消息并从程序返回。<strong>因此，我们使用了错误结构体类型上的方法来提供有关错误的更多信息。</strong></p>
+<p>如果没有错误，将打印矩形的面积。</p>
+<p>以下是完整的程序供您参考。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;errors&quot;</span>
+	<span class="hljs-string">&quot;fmt&quot;</span>
+)
+
+<span class="hljs-keyword">type</span> areaError <span class="hljs-keyword">struct</span> &#123;
+	err    <span class="hljs-type">string</span>  <span class="hljs-comment">//错误描述</span>
+	length <span class="hljs-type">float64</span> <span class="hljs-comment">//导致错误的长度</span>
+	width  <span class="hljs-type">float64</span> <span class="hljs-comment">//导致错误的宽度</span>
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(e *areaError)</span></span> Error() <span class="hljs-type">string</span> &#123;
+	<span class="hljs-keyword">return</span> e.err
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(e *areaError)</span></span> lengthNegative() <span class="hljs-type">bool</span> &#123;
+	<span class="hljs-keyword">return</span> e.length &lt; <span class="hljs-number">0</span>
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(e *areaError)</span></span> widthNegative() <span class="hljs-type">bool</span> &#123;
+	<span class="hljs-keyword">return</span> e.width &lt; <span class="hljs-number">0</span>
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">rectArea</span><span class="hljs-params">(length, width <span class="hljs-type">float64</span>)</span></span> (<span class="hljs-type">float64</span>, <span class="hljs-type">error</span>) &#123;
+	err := <span class="hljs-string">&quot;&quot;</span>
+	<span class="hljs-keyword">if</span> length &lt; <span class="hljs-number">0</span> &#123;
+		err += <span class="hljs-string">&quot;length is less than zero&quot;</span>
+	&#125;
+	<span class="hljs-keyword">if</span> width &lt; <span class="hljs-number">0</span> &#123;
+		<span class="hljs-keyword">if</span> err == <span class="hljs-string">&quot;&quot;</span> &#123;
+			err = <span class="hljs-string">&quot;width is less than zero&quot;</span>
+		&#125; <span class="hljs-keyword">else</span> &#123;
+			err += <span class="hljs-string">&quot;, width is less than zero&quot;</span>
+		&#125;
+	&#125;
+	<span class="hljs-keyword">if</span> err != <span class="hljs-string">&quot;&quot;</span> &#123;
+		<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>, &amp;areaError&#123;
+			err:    err,
+			length: length,
+			width:  width,
+		&#125;
+	&#125;
+	<span class="hljs-keyword">return</span> length * width, <span class="hljs-literal">nil</span>
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	length, width := <span class="hljs-number">-5.0</span>, <span class="hljs-number">-9.0</span>
+	area, err := rectArea(length, width)
+	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
+		<span class="hljs-keyword">var</span> areaError *areaError
+		<span class="hljs-keyword">if</span> errors.As(err, &amp;areaError) &#123;
+			<span class="hljs-keyword">if</span> areaError.lengthNegative() &#123;
+				fmt.Printf(<span class="hljs-string">&quot;error: length %0.2f is less than zero\n&quot;</span>, areaError.length)
+			&#125;
+			<span class="hljs-keyword">if</span> areaError.widthNegative() &#123;
+				fmt.Printf(<span class="hljs-string">&quot;error: width %0.2f is less than zero\n&quot;</span>, areaError.width)
+			&#125;
+			<span class="hljs-keyword">return</span>
+		&#125;
+		fmt.Println(err)
+		<span class="hljs-keyword">return</span>
+	&#125;
+	fmt.Println(<span class="hljs-string">&quot;area of rect&quot;</span>, area)
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://go.dev/play/p/9xxF9fVw1fe">在 Playground 中运行</a></p>
+<p>该程序将输出：</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">error: length -5.00 is less than zero
+error: width -9.00 is less than zero</code></pre></div>
+
+<p>我们已经看到了在<a href="../%E3%80%90GolangBot%E3%80%9130-%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86/">错误处理</a>教程中描述的三种方式中的两种示例，以提供有关错误的更多信息。</p>
+<p>第三种方式使用<a href="../%E3%80%90GolangBot%E3%80%9130-%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86/#3-%E7%9B%B4%E6%8E%A5%E6%AF%94%E8%BE%83">直接比较</a>非常简单。我将把它留作练习，让您弄清楚如何使用此策略来提供有关我们自定义错误的更多信息。</p>
+<p>本教程到此结束。</p>
+<p>以下是我们在本教程中学到的内容的快速回顾：</p>
+<ul>
+<li>使用 New 函数创建自定义错误</li>
+<li>使用 Errorf 为错误添加更多信息</li>
+<li>使用结构体类型和字段为错误提供更多信息</li>
+<li>使用结构体类型上的方法为错误提供更多信息</li>
+</ul>
+<p><strong>下一个教程 - <a href="../_posts/%E3%80%90GolangBot%E3%80%9132-%E9%94%99%E8%AF%AF%E5%8C%85%E8%A3%85">错误包装</a></strong></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E5%BF%83%E5%BE%97/" class="category-chain-item">学习心得</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E5%BF%83%E5%BE%97/GolangBot/" class="category-chain-item">GolangBot</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Golang/" class="print-no-link">#Golang</a>
+      
+        <a href="/tags/%E6%95%99%E7%A8%8B/" class="print-no-link">#教程</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>【GolangBot】31-自定义错误</div>
+      <div>https://zoekyhein.github.io/【GolangBot】31-自定义错误/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>ZoeKyHein</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年12月26日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/%E3%80%90GolangBot%E3%80%9132-%E9%94%99%E8%AF%AF%E5%8C%85%E8%A3%85/" title="【GolangBot】32-错误包装">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">【GolangBot】32-错误包装</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/%E3%80%90GolangBot%E3%80%9130-%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86/" title="【GolangBot】30-错误处理">
+                        <span class="hidden-mobile">【GolangBot】30-错误处理</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

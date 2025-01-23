@@ -1,0 +1,1061 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/icon.png">
+  <link rel="icon" href="/img/icon.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#ac9343">
+  <meta name="author" content="ZoeKyHein">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="欢迎来到Golang系列教程的第23讲。 什么是缓冲通道？我们在上一篇教程中讨论的所有通道基本上都是无缓冲的。正如我们在channels教程中详细讨论的那样，对无缓冲通道的发送和接收都是阻塞的。 可以创建一个带缓冲的通道。只有当缓冲区已满时，向缓冲通道发送数据才会被阻塞。同样，只有当缓冲区为空时，从缓冲通道接收数据才会被阻塞。 通过向make函数传递一个额外的容量参数来创建缓冲通道，该参数指定了缓">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【GolangBot】23-缓冲通道与工作池">
+<meta property="og:url" content="https://zoekyhein.github.io/%E3%80%90GolangBot%E3%80%9123-%E7%BC%93%E5%86%B2%E9%80%9A%E9%81%93%E4%B8%8E%E5%B7%A5%E4%BD%9C%E6%B1%A0/index.html">
+<meta property="og:site_name" content="传火祭祀场">
+<meta property="og:description" content="欢迎来到Golang系列教程的第23讲。 什么是缓冲通道？我们在上一篇教程中讨论的所有通道基本上都是无缓冲的。正如我们在channels教程中详细讨论的那样，对无缓冲通道的发送和接收都是阻塞的。 可以创建一个带缓冲的通道。只有当缓冲区已满时，向缓冲通道发送数据才会被阻塞。同样，只有当缓冲区为空时，从缓冲通道接收数据才会被阻塞。 通过向make函数传递一个额外的容量参数来创建缓冲通道，该参数指定了缓">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-12-25T11:54:19.000Z">
+<meta property="article:modified_time" content="2025-01-23T07:44:45.569Z">
+<meta property="article:author" content="ZoeKyHein">
+<meta property="article:tag" content="Golang">
+<meta property="article:tag" content="教程">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>【GolangBot】23-缓冲通道与工作池 - 传火祭祀场</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"zoekyhein.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"💥","loop":false,"scope":["home"]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>传火祭祀场</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/golangbot" target="_self">
+                <i class="iconfont icon-book"></i>
+                <span>Go教程</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/sunKnight.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">【GolangBot】23-缓冲通道与工作池</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-12-25 11:54" pubdate>
+          2024年12月25日 中午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.8k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          32 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">【GolangBot】23-缓冲通道与工作池</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>欢迎来到<a href="../golangbot/">Golang系列教程</a>的第23讲。</p>
+<h2 id="什么是缓冲通道？"><a href="#什么是缓冲通道？" class="headerlink" title="什么是缓冲通道？"></a>什么是缓冲通道？</h2><p>我们在<a href="../%E3%80%90GolangBot%E3%80%9122-Channels">上一篇教程</a>中讨论的所有通道基本上都是无缓冲的。正如我们在<a href="../%E3%80%90GolangBot%E3%80%9122-Channels">channels教程</a>中详细讨论的那样，对无缓冲通道的发送和接收都是阻塞的。</p>
+<p>可以创建一个带缓冲的通道。只有当缓冲区已满时，向缓冲通道发送数据才会被阻塞。同样，只有当缓冲区为空时，从缓冲通道接收数据才会被阻塞。</p>
+<p>通过向<code>make</code>函数传递一个额外的容量参数来创建缓冲通道，该参数指定了缓冲区的大小。</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">ch := make(chan type, capacity)</code></pre></div>
+
+<p>上述语法中的<em>capacity</em>必须大于0才能使通道具有缓冲区。无缓冲通道的容量默认为0，因此我们在<a href="../%E3%80%90GolangBot%E3%80%9122-Channels">上一教程</a>中创建通道时省略了容量参数。</p>
+<p>让我们编写一些代码并创建一个缓冲通道。</p>
+<h3 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h3><div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (
+    <span class="hljs-string">&quot;fmt&quot;</span>
+)
+
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+    ch := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> <span class="hljs-type">string</span>, <span class="hljs-number">2</span>)
+    ch &lt;- <span class="hljs-string">&quot;naveen&quot;</span>
+    ch &lt;- <span class="hljs-string">&quot;paul&quot;</span>
+    fmt.Println(&lt;- ch)
+    fmt.Println(&lt;- ch)
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/It-em11etK">Run program in playground</a></p>
+<p>在上面的程序中，第9行我们创建了一个容量为2的缓冲通道。由于通道的容量为2，所以可以向通道写入2个字符串而不会被阻塞。我们在第10行和第11行向通道写入2个字符串，通道不会阻塞。我们分别在第12行和第13行读取写入的2个字符串。这个程序打印：</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">naveen
+paul</code></pre></div>
+
+<h3 id="另一个示例"><a href="#另一个示例" class="headerlink" title="另一个示例"></a>另一个示例</h3><p>让我们看一个缓冲通道的另一个示例，其中值是在并发Goroutine中写入通道，并从main Goroutine中读取。这个示例将帮助我们更好地理解向缓冲通道写入时何时会阻塞。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (  
+    <span class="hljs-string">&quot;fmt&quot;</span>
+    <span class="hljs-string">&quot;time&quot;</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">write</span><span class="hljs-params">(ch <span class="hljs-keyword">chan</span> <span class="hljs-type">int</span>)</span></span> &#123;  
+    <span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">5</span>; i++ &#123;
+        ch &lt;- i
+        fmt.Println(<span class="hljs-string">&quot;successfully wrote&quot;</span>, i, <span class="hljs-string">&quot;to ch&quot;</span>)
+    &#125;
+    <span class="hljs-built_in">close</span>(ch)
+&#125;
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;  
+    ch := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> <span class="hljs-type">int</span>, <span class="hljs-number">2</span>)
+    <span class="hljs-keyword">go</span> write(ch)
+    time.Sleep(<span class="hljs-number">2</span> * time.Second)
+    <span class="hljs-keyword">for</span> v := <span class="hljs-keyword">range</span> ch &#123;
+        fmt.Println(<span class="hljs-string">&quot;read value&quot;</span>, v,<span class="hljs-string">&quot;from ch&quot;</span>)
+        time.Sleep(<span class="hljs-number">2</span> * time.Second)
+
+    &#125;
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/bKe5GdgMK9">Run program in playground</a></p>
+<p>在上面的程序中，在main Goroutine的第16行创建了一个容量为<code>2</code>的缓冲通道<code>ch</code>，并在第17行传递给write Goroutine。然后main Goroutine休眠2秒。在此期间，write Goroutine并发运行。write Goroutine有一个<code>for</code>循环，将数字0到4写入<code>ch</code>通道。这个缓冲通道的容量是<code>2</code>，因此write <code>Goroutine</code>将能够立即将值<code>0</code>和<code>1</code>写入<code>ch</code>通道，然后它会阻塞，直到至少从<code>ch</code>通道读取一个值。所以这个程序会立即打印以下2行。</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">successfully wrote 0 to ch
+successfully wrote 1 to ch</code></pre></div>
+
+<p>打印完上面两行后，write Goroutine中向<code>ch</code>通道的写入会被阻塞，直到有人从<code>ch</code>通道读取。由于main Goroutine在开始从通道读取之前休眠2秒，所以程序在接下来的2秒内不会打印任何内容。main Goroutine在2秒后醒来，并开始使用第19行的<code>for range</code>循环从<code>ch</code>通道读取，打印读取的值，然后再次休眠2秒，这个循环继续，直到<code>ch</code>被关闭。所以程序会在2秒后打印以下行：</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">read value 0 from ch
+successfully wrote 2 to ch</code></pre></div>
+
+<p>这将持续到所有值都写入通道并在write Goroutine中关闭。最终输出将是：</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">successfully wrote 0 to ch
+successfully wrote 1 to ch
+read value 0 from ch
+successfully wrote 2 to ch
+read value 1 from ch
+successfully wrote 3 to ch
+read value 2 from ch
+successfully wrote 4 to ch
+read value 3 from ch
+read value 4 from ch</code></pre></div>
+
+<h3 id="死锁"><a href="#死锁" class="headerlink" title="死锁"></a>死锁</h3><div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (
+    <span class="hljs-string">&quot;fmt&quot;</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+    ch := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> <span class="hljs-type">string</span>, <span class="hljs-number">2</span>)
+    ch &lt;- <span class="hljs-string">&quot;naveen&quot;</span>
+    ch &lt;- <span class="hljs-string">&quot;paul&quot;</span>
+    ch &lt;- <span class="hljs-string">&quot;steve&quot;</span>
+    fmt.Println(&lt;-ch)
+    fmt.Println(&lt;-ch)
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/FW-LHeH7oD">Run program in playground</a></p>
+<p>在上面的程序中，我们向一个容量为2的缓冲通道写入3个字符串。当控制到达第11行的第三次写入时，写入被阻塞，因为通道已超出其容量。现在必须有某个Goroutine从通道读取，写入才能继续进行，但在这种情况下，没有并发的例程从这个通道读取。因此会出现<strong>死锁</strong>，程序会在运行时出现panic，并显示以下消息：</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">fatal error: all goroutines are asleep - deadlock!
+
+goroutine 1 [chan send]:
+main.main()
+	/tmp/sandbox091448810/prog.go:11 +0x8d</code></pre></div>
+
+<h3 id="关闭缓冲通道"><a href="#关闭缓冲通道" class="headerlink" title="关闭缓冲通道"></a>关闭缓冲通道</h3><p>我们已经在<a href="../%E3%80%90GolangBot%E3%80%9123-%E7%BC%93%E5%86%B2%E9%80%9A%E9%81%93%E4%B8%8E%E5%B7%A5%E4%BD%9C%E6%B1%A0/#%E5%85%B3%E9%97%AD%E7%BC%93%E5%86%B2%E9%80%9A%E9%81%93">上一教程</a>中讨论了关闭通道。除了我们在上一教程中学到的内容外，关闭缓冲通道时还有一个需要考虑的细节。</p>
+<p>可以从已关闭的缓冲通道读取数据。通道将返回已写入通道的数据，一旦所有数据都被读取，它将返回通道的零值。</p>
+<p>让我们编写一个程序来理解这一点。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (
+    <span class="hljs-string">&quot;fmt&quot;</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+    ch := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> <span class="hljs-type">int</span>, <span class="hljs-number">5</span>)
+    ch &lt;- <span class="hljs-number">5</span>
+    ch &lt;- <span class="hljs-number">6</span>
+    <span class="hljs-built_in">close</span>(ch)
+    n, open := &lt;-ch 
+    fmt.Printf(<span class="hljs-string">&quot;Received: %d, open: %t\n&quot;</span>, n, open)
+    n, open = &lt;-ch 
+    fmt.Printf(<span class="hljs-string">&quot;Received: %d, open: %t\n&quot;</span>, n, open)
+    n, open = &lt;-ch 
+    fmt.Printf(<span class="hljs-string">&quot;Received: %d, open: %t\n&quot;</span>, n, open)
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/19cZrsy2X4v">Run program in playground</a></p>
+<p>在上面的程序中，我们在第8行创建了一个容量为<code>5</code>的缓冲通道。然后我们向通道写入<code>5</code>和<code>6</code>。通道在第11行之后关闭。即使通道已关闭，我们仍然可以读取已写入通道的值。这是在第12行和第14行完成的。在第12行，<code>n</code>的值将是<code>5</code>，open将是<code>true</code>。在第14行，<code>n</code>的值将是<code>6</code>，open再次为<code>true</code>。我们现在已经读取了通道中的<code>5</code>和<code>6</code>，没有更多的数据可读。现在当在第16行再次读取通道时，<code>n</code>的值将是<code>0</code>，这是<code>int</code>的零值，<code>open</code>将是<code>false</code>，表示通道已关闭。</p>
+<p>这个程序将打印：</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">Received: 5, open: true
+Received: 6, open: true
+Received: 0, open: false</code></pre></div>
+
+<p>同样的程序也可以使用for range循环来编写。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;fmt&quot;</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	ch := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> <span class="hljs-type">int</span>, <span class="hljs-number">5</span>)
+	ch &lt;- <span class="hljs-number">5</span>
+	ch &lt;- <span class="hljs-number">6</span>
+	<span class="hljs-built_in">close</span>(ch)
+	<span class="hljs-keyword">for</span> n := <span class="hljs-keyword">range</span> ch &#123;
+		fmt.Println(<span class="hljs-string">&quot;Received:&quot;</span>, n)
+	&#125;
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/xVgkn64Jado">Run program in playground</a></p>
+<p>上面程序第12行的<code>for range</code>循环将读取写入通道的所有值，并在没有更多值可读时退出，因为通道已经关闭。</p>
+<p>这个程序将打印：</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">Received: 5
+Received: 6</code></pre></div>
+
+<h3 id="长度与容量"><a href="#长度与容量" class="headerlink" title="长度与容量"></a>长度与容量</h3><p>缓冲通道的容量是通道可以容纳的值的数量。这是我们使用<code>make</code>函数创建缓冲通道时指定的值。</p>
+<p>缓冲通道的长度是当前队列中的元素数量。</p>
+<p>一个程序可以让事情变得清晰 😀</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (
+    <span class="hljs-string">&quot;fmt&quot;</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+    ch := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> <span class="hljs-type">string</span>, <span class="hljs-number">3</span>)
+    ch &lt;- <span class="hljs-string">&quot;naveen&quot;</span>
+    ch &lt;- <span class="hljs-string">&quot;paul&quot;</span>
+    fmt.Println(<span class="hljs-string">&quot;capacity is&quot;</span>, <span class="hljs-built_in">cap</span>(ch))
+    fmt.Println(<span class="hljs-string">&quot;length is&quot;</span>, <span class="hljs-built_in">len</span>(ch))
+    fmt.Println(<span class="hljs-string">&quot;read value&quot;</span>, &lt;-ch)
+    fmt.Println(<span class="hljs-string">&quot;new length is&quot;</span>, <span class="hljs-built_in">len</span>(ch))
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/2ggC64yyvr">Run program in playground</a></p>
+<p>在上面的程序中，通道创建时的容量为<code>3</code>，也就是说它可以容纳3个字符串。然后我们在第9行和第10行分别向通道写入2个字符串。现在通道中有2个字符串排队，因此其长度为<code>2</code>。在第13行，我们从通道读取一个字符串。现在通道中只有一个字符串排队，因此其长度变为<code>1</code>。这个程序将打印：</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">capacity is 3
+length is 2
+read value naveen
+new length is 1</code></pre></div>
+
+<h3 id="WaitGroup"><a href="#WaitGroup" class="headerlink" title="WaitGroup"></a>WaitGroup</h3><p>本教程的下一节是关于<em>Worker Pools</em>。为了理解worker pools，我们首先需要了解<code>WaitGroup</code>，因为它将在Worker pool的实现中使用。</p>
+<p>WaitGroup用于等待一组Goroutines完成执行。控制会被阻塞，直到所有Goroutines完成执行。假设我们有3个从<code>main</code> Goroutine生成的并发执行的Goroutines。<code>main</code> Goroutines需要等待其他3个Goroutines完成才能终止。这可以使用WaitGroup来实现。</p>
+<p>让我们停止理论，直接开始编写代码 😀</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;fmt&quot;</span>
+	<span class="hljs-string">&quot;sync&quot;</span>
+	<span class="hljs-string">&quot;time&quot;</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">process</span><span class="hljs-params">(i <span class="hljs-type">int</span>, wg *sync.WaitGroup)</span></span> &#123;
+	fmt.Println(<span class="hljs-string">&quot;started Goroutine &quot;</span>, i)
+	time.Sleep(<span class="hljs-number">2</span> * time.Second)
+	fmt.Printf(<span class="hljs-string">&quot;Goroutine %d ended\n&quot;</span>, i)
+	wg.Done()
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	no := <span class="hljs-number">3</span>
+	<span class="hljs-keyword">var</span> wg sync.WaitGroup
+	<span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; no; i++ &#123;
+		wg.Add(<span class="hljs-number">1</span>)
+		<span class="hljs-keyword">go</span> process(i, &amp;wg)
+	&#125;
+	wg.Wait()
+	fmt.Println(<span class="hljs-string">&quot;All go routines finished executing&quot;</span>)
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/CZNtu8ktQh">Run in playground</a></p>
+<p><a target="_blank" rel="noopener" href="https://golang.org/pkg/sync/#WaitGroup">WaitGroup</a>是一个结构类型，我们在第18行创建了一个WaitGroup类型的零值变量。WaitGroup的工作方式是通过使用计数器。当我们对WaitGroup调用<code>Add</code>并传递一个<code>int</code>时，WaitGroup的计数器会增加传递给<code>Add</code>的值。减少计数器的方法是在WaitGroup上调用<code>Done()</code>方法。<code>Wait()</code>方法会阻塞调用它的<code>Goroutine</code>，直到计数器变为零。</p>
+<p>在上面的程序中，我们在第20行的<code>for</code>循环内调用<code>wg.Add(1)</code>，循环迭代3次。所以计数器现在变成3。<code>for</code>循环还生成了3个<code>process</code> Goroutines，然后在第23行调用的<code>wg.Wait()</code>使<code>main</code> Goroutine等待，直到计数器变为零。计数器通过在<code>process</code> Goroutine中第13行调用<code>wg.Done</code>来递减。一旦所有3个生成的Goroutines完成执行，也就是<code>wg.Done()</code>被调用三次，计数器将变为零，main Goroutine将被解除阻塞。</p>
+<p><strong>在第21行传递<code>wg</code>的指针很重要。如果不传递指针，那么每个Goroutine将有自己的WaitGroup副本，并且main不会在它们完成执行时得到通知。</strong></p>
+<p>这个程序输出：</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">started Goroutine  2
+started Goroutine  0
+started Goroutine  1
+Goroutine 0 ended
+Goroutine 2 ended
+Goroutine 1 ended
+All go routines finished executing</code></pre></div>
+
+<p>你的输出可能与我的不同，因为Goroutines的执行顺序可能会有所不同 :)。</p>
+<h3 id="Worker-Pool-实现"><a href="#Worker-Pool-实现" class="headerlink" title="Worker Pool 实现"></a>Worker Pool 实现</h3><p>缓冲通道的一个重要用途是实现<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Thread_pool">worker pool</a>。</p>
+<p>一般来说，worker pool是等待分配任务的线程集合。一旦他们完成分配的任务，就会再次变得可用于下一个任务。</p>
+<p>我们将使用缓冲通道来实现worker pool。我们的worker pool将执行找出输入数字的各位数字之和的任务。例如，如果传入234，输出将是9（2 + 3 + 4）。worker pool的输入将是一个伪随机整数列表。</p>
+<p>以下是我们worker pool的核心功能：</p>
+<ul>
+<li>创建一个监听输入缓冲通道的Goroutine池，等待分配任务</li>
+<li>向输入缓冲通道添加任务</li>
+<li>任务完成后将结果写入输出缓冲通道</li>
+<li>从输出缓冲通道读取并打印结果</li>
+</ul>
+<p>我们将逐步编写这个程序，以使其更容易理解。</p>
+<p>第一步将是创建表示任务和结果的结构体。</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">type Job struct &#123;
+    id       int
+    randomno int
+&#125;
+type Result struct &#123;
+    job         Job
+    sumofdigits int
+&#125;</code></pre></div>
+
+<p>每个<code>Job</code>结构体都有一个<code>id</code>和一个需要计算各位数字之和的<code>randomno</code>。</p>
+<p><code>Result</code>结构体有一个<code>job</code>字段，它是持有结果（各位数字之和）的任务，结果存储在<code>sumofdigits</code>字段中。</p>
+<p>下一步是创建用于接收任务和写入输出的缓冲通道。</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">var jobs = make(chan Job, 10)
+var results = make(chan Result, 10)</code></pre></div>
+
+<p>Worker Goroutines监听<code>jobs</code>缓冲通道等待新任务。一旦任务完成，结果就会写入<code>results</code>缓冲通道。</p>
+<p>下面的<code>digits</code>函数实际执行找出整数各位数字之和并返回的任务。我们将在这个函数中添加2秒的休眠，只是为了模拟这个函数需要一些时间来计算结果。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">digits</span><span class="hljs-params">(number <span class="hljs-type">int</span>)</span></span> <span class="hljs-type">int</span> &#123;
+    sum := <span class="hljs-number">0</span>
+    no := number
+    <span class="hljs-keyword">for</span> no != <span class="hljs-number">0</span> &#123;
+        digit := no % <span class="hljs-number">10</span>
+        sum += digit
+        no /= <span class="hljs-number">10</span>
+    &#125;
+    time.Sleep(<span class="hljs-number">2</span> * time.Second)
+    <span class="hljs-keyword">return</span> sum
+&#125;</code></pre></div>
+
+<p>接下来，我们将编写一个创建worker Goroutine的函数。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">worker</span><span class="hljs-params">(wg *sync.WaitGroup)</span></span> &#123;
+    <span class="hljs-keyword">for</span> job := <span class="hljs-keyword">range</span> jobs &#123;
+        output := Result&#123;job, digits(job.randomno)&#125;
+        results &lt;- output
+    &#125;
+    wg.Done()
+&#125;</code></pre></div>
+
+<p>上面的函数创建一个worker，它从<code>jobs</code>通道读取，使用当前的<code>job</code>和<code>digits</code>函数的返回值创建一个<code>Result</code>结构体，然后将结果写入<code>results</code>缓冲通道。这个函数接受一个WaitGroup <code>wg</code>作为参数，当所有<code>jobs</code>完成时，它将在该参数上调用<code>Done()</code>方法。</p>
+<p><code>createWorkerPool</code>函数将创建一个worker Goroutine池。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">createWorkerPool</span><span class="hljs-params">(noOfWorkers <span class="hljs-type">int</span>)</span></span> &#123;
+    <span class="hljs-keyword">var</span> wg sync.WaitGroup
+    <span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; noOfWorkers; i++ &#123;
+        wg.Add(<span class="hljs-number">1</span>)
+        <span class="hljs-keyword">go</span> worker(&amp;wg)
+    &#125;
+    wg.Wait()
+    <span class="hljs-built_in">close</span>(results)
+&#125;</code></pre></div>
+
+<p>上面的函数接受要创建的workers数量作为参数。在创建Goroutine之前调用<code>wg.Add(1)</code>来增加WaitGroup计数器。然后通过将WaitGroup <code>wg</code>的指针传递给<code>worker</code>函数来创建worker Goroutines。创建完所需的worker Goroutines后，它通过调用<code>wg.Wait()</code>等待所有Goroutines完成执行。在所有Goroutines完成执行后，它关闭<code>results</code>通道，因为所有Goroutines都已完成执行，没有人会进一步写入<code>results</code>通道。</p>
+<p>现在我们已经准备好worker pool，让我们继续编写将任务分配给workers的函数。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">allocate</span><span class="hljs-params">(noOfJobs <span class="hljs-type">int</span>)</span></span> &#123;
+    <span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; noOfJobs; i++ &#123;
+        randomno := rand.Intn(<span class="hljs-number">999</span>)
+        job := Job&#123;i, randomno&#125;
+        jobs &lt;- job
+    &#125;
+    <span class="hljs-built_in">close</span>(jobs)
+&#125;</code></pre></div>
+
+<p>上面的<code>allocate</code>函数接受要创建的任务数量作为输入参数，生成最大值为<code>998</code>的伪随机数，使用随机数和for循环计数器<code>i</code>作为id创建<code>Job</code>结构体，然后将它们写入<code>jobs</code>通道。写入所有任务后关闭<code>jobs</code>通道。</p>
+<p>下一步将是创建读取<code>results</code>通道并打印输出的函数。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">result</span><span class="hljs-params">(done <span class="hljs-keyword">chan</span> <span class="hljs-type">bool</span>)</span></span> &#123;
+    <span class="hljs-keyword">for</span> result := <span class="hljs-keyword">range</span> results &#123;
+        fmt.Printf(<span class="hljs-string">&quot;Job id %d, input random no %d , sum of digits %d\n&quot;</span>, result.job.id, result.job.randomno, result.sumofdigits)
+    &#125;
+    done &lt;- <span class="hljs-literal">true</span>
+&#125;</code></pre></div>
+
+<p><code>result</code>函数读取<code>results</code>通道并打印任务id、输入随机数和随机数的各位数字之和。result函数还接受一个<code>done</code>通道作为参数，一旦打印完所有结果就向该通道写入。</p>
+<p>现在我们已经准备就绪。让我们继续最后一步，从<code>main()</code>函数调用所有这些函数。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+    startTime := time.Now()
+    noOfJobs := <span class="hljs-number">100</span>
+    <span class="hljs-keyword">go</span> allocate(noOfJobs)
+    done := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> <span class="hljs-type">bool</span>)
+    <span class="hljs-keyword">go</span> result(done)
+    noOfWorkers := <span class="hljs-number">10</span>
+    createWorkerPool(noOfWorkers)
+    &lt;-done
+    endTime := time.Now()
+    diff := endTime.Sub(startTime)
+    fmt.Println(<span class="hljs-string">&quot;total time taken &quot;</span>, diff.Seconds(), <span class="hljs-string">&quot;seconds&quot;</span>)
+&#125;</code></pre></div>
+
+<p>我们首先在main函数的第2行存储程序的执行开始时间，在最后一行（第12行）我们计算endTime和startTime之间的时间差，并显示程序运行所需的总时间。这是必需的，因为我们将通过改变Goroutines的数量来做一些基准测试。</p>
+<p><code>noOfJobs</code>设置为100，然后调用<code>allocate</code>向<code>jobs</code>通道添加任务。</p>
+<p>然后创建<code>done</code>通道并传递给<code>result</code> Goroutine，这样它就可以开始打印输出并在一切都打印完成时通知。</p>
+<p>最后通过调用<code>createWorkerPool</code>函数创建一个包含<code>10</code>个worker Goroutines的池，然后main在<code>done</code>通道上等待所有结果打印完成。</p>
+<p>这是完整的程序供你参考。我也导入了必要的包。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (
+    <span class="hljs-string">&quot;fmt&quot;</span>
+    <span class="hljs-string">&quot;math/rand&quot;</span>
+    <span class="hljs-string">&quot;sync&quot;</span>
+    <span class="hljs-string">&quot;time&quot;</span>
+)
+
+<span class="hljs-keyword">type</span> Job <span class="hljs-keyword">struct</span> &#123;
+    id       <span class="hljs-type">int</span>
+    randomno <span class="hljs-type">int</span>
+&#125;
+<span class="hljs-keyword">type</span> Result <span class="hljs-keyword">struct</span> &#123;
+    job         Job
+    sumofdigits <span class="hljs-type">int</span>
+&#125;
+
+<span class="hljs-keyword">var</span> jobs = <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> Job, <span class="hljs-number">10</span>)
+<span class="hljs-keyword">var</span> results = <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> Result, <span class="hljs-number">10</span>)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">digits</span><span class="hljs-params">(number <span class="hljs-type">int</span>)</span></span> <span class="hljs-type">int</span> &#123;
+    sum := <span class="hljs-number">0</span>
+    no := number
+    <span class="hljs-keyword">for</span> no != <span class="hljs-number">0</span> &#123;
+        digit := no % <span class="hljs-number">10</span>
+        sum += digit
+        no /= <span class="hljs-number">10</span>
+    &#125;
+    time.Sleep(<span class="hljs-number">2</span> * time.Second)
+    <span class="hljs-keyword">return</span> sum
+&#125;
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">worker</span><span class="hljs-params">(wg *sync.WaitGroup)</span></span> &#123;
+    <span class="hljs-keyword">for</span> job := <span class="hljs-keyword">range</span> jobs &#123;
+        output := Result&#123;job, digits(job.randomno)&#125;
+        results &lt;- output
+    &#125;
+    wg.Done()
+&#125;
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">createWorkerPool</span><span class="hljs-params">(noOfWorkers <span class="hljs-type">int</span>)</span></span> &#123;
+    <span class="hljs-keyword">var</span> wg sync.WaitGroup
+    <span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; noOfWorkers; i++ &#123;
+        wg.Add(<span class="hljs-number">1</span>)
+        <span class="hljs-keyword">go</span> worker(&amp;wg)
+    &#125;
+    wg.Wait()
+    <span class="hljs-built_in">close</span>(results)
+&#125;
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">allocate</span><span class="hljs-params">(noOfJobs <span class="hljs-type">int</span>)</span></span> &#123;
+    <span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; noOfJobs; i++ &#123;
+        randomno := rand.Intn(<span class="hljs-number">999</span>)
+        job := Job&#123;i, randomno&#125;
+        jobs &lt;- job
+    &#125;
+    <span class="hljs-built_in">close</span>(jobs)
+&#125;
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">result</span><span class="hljs-params">(done <span class="hljs-keyword">chan</span> <span class="hljs-type">bool</span>)</span></span> &#123;
+    <span class="hljs-keyword">for</span> result := <span class="hljs-keyword">range</span> results &#123;
+        fmt.Printf(<span class="hljs-string">&quot;Job id %d, input random no %d , sum of digits %d\n&quot;</span>, result.job.id, result.job.randomno, result.sumofdigits)
+    &#125;
+    done &lt;- <span class="hljs-literal">true</span>
+&#125;
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+    startTime := time.Now()
+    noOfJobs := <span class="hljs-number">100</span>
+    <span class="hljs-keyword">go</span> allocate(noOfJobs)
+    done := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> <span class="hljs-type">bool</span>)
+    <span class="hljs-keyword">go</span> result(done)
+    noOfWorkers := <span class="hljs-number">10</span>
+    createWorkerPool(noOfWorkers)
+    &lt;-done
+    endTime := time.Now()
+    diff := endTime.Sub(startTime)
+    fmt.Println(<span class="hljs-string">&quot;total time taken &quot;</span>, diff.Seconds(), <span class="hljs-string">&quot;seconds&quot;</span>)
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/au5islUIbx">Run in playground</a></p>
+<p>请在本地机器上运行此程序以获得更准确的总时间计算。</p>
+<p>这个程序将打印：</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">Job id 1, input random no 636, sum of digits 15
+Job id 0, input random no 878, sum of digits 23
+Job id 9, input random no 150, sum of digits 6
+...
+total time taken  20.01081009 seconds</code></pre></div>
+
+<p>将打印总共100行，对应100个任务，然后最后一行打印程序运行的总时间。你的输出会与我的不同，因为Goroutines可以以任何顺序运行，总时间也会根据硬件而变化。在我的情况下，程序完成大约需要20秒。</p>
+<p>现在让我们将<code>main</code>函数中的<code>noOfWorkers</code>增加到<code>20</code>。我们已经将workers的数量翻倍了。由于worker Goroutines增加了（准确地说是翻倍），程序完成所需的总时间应该减少（准确地说是减半）。在我的情况下，它变成了10.004364685秒，程序打印：</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">...
+total time taken  10.004364685 seconds</code></pre></div>
+
+<p>现在我们可以理解，随着worker Goroutines数量的增加，完成任务所需的总时间会减少。我把它作为一个练习留给你，在<code>main</code>函数中将<code>noOfJobs</code>和<code>noOfWorkers</code>设置为不同的值并分析结果。</p>
+<p><strong>下一教程 - <a href="../%E3%80%90GolangBot%E3%80%9124-Select">Select</a></strong></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E5%BF%83%E5%BE%97/" class="category-chain-item">学习心得</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E5%BF%83%E5%BE%97/GolangBot/" class="category-chain-item">GolangBot</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Golang/" class="print-no-link">#Golang</a>
+      
+        <a href="/tags/%E6%95%99%E7%A8%8B/" class="print-no-link">#教程</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>【GolangBot】23-缓冲通道与工作池</div>
+      <div>https://zoekyhein.github.io/【GolangBot】23-缓冲通道与工作池/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>ZoeKyHein</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年12月25日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/%E3%80%90GolangBot%E3%80%9124-Select/" title="【GolangBot】24-Select">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">【GolangBot】24-Select</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/%E3%80%90GolangBot%E3%80%9122-Channels/" title="【GolangBot】22-Channels">
+                        <span class="hidden-mobile">【GolangBot】22-Channels</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

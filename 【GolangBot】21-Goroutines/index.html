@@ -1,0 +1,738 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/icon.png">
+  <link rel="icon" href="/img/icon.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#ac9343">
+  <meta name="author" content="ZoeKyHein">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="欢迎来到Golang教程系列的第21篇教程。 在上一篇教程中，我们讨论了并发以及它与并行的区别。在本教程中，我们将讨论Go如何使用Goroutines实现并发。 什么是Goroutines？Goroutines是与其他函数或方法并发运行的函数或方法。Goroutines可以被认为是轻量级线程。与线程相比，创建Goroutine的成本很小。因此，Go应用程序通常会有数千个Goroutines并发运行">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【GolangBot】21-Goroutines">
+<meta property="og:url" content="https://zoekyhein.github.io/%E3%80%90GolangBot%E3%80%9121-Goroutines/index.html">
+<meta property="og:site_name" content="传火祭祀场">
+<meta property="og:description" content="欢迎来到Golang教程系列的第21篇教程。 在上一篇教程中，我们讨论了并发以及它与并行的区别。在本教程中，我们将讨论Go如何使用Goroutines实现并发。 什么是Goroutines？Goroutines是与其他函数或方法并发运行的函数或方法。Goroutines可以被认为是轻量级线程。与线程相比，创建Goroutine的成本很小。因此，Go应用程序通常会有数千个Goroutines并发运行">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://golangbot.com/content/images/2017/07/Goroutines-explained.png">
+<meta property="article:published_time" content="2024-12-25T09:53:27.000Z">
+<meta property="article:modified_time" content="2025-01-23T07:44:45.569Z">
+<meta property="article:author" content="ZoeKyHein">
+<meta property="article:tag" content="Golang">
+<meta property="article:tag" content="教程">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://golangbot.com/content/images/2017/07/Goroutines-explained.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>【GolangBot】21-Goroutines - 传火祭祀场</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"zoekyhein.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"💥","loop":false,"scope":["home"]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>传火祭祀场</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/golangbot" target="_self">
+                <i class="iconfont icon-book"></i>
+                <span>Go教程</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/sunKnight.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">【GolangBot】21-Goroutines</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-12-25 09:53" pubdate>
+          2024年12月25日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.3k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          11 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">【GolangBot】21-Goroutines</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>欢迎来到<a href="../golangbot/">Golang教程系列</a>的第21篇教程。</p>
+<p>在<a href="../%E3%80%90GolangBot%E3%80%9120-%E5%B9%B6%E5%8F%91%E4%BB%8B%E7%BB%8D">上一篇教程</a>中，我们讨论了并发以及它与并行的区别。在本教程中，我们将讨论Go如何使用Goroutines实现并发。</p>
+<h3 id="什么是Goroutines？"><a href="#什么是Goroutines？" class="headerlink" title="什么是Goroutines？"></a>什么是Goroutines？</h3><p>Goroutines是与其他<a href="../%E3%80%90GolangBot%E3%80%916-%E5%87%BD%E6%95%B0">函数</a>或<a href="../%E3%80%90GolangBot%E3%80%9117-%E6%96%B9%E6%B3%95">方法</a>并发运行的函数或方法。Goroutines可以被认为是轻量级线程。与线程相比，创建Goroutine的成本很小。因此，Go应用程序通常会有数千个Goroutines并发运行。</p>
+<h3 id="Goroutines相对于线程的优势"><a href="#Goroutines相对于线程的优势" class="headerlink" title="Goroutines相对于线程的优势"></a>Goroutines相对于线程的优势</h3><ul>
+<li>与线程相比，Goroutines非常轻量。它们的栈大小只有几kb，而且栈可以根据应用程序的需要增长和收缩，而线程的栈大小必须指定且是固定的。</li>
+<li>Goroutines被多路复用到更少数量的OS线程上。一个程序中可能只有一个线程却有数千个Goroutines。如果该线程中的任何Goroutine阻塞（比如等待用户输入），则会创建另一个OS线程，并将剩余的Goroutines移动到新的OS线程。这些都由运行时处理，我们作为程序员不需要关心这些复杂的细节，而是得到了一个处理并发的清晰API。</li>
+<li>Goroutines通过channels进行通信。channels的设计可以防止在使用Goroutines访问共享内存时发生竞态条件。channels可以被认为是Goroutines用来通信的管道。我们将在下一个教程中详细讨论channels。</li>
+</ul>
+<h3 id="如何启动Goroutine？"><a href="#如何启动Goroutine？" class="headerlink" title="如何启动Goroutine？"></a>如何启动Goroutine？</h3><p>在函数或方法调用前加上关键字<code>go</code>，你就会有一个新的并发运行的Goroutine。</p>
+<p>让我们创建一个Goroutine :)</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (
+    <span class="hljs-string">&quot;fmt&quot;</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">hello</span><span class="hljs-params">()</span></span> &#123;
+    fmt.Println(<span class="hljs-string">&quot;Hello world goroutine&quot;</span>)
+&#125;
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+    <span class="hljs-keyword">go</span> hello()
+    fmt.Println(<span class="hljs-string">&quot;main function&quot;</span>)
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/zC78_fc1Hn">在playground中运行程序</a></p>
+<p>在第11行，<code>go hello()</code>启动了一个新的Goroutine。现在<code>hello()</code>函数将与<code>main()</code>函数并发运行。main函数在它自己的Goroutine中运行，它被称为<em>主Goroutine</em>。</p>
+<p><em>运行这个程序，你会有一个惊喜！</em></p>
+<p>这个程序只输出文本<code>main function</code>。我们启动的Goroutine怎么了？我们需要理解goroutines的两个主要特性来理解为什么会这样。</p>
+<ul>
+<li><strong>当启动一个新的Goroutine时，goroutine调用会立即返回。与函数不同，控制不会等待Goroutine执行完成。控制会立即返回到Goroutine调用后的下一行代码，而且会忽略Goroutine的任何返回值。</strong></li>
+<li><strong>主Goroutine必须运行才能让其他Goroutines运行。如果主Goroutine终止，则程序将被终止，其他Goroutine也不会运行。</strong></li>
+</ul>
+<p>我想现在你应该能理解为什么我们的Goroutine没有运行了。在第11行调用<code>go hello()</code>之后，控制立即返回到下一行代码，没有等待hello goroutine完成就打印了<code>main function</code>。然后主Goroutine终止了，因为没有其他要执行的代码，因此<code>hello</code> Goroutine没有机会运行。</p>
+<p>让我们现在来修复这个问题。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (  
+    <span class="hljs-string">&quot;fmt&quot;</span>
+    <span class="hljs-string">&quot;time&quot;</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">hello</span><span class="hljs-params">()</span></span> &#123;  
+    fmt.Println(<span class="hljs-string">&quot;Hello world goroutine&quot;</span>)
+&#125;
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;  
+    <span class="hljs-keyword">go</span> hello()
+    time.Sleep(<span class="hljs-number">1</span> * time.Second)
+    fmt.Println(<span class="hljs-string">&quot;main function&quot;</span>)
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/U9ZZuSql8-">在playground中运行程序</a></p>
+<p>在上面程序的第13行，我们调用了<em>time</em>包的<a target="_blank" rel="noopener" href="https://golang.org/pkg/time/#Sleep">Sleep</a>方法，它会使执行该方法的goroutine休眠。在这个例子中，主goroutine被置于休眠状态1秒。现在调用<code>go hello()</code>有足够的时间在主Goroutine终止之前执行。这个程序首先打印<code>Hello world goroutine</code>，等待1秒，然后打印<code>main function</code>。</p>
+<p><em>在主Goroutine中使用sleep来等待其他Goroutines完成执行是一种hack方法，我们用它来理解Goroutines是如何工作的。channels可以用来阻塞主Goroutine直到所有其他Goroutines完成执行。我们将在下一个教程中讨论channels。</em></p>
+<h3 id="启动多个Goroutines"><a href="#启动多个Goroutines" class="headerlink" title="启动多个Goroutines"></a>启动多个Goroutines</h3><p>让我们再写一个启动多个Goroutines的程序来更好地理解Goroutines。</p>
+<div class="code-wrapper"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (  
+    <span class="hljs-string">&quot;fmt&quot;</span>
+    <span class="hljs-string">&quot;time&quot;</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">numbers</span><span class="hljs-params">()</span></span> &#123;  
+    <span class="hljs-keyword">for</span> i := <span class="hljs-number">1</span>; i &lt;= <span class="hljs-number">5</span>; i++ &#123;
+        time.Sleep(<span class="hljs-number">250</span> * time.Millisecond)
+        fmt.Printf(<span class="hljs-string">&quot;%d &quot;</span>, i)
+    &#125;
+&#125;
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">alphabets</span><span class="hljs-params">()</span></span> &#123;  
+    <span class="hljs-keyword">for</span> i := <span class="hljs-string">&#x27;a&#x27;</span>; i &lt;= <span class="hljs-string">&#x27;e&#x27;</span>; i++ &#123;
+        time.Sleep(<span class="hljs-number">400</span> * time.Millisecond)
+        fmt.Printf(<span class="hljs-string">&quot;%c &quot;</span>, i)
+    &#125;
+&#125;
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;  
+    <span class="hljs-keyword">go</span> numbers()
+    <span class="hljs-keyword">go</span> alphabets()
+    time.Sleep(<span class="hljs-number">3000</span> * time.Millisecond)
+    fmt.Println(<span class="hljs-string">&quot;main terminated&quot;</span>)
+&#125;</code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://play.golang.org/p/oltn5nw0w3">在playground中运行</a></p>
+<p>上面的程序在第21行和第22行启动了两个Goroutines。这两个Goroutines现在并发运行。<code>numbers</code> Goroutine最初休眠250毫秒然后打印<code>1</code>，然后再次休眠并打印<code>2</code>，这个循环一直持续到打印5。同样，<code>alphabets</code> Goroutine打印从<code>a</code>到<code>e</code>的字母，休眠时间为400毫秒。主Goroutine启动<code>numbers</code>和<code>alphabets</code> Goroutines，休眠3000毫秒然后终止。</p>
+<p>这个程序输出</p>
+<div class="code-wrapper"><pre><code class="hljs fallback">1 a 2 3 b 4 c 5 d e main terminated</code></pre></div>
+
+<p>下面的图片描述了这个程序是如何工作的。请在新标签页中打开图片以获得更好的可视性 :)</p>
+<p><img src="https://golangbot.com/content/images/2017/07/Goroutines-explained.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>图片中蓝色部分代表<em>numbers Goroutine</em>，栗色部分代表<em>alphabets Goroutine</em>，绿色部分代表<em>main Goroutine</em>，最后的黑色部分合并了上面三个部分，展示了程序如何工作。每个框顶部的字符串如<em>0 ms, 250 ms</em>代表毫秒时间，输出显示在每个框的底部，如<em>1, 2, 3</em>等。蓝色框告诉我们<code>1</code>在<code>250 ms</code>后打印，<code>2</code>在<code>500 ms</code>后打印，以此类推。最后黑色框的底部有值<code>1 a 2 3 b 4 c 5 d e main terminated</code>，这也是程序的输出。这张图片很好理解，你能够理解程序是如何工作的。</p>
+<p><strong>下一篇教程 - <a href="../%E3%80%90GolangBot%E3%80%9122-Channels">Channels</a></strong></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E5%BF%83%E5%BE%97/" class="category-chain-item">学习心得</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E5%BF%83%E5%BE%97/GolangBot/" class="category-chain-item">GolangBot</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Golang/" class="print-no-link">#Golang</a>
+      
+        <a href="/tags/%E6%95%99%E7%A8%8B/" class="print-no-link">#教程</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>【GolangBot】21-Goroutines</div>
+      <div>https://zoekyhein.github.io/【GolangBot】21-Goroutines/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>ZoeKyHein</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年12月25日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/%E3%80%90GolangBot%E3%80%9122-Channels/" title="【GolangBot】22-Channels">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">【GolangBot】22-Channels</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/%E3%80%90GolangBot%E3%80%9120-%E5%B9%B6%E5%8F%91%E4%BB%8B%E7%BB%8D/" title="【GolangBot】20-并发介绍">
+                        <span class="hidden-mobile">【GolangBot】20-并发介绍</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
